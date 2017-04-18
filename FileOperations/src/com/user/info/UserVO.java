@@ -1,5 +1,9 @@
 package com.user.info;
-
+/**
+ * 
+ * @author sdahake
+ *
+ */
 public class UserVO {
 	
 	private String userName;

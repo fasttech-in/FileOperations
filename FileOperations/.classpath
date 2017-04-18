@@ -2,11 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="D:/CodeExamples/GIT/DMS/FileOperations/libs/dropbox-core-sdk-1.8.2.jar"/>
-	<classpathentry kind="lib" path="D:/CodeExamples/GIT/DMS/FileOperations/libs/dropbox-core-sdk-2.0-beta-4.jar"/>
-	<classpathentry kind="lib" path="D:/CodeExamples/GIT/DMS/FileOperations/libs/jackson-core-2.6.1.jar"/>
-	<classpathentry kind="lib" path="D:/CodeExamples/GIT/DMS/FileOperations/libs/zip4j_1.3.2.jar"/>
-	<classpathentry kind="lib" path="D:/CodeExamples/GIT/DMS/FileOperations/libs/commons-io-2.5-bin/commons-io-2.5/commons-io-2.5.jar"/>
-	<classpathentry kind="lib" path="D:/CodeExamples/GIT/DMS/FileOperations/libs/commons-io-2.5-bin/commons-io-2.5/commons-io-2.5-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/dropbox-core-sdk-1.8.2.jar"/>
+	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/dropbox-core-sdk-2.0-beta-4.jar"/>
+	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/jackson-core-2.6.1.jar"/>
+	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/zip4j_1.3.2.jar"/>
+	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/commons-io-2.5-bin/commons-io-2.5/commons-io-2.5.jar"/>
+	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/commons-io-2.5-bin/commons-io-2.5/commons-io-2.5-javadoc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
