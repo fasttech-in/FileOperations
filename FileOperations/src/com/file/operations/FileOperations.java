@@ -101,6 +101,9 @@ public class FileOperations extends Operations {
 	protected String zipProcess(String fromPath, String toPath) throws IOException, ZipException {
 		File fromFile = FileUtils.getFile(fromPath);
 		File toFile = FileUtils.getFile(toPath);
+		if(!toFile.exists()) {
+			toFile.mkdirs();
+		}
 		File f = new File(toFile.getAbsolutePath(), fromFile.getName()+".zip");
 
 		ZipParameters params = new ZipParameters();

@@ -8,5 +8,9 @@
 	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/zip4j_1.3.2.jar"/>
 	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/commons-io-2.5-bin/commons-io-2.5/commons-io-2.5.jar"/>
 	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/commons-io-2.5-bin/commons-io-2.5/commons-io-2.5-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/org.eclipse.fx.core_3.0.0.201704170600.jar"/>
+	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/org.eclipse.e4.core.di_1.6.1.v20160712-0927.jar"/>
+	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/org.eclipse.fx.ui.controls_3.0.0.201704170600.jar"/>
+	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/org.eclipse.fx.ui.panes_3.0.0.201704170600.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

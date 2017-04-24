@@ -10,7 +10,6 @@ import net.lingala.zip4j.exception.ZipException;
 
 import org.apache.commons.io.FileUtils;
 
-import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxException;
 import com.file.Interfaces.IFileOperations;
 import com.user.info.UserInfo;
@@ -93,7 +92,14 @@ public abstract class Operations implements IFileOperations {
 		return FileUtils.deleteQuietly(file);
 	}
 	
+	public String getUserRootDirectory() {
+		return userInfo.getUserRootDirectory();
+	}
+	
 	protected String convertToDropboxPath(String uploadPath) {
+		if(uploadPath.contains("/")){
+			uploadPath = uploadPath.replaceAll("\\/", "\\\\");
+		}
 		return "/DMS/Data/" + userInfo.getUserName() + "/"
 				+ uploadPath.replace(userInfo.getUserRootDirectory(), "").replaceAll("\\\\","/");
 	}
