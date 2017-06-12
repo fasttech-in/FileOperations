@@ -1,0 +1,64 @@
+.styled-text-area .source-segment {
+	/* @SuppressWarning */
+	-styled-text-color: black;
+	-fx-fill: -styled-text-color;
+}
+
+.styled-text-area .line-ruler {
+	-fx-background: white;
+}
+
+.styled-text-area .line-ruler.spacer {
+	-fx-border-width: 0 0.1 0 0;
+	-fx-border-color: gray;
+	-fx-border-style: solid;
+}
+
+.styled-text-area .line-ruler-text {
+	-fx-fill: gray;
+}
+
+.styled-text-area {
+	-fx-fixed-line-height: 16;
+    -fx-font-family: monospace;
+	-fx-font-size: 12;
+
+}
+
+.styled-text-area .list-view {
+	-fx-cursor: text;
+}
+
+.styled-text-area:quick-link-active .list-view {
+	-fx-cursor: hand;
+}
+
+.styled-text-area:drag-text-move-active .list-view {
+	-fx-cursor: move;
+}
+
+.styled-text-area:drag-text-copy-active .list-view {
+	-fx-cursor: text; /* we need a copy gesture icon */
+}
+
+
+.styled-text-area .current-line {
+	-fx-background-color: #e8f2fe
+}
+
+.styled-text-area .list-cell {
+	-fx-padding: 0 0 0 5;
+}
+
+.styled-text-area .source-segment-container {
+
+}
+
+.styled-text-area .text-caret {
+	-fx-fill: black;
+	-fx-stroke: black;
+}
+
+.styled-text-area .selection-marker {
+	-fx-background-color: #b5d5ff;
+}

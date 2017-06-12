@@ -1,0 +1,692 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.eclipse.fx.ui.controls.source
+Bundle-Version: 3.0.0.201704170600
+Bundle-Name: %bundleName
+Archiver-Version: Plexus Archiver
+Bundle-Localization: OSGI-INF/l10n/bundle-src
+Built-By: genie.efxclipse
+Bundle-ManifestVersion: 2
+Bundle-Vendor: %bundleVendor
+Eclipse-SourceBundle: org.eclipse.fx.ui.controls;version="3.0.0.201704
+ 170600";roots:="."
+Created-By: Apache Maven
+Build-Jdk: 1.8.0_121
+
+Name: org/eclipse/fx/ui/controls/stage/NativeDecoratedTrimmedWindow.ja
+ va
+SHA-256-Digest: 1+FsZiUA6hDYw638Y9GW/jK8Ty7ikTiHhWRvc5ZWDA0=
+
+Name: org/eclipse/fx/ui/controls/styledtext/StyledLabel.java
+SHA-256-Digest: m+JKjSoeEMsRMf4XWYu1XJdV7TE9rMFmXMDbXEzO8jc=
+
+Name: org/eclipse/fx/ui/controls/tabpane/GenericTab.java
+SHA-256-Digest: uQapP1BHSCKKhpWHUDRM81hXKyHBiDleSxIr6tDGmJM=
+
+Name: org/eclipse/fx/ui/controls/image/internal/FXMLNodeProvider.java
+SHA-256-Digest: +m5aTLZtNLrWjYHCsOA9klHedCJW4x01GKsTDFiaoQA=
+
+Name: org/eclipse/fx/ui/controls/list/L10NListCell.java
+SHA-256-Digest: A7XOVzbR9CjDk0lZgf2J6V52WJGlwsh+t55gxnWxhnM=
+
+Name: org/eclipse/fx/ui/controls/markers/TabOutlineMarker.java
+SHA-256-Digest: mg3fRjUfc4CB6mJBrlWWAGkBvz0Vj/UoZ3NIrcm+5u0=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-warning.svgz
+SHA-256-Digest: YGNSBuUV98jwgxnrba82MXNTLsh4VcohHaFuHmfd37Y=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/file_48.png
+SHA-256-Digest: 5zlk3iO4xf4baIsfuz5PVTa02gqqpvsR0mmImfoXcB8=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-info-8.png
+SHA-256-Digest: WnqAuZUsWvHkutzta3R1aDTWp/kkpyw1VtBlp3kAWZg=
+
+Name: org/eclipse/fx/ui/controls/image/GraphicNode.java
+SHA-256-Digest: xQzM6Pve1Lhedeq8goBouDVE/t9rbyRnkyByDNZ8YXQ=
+
+Name: org/eclipse/fx/ui/controls/form/StatusNode.java
+SHA-256-Digest: QPGhQAuXqApGQs7LhdwFg+6aLfP3gay6caPmql41TFA=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/LineNode.java
+SHA-256-Digest: xIG6Y9wAMA33/5L+sgQgGCIuIgb5NonyWuGV+mDBgB4=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/ScrollbarPane.jav
+ a
+SHA-256-Digest: Ut1bffFyVQzkSGO62ZcnCuq9TFLAJR0/1s9dCESJ6is=
+
+Name: org/eclipse/fx/ui/controls/styledtext/model/DecorationStrategy.j
+ ava
+SHA-256-Digest: wv7rUp9YjD9IJPSs4lzN0EPueHgcQo/djkjWlUGkY4Q=
+
+Name: org/eclipse/fx/ui/controls/styledtext/model/AnnotationProvider.j
+ ava
+SHA-256-Digest: zdx507PcY/Vya+H12ztuKM0twtBQj2YeLbMZ2DFXtxQ=
+
+Name: org/eclipse/fx/ui/controls/styledtext/UnderlineStrategyFactory.j
+ ava
+SHA-256-Digest: zz5b5ZGBWjDMF/kn3/VWr9dOoGwZxoAXxeBMxxJ3jTE=
+
+Name: controls.cssext
+SHA-256-Digest: d8QC8qqkX8BliCeIWUeF5PnN9q1O1UDtd7RggxM4ucY=
+
+Name: org/eclipse/fx/ui/controls/markers/AreaOverlay.java
+SHA-256-Digest: +EPo+aAY+LFigVQVJQ96hYvnx+90GSQZzW2hFkVWspY=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/StyleProxyFactory.java
+SHA-256-Digest: JvIgja/NcuBJ0HEyKj/fRGtZmbhaA29Nnq4GNzi00gc=
+
+Name: OSGI-INF/l10n/bundle-src.properties
+SHA-256-Digest: UoCDeDpKBCfySmMDf401JzDR5ri1dz+4dmdolHQo5Ak=
+
+Name: org/eclipse/fx/ui/controls/dialog/DialogMessagesProvider.java
+SHA-256-Digest: dPCk54L4GsBm6B5llaxsxQlZ232tJHG7bIHHWu85/2A=
+
+Name: org/eclipse/fx/ui/controls/styledtext/StyledTextContent.java
+SHA-256-Digest: 0/tIXGdGYLm5V33k8H/yhXSMtAgGw8d8C3UGoUUxSok=
+
+Name: org/eclipse/fx/ui/controls/filesystem/RootDirItem.java
+SHA-256-Digest: 3yCbJA5PGLDO1duTZEXziNH84dqbQLbXA7rwqXrEZ6c=
+
+Name: org/eclipse/fx/ui/controls/stage/ResizeableWindowPane.java
+SHA-256-Digest: 6G8N4mxaPuHZ0MH/85OW+g6mu1yvRebYMvhShpQyr3o=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/file_obj.svg
+SHA-256-Digest: EPsVe+pAxkNTiY9isNlVQNrK2Bwb0/9pLQfh14IZpPw=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/DirectoryViewSkin.jav
+ a
+SHA-256-Digest: H20VqM8rdeaCuOSfAREKlj4DL1ZUEIkEQmx6UKEegqs=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-warning-16.png
+SHA-256-Digest: QYSf6GgXEtxJQAR8dTj8l0tWIn32DRY61G2tmJO35Yo=
+
+Name: org/eclipse/fx/ui/controls/filesystem/DirectoryTreeView.java
+SHA-256-Digest: caKiR1k3DmKXBbUtqvuJAJJ07xctbOylzf75AIvE4qc=
+
+Name: org/eclipse/fx/ui/controls/styledtext/DefaultContent.java
+SHA-256-Digest: 2iuiMaqqbJtsB761HxjJtpLOB+R7JNXY3/IxiUyPmLU=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/fldr_32.png
+SHA-256-Digest: i1y/LbkKllKCmkQbvBdNqsGYxZm0130R4MbF1sBcO70=
+
+Name: org/eclipse/fx/ui/controls/styledtext/StyledString.java
+SHA-256-Digest: XTIvW1KmyHofouCXVTLNzT56W+waZCc8WDRTa+PmZkc=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/NodeCachePane.jav
+ a
+SHA-256-Digest: 1xUtxzeyWefxtFs6gSxNhalcnw3zE32+yHTjLKN5Tlk=
+
+Name: org/eclipse/fx/ui/controls/styledtext/model/AnnotationPresenter.
+ java
+SHA-256-Digest: a/AAO++yeaX5RHkVqoOMXSjUFZRO8wTX3OnkQjUU6Ro=
+
+Name: org/eclipse/fx/ui/controls/image/ImageClipNode.java
+SHA-256-Digest: npg1Ov9qIyQzmCvwoYIN89Ep3IBlxV6/93NvgFZC4GY=
+
+Name: org/eclipse/fx/ui/controls/form/GraphicDecorator.java
+SHA-256-Digest: T+tCF5yh/B+xDBYIae8iPbQWKv1ICHh/aCYNf7Nvsuk=
+
+Name: org/eclipse/fx/ui/controls/filesystem/ResourcePreview.java
+SHA-256-Digest: A///Y/V+ZR+CvzgIDa/iocdYev+Pqq9W98H8Put39pw=
+
+Name: org/eclipse/fx/ui/controls/tabpane/GenericTabPane.java
+SHA-256-Digest: gt4+OO9nHe5SLa6Kg0IOr/8bii9VjHZMYa3sBp88zWs=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-error-8@2x.png
+SHA-256-Digest: ndo7GORUCBpjTpa4rL7zvug01YvlHdonRVzvunByZk4=
+
+Name: org/eclipse/fx/ui/controls/tabpane/skin/DnDTabPaneSkinFullDrag.j
+ ava
+SHA-256-Digest: kCFEN4x3iEAAl2hNIizy3DcONsah0/CSEKs5xd2WTRE=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/TextNodeOriginal.
+ java
+SHA-256-Digest: eCGNZwBhPF4h/rJX36KiugComyfbnKnRmbovzEcWnAI=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/internal/SingleCharStyl
+ edLineRenderer.java
+SHA-256-Digest: J/Zui5AUA+eO1z+wUpLxWCtva2vcb16s9earYpUFv5Q=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-error.svgz
+SHA-256-Digest: XLBzyB1PeTLX8XhcqkjNN0Wipm1eYIBIwKpvlfbrD2E=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-warning-24@2x.png
+SHA-256-Digest: 0i3wqdr8NTXxAZQT5J0y8eji7riTdbDjS1fqz3qWPr4=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/StyledLineRenderer.java
+SHA-256-Digest: eu3dFSWygrIVNBoYiOqZfO9HQw6FAC8/f7k7ZM77wWc=
+
+Name: org/eclipse/fx/ui/controls/dnd/EFXDragEvent.java
+SHA-256-Digest: CxHcwJAtKD/b9S6QjlVPchafu0DutlAPYF8XLL+4Kgc=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/file_32.png
+SHA-256-Digest: 9SEOlslUi2u9jWlVs0hlcqyalcIOv/nrmMqV6vd43bI=
+
+Name: org/eclipse/fx/ui/controls/image/fontawesome/ClassGen.java
+SHA-256-Digest: onf3BZQ4uUtjK5xY+7pQ+D4si+8rdVg3TysQ8Z4FzVw=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/LineRuler.java
+SHA-256-Digest: V8qpBKBvEfS7M2MXr9bfuYlZ66JMcMCu5VbUNdMMZjs=
+
+Name: org/eclipse/fx/ui/controls/styledtext/skin/StyledLabelSkin.java
+SHA-256-Digest: RgAyjZI94aaypahbrk4gjsewtLhA55tuc0XKDsM/2Ro=
+
+Name: org/eclipse/fx/ui/controls/tabpane/skin/FXTabWrapper.java
+SHA-256-Digest: /w4u5zLOWHqwFYIbrEkgBGjQyXChhGDTPX54uzAYrRM=
+
+Name: org/eclipse/fx/ui/controls/stage/Window.java
+SHA-256-Digest: D2jCjudr5VgAx54COD4Mw03NXQKpo6yakqkPnsfFKpY=
+
+Name: org/eclipse/fx/ui/controls/stage/ResizeableFramePane.java
+SHA-256-Digest: CsY96tsSGqnoiII61QBjRwDk7lHfiWmouz0fCbwExag=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-warning-16@2x.png
+SHA-256-Digest: KUgrWa4zdEZw44oJReVlBpGoFKfUMf3/6f69S/ZzIDM=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/test.css
+SHA-256-Digest: p6ZYYP3DSd/SpALFactpnXWzLQMVyschNviavLdDJOY=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/fldr_48.png
+SHA-256-Digest: mH3IvGf98AHNNN1+gDcKWq5n1BtYFD236IyLpAuatBs=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/internal/SingleCharStyl
+ edLineRendererFactory.java
+SHA-256-Digest: c4gbx6K1Yn74PcqqAuHzf5VI+3MpiJaQGl/TyAzq1iQ=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/resource.properties
+SHA-256-Digest: v+r4qkihDFWi44S6Yutyqd9Tob0fnFyo7HyNYjtX6kk=
+
+Name: org/eclipse/fx/ui/controls/styledtext/events/UndoHintEvent.java
+SHA-256-Digest: RU2AzaPUwTjbos5N+Mkln+oj7ZaE3D5qg9D5GCfV7Ns=
+
+Name: org/eclipse/fx/ui/controls/tabpane/skin/FXTabPaneWrapper.java
+SHA-256-Digest: 76N7+fHGHVxfYl2+h5bxuail6Q4jGjWqgys+Kkw3K7M=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-info-8@2x.png
+SHA-256-Digest: CD4PrCNr3YoZB6GWwcnnCp3wd5f21yBSRHvT18T15Ok=
+
+Name: org/eclipse/fx/ui/controls/image/FontIconStyleConverter.java
+SHA-256-Digest: 1HpInkrFruANFFNzq+0UcgsCSQk3leGdFDiRf62olNQ=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-information.svgz
+SHA-256-Digest: /inl7dLDb48tXgJtxPX9RFx+2iCfR1XRrd85oS0YRv0=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/ContentView.java
+SHA-256-Digest: lZ8NYGh3y7WPFU5zAZLdjS4RLWq01o37l3SZ76ovi9U=
+
+Name: org/eclipse/fx/ui/controls/image/internal/ImageClipNodeProvider.
+ java
+SHA-256-Digest: WHIWudlDBHCjJmSQBhitvly0vTJ+VKOOduUXbsw1cXY=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/color-change.css
+SHA-256-Digest: B9p9D1k4+FPneB3F0fxkYwdvk0pjE+ydK0PveiZGSzA=
+
+Name: org/eclipse/fx/ui/controls/image/fontawesome/FontAwesomeIconFont
+ Provider.java
+SHA-256-Digest: QYZ1dhdkQwH2OLL802OCnTypCYqgtr05jsnp+cBlKFY=
+
+Name: org/eclipse/fx/ui/controls/tree/SimpleTreeCell.java
+SHA-256-Digest: bCGMrhhcTglbnQZZUJkMUymxa98JWnbImn+/vn7VG10=
+
+Name: org/eclipse/fx/ui/controls/filesystem/ResourceItem.java
+SHA-256-Digest: GB5iseeIzgITdoJuj/OLlEMUlTXKTmWwEeh31ZJ+mWc=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/VFlow.java
+SHA-256-Digest: lV8rDTujMILCGYokhhgfxe7+lyxPDG7R3BZfIsfzQfQ=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/FXBindUtil.java
+SHA-256-Digest: 4SJrob5Lyr81wl7GP0BDKqOEVlIugf063kqQCOPUrL8=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/default.css
+SHA-256-Digest: kImYhh8sDPL9Zx4i/4Gi1VUuSCC8xBEABq5ob+9NH5E=
+
+Name: org/eclipse/fx/ui/controls/paint/Messages.java
+SHA-256-Digest: GmiVR6iNWXIA47KxvvDx4MeA2GiXzWQ/45LsAZu0Z30=
+
+Name: org/eclipse/fx/ui/controls/tabpane/skin/DndTabPaneSkinHooker.jav
+ a
+SHA-256-Digest: 5qILdz/hiGQ1CnRqs3v7Kxgr1I1tez9iCThIrJx5qh4=
+
+Name: org/eclipse/fx/ui/controls/form/SimpleDecoratedNode.java
+SHA-256-Digest: v0yZxZvcktBpOrgdVEwbPXuI9wafOEi8hywyv04w4js=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-warning-8.png
+SHA-256-Digest: KIyrQBJ22p5Sa9Qyb8O1ld3jH6dmbMtBqqnf8rZM2G4=
+
+Name: org/eclipse/fx/ui/controls/list/ListComboUtil.java
+SHA-256-Digest: uF4tqV3axgxR44MGAuoA2vt6uPhb9Z6d0lrw+YA+FWU=
+
+Name: org/eclipse/fx/ui/controls/stage/DefaultFramePane.java
+SHA-256-Digest: QX4xzIyCU9hq5FiSVgyg+WB9vjTDkoQUtAmERLCaCW8=
+
+Name: org/eclipse/fx/ui/controls/image/FontAwesomeIcons.java
+SHA-256-Digest: zPhZlEWkgm9YPuN7auI1TqnI17ZZ5BPKHA4O/+31xcs=
+
+Name: org/eclipse/fx/ui/controls/list/SimpleListCell.java
+SHA-256-Digest: aU9/83wS4HmgUGF/HCLM6nO8zE5eWZIhIdbjPnbtvBk=
+
+Name: org/eclipse/fx/ui/controls/styledtext/TextChangedEvent.java
+SHA-256-Digest: UfVNovA55Od2QcTjCrNtfVFGNIFWVL/jr1v8wLMF2M4=
+
+Name: org/eclipse/fx/ui/controls/tabpane/DndTabPaneFactory.java
+SHA-256-Digest: aVFcFV6z7mNNZcAUWuUrfelTNhRFohMJZ845RcZN9hk=
+
+Name: org/eclipse/fx/ui/controls/dialog/dialog.css
+SHA-256-Digest: 2cqv0P9hpbQVOJIQStlqfRlaxA8dbYIuyshhXuK8sgY=
+
+Name: org/eclipse/fx/ui/controls/filesystem/FileItem.java
+SHA-256-Digest: toEpO4rmjzkyPuSCjtUUTStawPCkEeMCg9EumxfmGQ4=
+
+Name: org/eclipse/fx/ui/controls/image/internal/FontGraphicNodeProvide
+ r.java
+SHA-256-Digest: xXLzBOkRfp0ORKVC6/rqt2loNRRAsD+wuVIjT90wg4Q=
+
+Name: org/eclipse/fx/ui/controls/styledtext/events/TextPositionEvent.j
+ ava
+SHA-256-Digest: fDks9ljPja55osNJHRt5V9xbpNsuae2kXB7nF3td/ks=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-warning.svgz
+SHA-256-Digest: h6X81T2NsqhNnIbDtDqg+iPtRqA3NTVsNjqvKvo6gws=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-error.svgz
+SHA-256-Digest: ehXhSr7iNHh0ije3ZDP+q3zijiJQ1H3VWhZetTMnX+c=
+
+Name: org/eclipse/fx/ui/controls/image/SingleMultiDimensionImage.java
+SHA-256-Digest: pps7SIVn/blKcAVNpZArgPXQmHmvZLiMWcdaapLMR08=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/ReuseCache.java
+SHA-256-Digest: cZQqI/uRjhFCeAwv6SflRrSgL3lRPJa2t56UQai4Uv4=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-information.svgz
+SHA-256-Digest: JHDWOvtkf4ICWXfmT5y1zrEzBK+Ck7cC34k8cjrRAoU=
+
+Name: org/eclipse/fx/ui/controls/image/fontawesome/FontAwesome.otf
+SHA-256-Digest: eWEHD3ajPBMH3hnOKpPcKybWdH+nWa7lBFEYZEx1isw=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/TextNode.java
+SHA-256-Digest: vzY0U7ovSEfKfzS67Dg/xpJcUJYejnqN6eA0gQH6QYo=
+
+Name: org/eclipse/fx/ui/controls/dialog/messages.properties
+SHA-256-Digest: CxRF9oGV6+CfowQyxek9TowPCgWr/QZCTN+U+2fKUOY=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/TextStyle.java
+SHA-256-Digest: fKPYUbwSzmuBF5cuvehs7O4ZgAFOOqCrhLCxSmNpr4I=
+
+Name: org/eclipse/fx/ui/controls/styledtext/model/Annotation.java
+SHA-256-Digest: UJTKxw4bDl8HTIXKku7kKXZt14lNYNfJYCZYaPXlIG0=
+
+Name: org/eclipse/fx/ui/controls/tree/FilterableTreeItem.java
+SHA-256-Digest: bTzNkuG3gPzZ7oUTbuuVFwMBy1X7flUV105asZbm+Qk=
+
+Name: org/eclipse/fx/ui/controls/styledtext/styledtextarea.css
+SHA-256-Digest: 5YtP71HfJqe4ufNdzhUyFVEGwQTF+4qcSTZboGDe43M=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/StyledLine.java
+SHA-256-Digest: egMySnsNQ52YpkGlXMEbDSmdL+hnwehFTekF/L1IJCs=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/fldr_16.png
+SHA-256-Digest: KSLhb9Z7tLDI6zHFyKOceZDX1d3HItKLL6lVy2cDmqg=
+
+Name: org/eclipse/fx/ui/controls/image/ImageCache.java
+SHA-256-Digest: bQ6P16z5D+VTBVWHXUKRh//hM+298G29XJ5fY7dTNjs=
+
+Name: org/eclipse/fx/ui/controls/styledtext/TextChangingEvent.java
+SHA-256-Digest: c6L1qksSxE8wUnXPqfR9ADjoBtM6l08zQrijApeG8Lw=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-information.png
+SHA-256-Digest: nHG7tppucWCNFTYpBOUwd8FFWWGBH9hmxPf3FYWfZXc=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-warning-8@2x.png
+SHA-256-Digest: JN/6zoJiXXARll8B5buv9hbRWY9Uxe8EOM85IXbHgzk=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/DefaultStyleProxyFactor
+ y.java
+SHA-256-Digest: 7tK1hIYggHABmPUN3lAd5hYlzRDp5p/CAAMcBkvv3Jo=
+
+Name: org/eclipse/fx/ui/controls/stage/DefaultTrimmedWindowPane.java
+SHA-256-Digest: 6kf7Kfrkd73LCe3Yj4a4dFeVbpbBzAUYb7M+ofXuT+s=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/internal/ContentArea.ja
+ va
+SHA-256-Digest: AuGgNIbji3ffHPS6QdPSsDO0OTuQyE9rRxSBgx9mJ4U=
+
+Name: org/eclipse/fx/ui/controls/sceneviewer/OpenItemEvent.java
+SHA-256-Digest: XuE0aZXk5X8dMDbhFQyOY3gT10fnd74B8JhjSv8rzVI=
+
+Name: org/eclipse/fx/ui/controls/styledtext/skin/StyledTextSkin.java
+SHA-256-Digest: nUji7OnOgeed91rlKTKDANPJ7UjEJ5bXg8Psvdu0WfQ=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/internal/SingleTextStyl
+ edLineRenderer.java
+SHA-256-Digest: Gf5YIKVMfIfp8T5sqWUcWC8i0GzyEYhO2wCseWPyuvA=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/StyleRange.java
+SHA-256-Digest: LBsnJ+IMYBLKWm2dUyKro2QmYZPtjtuo8sUAvg44Ct0=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/file_16.png
+SHA-256-Digest: BIZQF0UEs86xAEaB3i6hKvlzWf2gXeCofiwMVLuCtM0=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/internal/BaseStyledLine
+ Renderer.java
+SHA-256-Digest: t0N3neY2FYO2ueso6dBx/FG4gCcoGeE7KzUW4t5W+Bo=
+
+Name: org/eclipse/fx/ui/controls/filesystem/DirItem.java
+SHA-256-Digest: 9olOZ/oo1SKb+U/32VCXv+9fe6LQTPPsHb1svsLlMBw=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/internal/SingleTextGrad
+ ientStyledLineRenderer.java
+SHA-256-Digest: KRrv+F6XLRmFBQmyac1aJTKV0r4yesh9ChmuYn/VShc=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/VerticalLineFlow.
+ java
+SHA-256-Digest: tYyGZkg3cV4GLcolLxr6nFRB51Cr8Nd0+ucEP76tV3w=
+
+Name: org/eclipse/fx/ui/controls/styledtext/TextSelection.java
+SHA-256-Digest: TLElVTxN/NGudnZqPCrop9rGVpNeFB8kNI9ouaim/ug=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/DebugMarker.java
+SHA-256-Digest: bo9wDi31fSjWpKCVRJa5T/2VBeAQTX6k/1lGdw/UOpY=
+
+Name: org/eclipse/fx/ui/controls/stage/Frame.java
+SHA-256-Digest: MIjajAmPG9ffI4LXiJcpTx4ldjQ4ApGqg83foLWhSmU=
+
+Name: org/eclipse/fx/ui/controls/styledtext/behavior/TextPositionSuppo
+ rt.java
+SHA-256-Digest: SIkgs9WEml36Z7+ejYlmXmmq+EAhWwd5tEKPJxTEA/s=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/PathItemImpl.java
+SHA-256-Digest: GFFDv++zLDXTPv4I+piSeq9t3TGadxCzi1Mx8H2g3rs=
+
+Name: org/eclipse/fx/ui/controls/styledtext/behavior/HoverSupport.java
+SHA-256-Digest: WglGIOwE5U43VTBPlMtW/S2ciUt6AFqkA/cmNEFSEYw=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/TestStyledLine.java
+SHA-256-Digest: e8qJD9TcbbyZS6ytxRzYSSMnb8QDSg0ddTrBnGeTi+o=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-error-16.png
+SHA-256-Digest: 1Nj3B22rYfsvh7O/yLEwvE7ZfGknqrb3WWF6+5iZTb0=
+
+Name: org/eclipse/fx/ui/controls/stage/TrimmedWindow.java
+SHA-256-Digest: nKSvHDQ+U1HcOS6uuGZlh6b0NJhwoGp92Hw9fbTqwkc=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/internal/LineInfo.java
+SHA-256-Digest: svYlFavyJPS6U0vqyi4I9kV33sl1gpq7wT5wPR2UIv8=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/internal/MultiTextStyle
+ dLineRenderer.java
+SHA-256-Digest: 1Q5nrxnfz06BQol7+3OVIwAHrK2H7ySmfU237iZkarA=
+
+Name: org/eclipse/fx/ui/controls/dialog/TitleAreaDialog.java
+SHA-256-Digest: DXYONoqLIazZbkbicBUp9JkKf3WZYwkeb002vfr1kNg=
+
+Name: org/eclipse/fx/ui/controls/sceneviewer/Viewer3d.java
+SHA-256-Digest: 76uRvIArDNOmFJS5yDq034fToV2XTMb0MRzYsRAzYH8=
+
+Name: org/eclipse/fx/ui/controls/filesystem/ResourceEvent.java
+SHA-256-Digest: w0MfRvO98RRBtGCbvqDU3kJ1YVb95jOsdOugdDVe5aE=
+
+Name: org/eclipse/fx/ui/controls/styledtext/model/TextAnnotationPresen
+ ter.java
+SHA-256-Digest: hlyxTsm62UajyS0VReeNHQg8BqmXCVtKKgbLdeusw3g=
+
+Name: org/eclipse/fx/ui/controls/form/status-icon.css
+SHA-256-Digest: cCc03cd8wsN/aYmcc+OefHayFK8/KNkM3xIbSKyMn6M=
+
+Name: org/eclipse/fx/ui/controls/styledtext/StyleRange.java
+SHA-256-Digest: f0OP6icQQnTGt2QPMNLQcu7NSmVuzD6mhBkGWfv1joo=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/preferences-desktop-noti
+ fication.png
+SHA-256-Digest: kMuqjqNvmzxOpHDvcMfuasgUS2AxuU6l8YZXFAGZiBA=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/system-help.png
+SHA-256-Digest: fgMTnftkMVXjsNmQlX2Xrx5+RGciWHLLIHmkjVEspZU=
+
+Name: org/eclipse/fx/ui/controls/styledtext/styledlabel.css
+SHA-256-Digest: vOBX5TbAPKcwwqszKbvxoFfuZ4/B6l1rjFoQ3BejPwQ=
+
+Name: org/eclipse/fx/ui/controls/table/TableColumnUtil.java
+SHA-256-Digest: TvWUYHv+TI/jaZSQKtrxNNf9C9W8Did8et091oD3Yi0=
+
+Name: org/eclipse/fx/ui/controls/stage/window.css
+SHA-256-Digest: VnwGJp9qiXzkfEAii9LnWAIokPETHVK26z+qrrHu6Zs=
+
+Name: org/eclipse/fx/ui/controls/tabpane/skin/DnDTabPaneSkin.java
+SHA-256-Digest: avmgTfQPmV5WI5wZrJ1Y2usYKF4+tVN1g14ajL5IuC4=
+
+Name: org/eclipse/fx/ui/controls/tree/TreeItemComparator.java
+SHA-256-Digest: oMUsiU3Cyf/7CETImdv9KoFxsBY699nhvpOD2ccH1Jk=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-error-24.png
+SHA-256-Digest: t6gETGaw4nvsJMgqX0jNhaQZS/7Zp0lqYbIhen7Kq/s=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-information-16.pn
+ g
+SHA-256-Digest: oSArWdIzzyuWHSQwiHVkTa61uNAFzkow6/kJdhz0z5g=
+
+Name: org/eclipse/fx/ui/controls/tree/CheckedTreeItemCollector.java
+SHA-256-Digest: JEk3vZNQvvzHDxC1KGSAOerLLO3GybFHvwUn+25B5N8=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-error-8.png
+SHA-256-Digest: gsp/CxdHgigaQMCn4R6GuCBLav3gRPTu+PFOYkmr5p8=
+
+Name: org/eclipse/fx/ui/controls/styledtext/behavior/StyledTextBehavio
+ r.java
+SHA-256-Digest: tOfxDZ8V+D/fsSN4d0PJJsUUx2BZdA+S1OTRnycbbCc=
+
+Name: org/eclipse/fx/ui/controls/tree/TreeColumnUtil.java
+SHA-256-Digest: yxSF7wojVX0TJUUIgMa8UMVQAaay9UU0dBDmPk1BKLs=
+
+Name: org/eclipse/fx/ui/controls/image/FontIcon.java
+SHA-256-Digest: aDNwARaUPzSb4LD8Z1+fZIo9yXagswvoBETv0wcLF7g=
+
+Name: org/eclipse/fx/ui/controls/Util.java
+SHA-256-Digest: b2+v8hLVj/rDW51k93VzEOE0rFK3DfDZe9stRwmAMWo=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/ResourceTreeViewSkin.
+ java
+SHA-256-Digest: Kril1X7CVj0vxBvOXfsIWRMEN9fjUaWfTNYTPTyReWE=
+
+Name: org/eclipse/fx/ui/controls/filesystem/IconSize.java
+SHA-256-Digest: UgG2yoUz03l9Gt0t17+NdS09c3t0YgRLHS1u0l6+MWo=
+
+Name: org/eclipse/fx/ui/controls/paint/messages.properties
+SHA-256-Digest: qFRbZxqKRQoweJfvzWTGLUONpeB/+PXG89b/Ks/Uxl4=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/StyleProxy.java
+SHA-256-Digest: hAWZAuP/nOnVNw8/CAroe+4SQ27I5EXB2Y2SXGPHt2M=
+
+Name: org/eclipse/fx/ui/controls/image/AdornedGraphicNode.java
+SHA-256-Digest: pIT+//ZJE0DWtt56BoBy0UjBQ/4IaP1tC5EEK2l52Ik=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/internal/SingleTextStyl
+ edLineRendererFactory.java
+SHA-256-Digest: VmAvBg2GaA2NNr91b5/oPjD7EjA5JGLL1N/EMvnFaBI=
+
+Name: org/eclipse/fx/ui/controls/filesystem/ResourceTreeView.java
+SHA-256-Digest: ZeuyFBNZaJ3gIwiVliO+oH04xq9DZYY5UsXXrfGtuyE=
+
+Name: org/eclipse/fx/ui/controls/form/graphic-status-decorator.css
+SHA-256-Digest: Qswo2AfQ5l0NfHqYvekIBpwd4M/FRwJS/qsQ7GaQ7As=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/StyledLineRendererFacto
+ ry.java
+SHA-256-Digest: PIyvpaLpOcRMtEandypa39jcXRrhnjGU6FuQUy7sx94=
+
+Name: org/eclipse/fx/ui/controls/tree/SortableTreeItem.java
+SHA-256-Digest: qypnpU206I8mcrTIHridx8VZ2BY7lKt0bg0IfPuT0dA=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/Scroller.java
+SHA-256-Digest: lYwNtXYeIRqdrdF81rClo42ll0w2DYAVmGDt6MOZJ9M=
+
+Name: org/eclipse/fx/ui/controls/styledtext/StyledTextArea.java
+SHA-256-Digest: cyeN3+PGtIe/+TIoMN4eGYUb3diJ7Uac0A3ROvvAYJs=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/Segment.java
+SHA-256-Digest: tFCyWu1/rhbS1JWZ9oiH9e+ed4Y3Kjo1hhibtnNf1YM=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-error-16@2x.png
+SHA-256-Digest: uUpa7KGNsJUcduEOl07dTNO/8zqCVN6mhcgt+uvibjs=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/DynCachePane.java
+SHA-256-Digest: FdBadWaX/PnZI4NHplaOizw5bM3slgkTmdfM2WGvsrA=
+
+Name: org/eclipse/fx/ui/controls/tabpane/DndTabPane.java
+SHA-256-Digest: Oz5HhAo6A1kgBwsw8qqdDQaWMfq67PXYMOeGyXexFD0=
+
+Name: org/eclipse/fx/ui/controls/media/MediaLoader.java
+SHA-256-Digest: fLnSciqDME8FK/PJS5r9J8dYHNguX59cFfBvqim2Kv0=
+
+Name: org/eclipse/fx/ui/controls/image/fonticonview.cssext
+SHA-256-Digest: gRQICTLoi+NB3K9bV+M1wh6MESy4fkzzxDHa8nUg9ik=
+
+Name: org/eclipse/fx/ui/controls/tree/PropertyTreeCell.java
+SHA-256-Digest: QQN1ak2PqRgejF2mWXEYQMorw+Es1+5bfXT0uE6znew=
+
+Name: org/eclipse/fx/ui/controls/dialog/Dialog.java
+SHA-256-Digest: rzoJvChjP53D4fdIdcZB4tf1t82BO+03sjj1kag2rlI=
+
+Name: org/eclipse/fx/ui/controls/image/FontIconView.java
+SHA-256-Digest: CQDcYmKYoX5l+bYnLJdZVPsdQ+HOHZePMJ62ujx2tb0=
+
+Name: org/eclipse/fx/ui/controls/styledtext/events/HoverTarget.java
+SHA-256-Digest: cHIqy14d6ag/3VgXzL0NAMuvOPzVqHc7fKKE9jDzA94=
+
+Name: org/eclipse/fx/ui/controls/tabpane/skin/DnDTabPaneSkinHookerFull
+ Drag.java
+SHA-256-Digest: zfNn5uWH6xbLMMjUGG31kW7qJ8WY+2QCFkFRWDIWK68=
+
+Name: org/eclipse/fx/ui/controls/styledtext/events/TextHoverEvent.java
+SHA-256-Digest: Rb7Z80VMzwQNhYmdWJEp/GVdIwRT/ds8VBg8s+tRbNk=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-error.png
+SHA-256-Digest: CQwRfKkslpYXR+sQ0yKhwOxnxM3gs5DEyL+B1AV4k7Q=
+
+Name: org/eclipse/fx/ui/controls/JavaFXCompatUtil.java
+SHA-256-Digest: CfEUXfq6XI2C8mphM6ooyoOCptsnpO4toj+oVTnPHPw=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/internal/SingleTextGrad
+ ientStyledLineRendererFactory.java
+SHA-256-Digest: RfUIm36L7TvVeixNyE4y60B5kqNUfjFgniKl4OUOxhI=
+
+Name: org/eclipse/fx/ui/controls/styledtext/TriggerActionMapping.java
+SHA-256-Digest: eCnphqeSPSMt6fa3rITYGlLklJNQEQOAQ+RmIGU/ruw=
+
+Name: org/eclipse/fx/ui/controls/form/DecoratedNode.java
+SHA-256-Digest: 7kdxepdfgRCHtrcnpsw6rYhQZREc5aprSGdAvgL1jHw=
+
+Name: org/eclipse/fx/ui/controls/styledtext/VerifyEvent.java
+SHA-256-Digest: zZAJnS5MfnA97Q4S7Tz2s8zcAEFd4JVuSsAGpC3XZLo=
+
+Name: org/eclipse/fx/ui/controls/styledtext/TextStyle.java
+SHA-256-Digest: ORz8JC9USF4pZKvmQhznGtQ2KSJdBJgP96Tm2C5NgHg=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-warning-24.png
+SHA-256-Digest: mgUpzluy93HPj97l2rd0m3Gi9jbHzvW+3AITdffheYs=
+
+Name: org/eclipse/fx/ui/controls/dialog/MessageDialog.java
+SHA-256-Digest: 9Kd+8o+PHZi+VEddfecJqr13UsrGMLRw/DgopF1XZwY=
+
+Name: org/eclipse/fx/ui/controls/form/NodeDecorator.java
+SHA-256-Digest: jz8gRZ4EyBTbOoGOeDlFBK8/Nf5uCwPTdol1bk275pI=
+
+Name: org/eclipse/fx/ui/controls/styledtext/model/LineRulerAnnotationP
+ resenter.java
+SHA-256-Digest: xjBkj1ntfT6IPo+SuJK3F3r8sNQgmEowx9ihNX3+LlI=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-warning.png
+SHA-256-Digest: Zu2aY2BJ0ehfwBGv8Vuiy7pa4fjhAHWS1G5lwYbBy/Q=
+
+Name: org/eclipse/fx/ui/controls/vectorgraphics/PathUtils.java
+SHA-256-Digest: GxUgfV9zp4uxt+I4VA4a+5XpvUVJYOJtEPXyj61eSpg=
+
+Name: org/eclipse/fx/ui/controls/image/MultiDimensionImage.java
+SHA-256-Digest: Q13ZofSdm6POML/eEOx9dvSdhoxjROEZaAe5gJW0Xr8=
+
+Name: org/eclipse/fx/ui/controls/image/GraphicNodeProvider.java
+SHA-256-Digest: AWOIONTOg3/hWk/GYCa2GuojZoFvd+jv7iC+Ojg8sFQ=
+
+Name: org/eclipse/fx/ui/controls/stage/FrameEvent.java
+SHA-256-Digest: FPH1WoKz+ovA6Q1LQZLBlDzWgZHs7YYfW5Im4TZt5XI=
+
+Name: org/eclipse/fx/ui/controls/image/FontIconProvider.java
+SHA-256-Digest: U/SMCQfIyLjxxOTIziTj2fjpS1mV4g7YVlMSw3AqpSo=
+
+Name: org/eclipse/fx/ui/controls/dialog/DialogMessageProviderImpl.java
+SHA-256-Digest: pqVxuG2hoOYAG2N45BfzNPGeQ5IwOY4cYDo7pH1hH4M=
+
+Name: org/eclipse/fx/ui/controls/markers/PositionMarker.java
+SHA-256-Digest: 58Ft4BuUdKRwZgvBYgwExinqP2cFsKtLYz0kvTmwcdY=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/internal/StyledTextRend
+ erer.java
+SHA-256-Digest: 0QGOAeHlc7Qg5BcI7WlWunf72acnOZaRfoshgRfK1Fw=
+
+Name: org/eclipse/fx/ui/controls/tree/TreeItemPredicate.java
+SHA-256-Digest: fWRGjlaoldhcNt7BCwCtrFka7BmL48c7nv+rSwNSQX4=
+
+Name: org/eclipse/fx/ui/controls/dialog/icons/dialog-information-16@2x
+ .png
+SHA-256-Digest: gBDSR01yI7raB/rU7qfHHe0p4H2CXpZppgtFL7INHvg=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/fldr_obj.svg
+SHA-256-Digest: GG7wxYM5Fluer8SSN9y1GYsnqxRXRCzPuWmlek2VrCo=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/ResourcePreviewSkin.j
+ ava
+SHA-256-Digest: atv54xzqvJgXz/xa04C+K8PL4EA6WZbwS0MrXZrOr3A=
+
+Name: org/eclipse/fx/ui/controls/image/DelegatingMultiDimensionImage.j
+ ava
+SHA-256-Digest: Uec6ZoTINym4n/5MUf4OHxPhYuK5+vPNNOyWX24EDlc=
+
+Name: org/eclipse/fx/ui/controls/filesystem/DirectoryView.java
+SHA-256-Digest: DV5GdT3T/pJIxITyyD220+P9NXi6nema4iJYYyYv9x8=
+
+Name: org/eclipse/fx/ui/controls/tree/LazyTreeItem.java
+SHA-256-Digest: lPHInaY/cLXsW69naG99MIhCPrUr8DMxTnUXRQZ6ke0=
+
+Name: org/eclipse/fx/ui/controls/list/ScalingImageListCell.java
+SHA-256-Digest: XuJMojoRRXJhrwcs1aGUFXNhkHHjzEetN0AoLjmRO/E=
+
+Name: org/eclipse/fx/ui/controls/styledtext/StyledStringSegment.java
+SHA-256-Digest: vYO8RyXhw00Hrs3bOzhVyhN/LTnGDvhhhDiJsZfSehQ=
+
+Name: org/eclipse/fx/ui/controls/dnd/EFXDnDAdapter.java
+SHA-256-Digest: amTDIi4wL+r/FaBHRmIWkD88fZJucHmpr+c0RC6dyWo=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/LineHelper.java
+SHA-256-Digest: C02jG1PvbnJNHYEQdaRFcdyP2+zcTCQAbnjrnWMRpIs=
+
+Name: org/eclipse/fx/ui/controls/styledtext/model/TextAnnotation.java
+SHA-256-Digest: xJw3888XM5E0sOWG3bJLWl007/uuvNTMXiMZMmlsQ38=
+
+Name: org/eclipse/fx/ui/controls/styledtext/DecorationStrategyFactory.
+ java
+SHA-256-Digest: DBIyDqPhpwpYjZFOAiuY04H3qs6d+gJXfosyHeWndIk=
+
+Name: org/eclipse/fx/ui/controls/styledtext_ng/StyledTextAreaNG.java
+SHA-256-Digest: iZ2DiL4q82r7r7t7qBzRiWtr/malsuQtztzPgfTanN4=
+
+Name: org/eclipse/fx/ui/controls/paint/PaintEditor.java
+SHA-256-Digest: tftgybQHO0AFa9zNVzUSrnCQSoSyXPzYfPNtcc7LuVY=
+
+Name: org/eclipse/fx/ui/controls/filesystem/skin/DirectoryTreeViewSkin
+ .java
+SHA-256-Digest: 2Vm+TLqgIyQaY4IkAj9P5G6A6s5s12retkWA7y+UhH8=
+
+Name: org/eclipse/fx/ui/controls/image/skin/FontIconViewSkin.java
+SHA-256-Digest: HvjR6qDzvwHNAVEBSV1bz4t/Co7JL0/nvGoC9rs64bQ=
+
+Name: org/eclipse/fx/ui/controls/internal/FXThreadSynchronizeImpl.java
+SHA-256-Digest: WbQExRDX7W6Vpwz1KdBtxjLO4UnUqUAsc7Ouh+wrfOI=
+
+Name: org/eclipse/fx/ui/controls/styledtext/internal/TextNodeSingle.ja
+ va
+SHA-256-Digest: BiuRs/NQqwNKC2qErR3ixbXEF7+qpLgegeYpgyMZLgw=
+
+Name: org/eclipse/fx/ui/controls/image/ScalingImageViewer.java
+SHA-256-Digest: dP3glEMFTg3iMWJPftzEGQ5kxXOcFZOvXBPpmuIzNU4=
+
+Name: org/eclipse/fx/ui/controls/form/icons/dialog-error-24@2x.png
+SHA-256-Digest: RbFS7g1v9YB3bi0887Hma/ScTKj/cRTGUWTDsS9QzPs=
+

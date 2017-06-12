@@ -1,0 +1,75 @@
+.efx-dialog-pane {
+	-fx-background-color: -fx-background;
+	-fx-border-color: derive(-fx-background, -20%);
+	-fx-border-width: 0 1 1 1;
+}
+
+.efx-dialog-button-area {
+	-fx-padding: 10px;
+	-fx-border-color: derive(-fx-background, -20%);
+	-fx-border-width: 1 0 0 0;
+}
+
+.efx-dialog-client-area {
+	-fx-padding: 5px;
+}
+
+.efx-dialog-title {
+	-fx-font-weight: bold;
+}
+
+.efx-dialog-messageArea-area {
+	-fx-spacing: 10px;
+}
+
+.efx-dialog-title-message {
+	-fx-padding: 0 0 0 10;
+}
+
+.efx-dialog-title-area {
+	-fx-min-height: 70px;
+	-fx-border-color: derive(-fx-background, -20%);
+	-fx-border-width: 0 0 1 0;
+	-fx-padding: 10px;
+	-fx-background-color: derive(-fx-background, 20%);
+}
+
+.efx-messagedialog-error ImageView.efx-messagedialog-icon {
+	-fx-image: url("icons/dialog-error.png");
+}
+
+.efx-messagedialog-information ImageView.efx-messagedialog-icon {
+	-fx-image: url("icons/dialog-information.png");
+}
+
+.efx-messagedialog-warning ImageView.efx-messagedialog-icon {
+	-fx-image: url("icons/dialog-warning.png");
+}
+
+.efx-messagedialog-confirm ImageView.efx-messagedialog-icon {
+	-fx-image: url("icons/preferences-desktop-notification.png");
+}
+
+.efx-messagedialog-question ImageView.efx-messagedialog-icon {
+	-fx-image: url("icons/system-help.png");
+}
+
+.efx-messagedialog-question_cancel ImageView.efx-messagedialog-icon {
+	-fx-image: url("icons/system-help.png");
+}
+
+.efx-dialog-title-area .efx-dialog-title-message.warning-message {
+	-fx-graphic: url("icons/dialog-warning-16.png");
+}
+
+.efx-dialog-title-area .efx-dialog-title-message.error-message {
+	-fx-graphic: url("icons/dialog-error-16.png");
+}
+
+.efx-dialog-title-area .efx-dialog-title-message.info-message {
+	-fx-graphic: url("icons/dialog-information-16.png");
+}
+
+.efx-dialog-title-font-icon {
+	visibility: hidden;
+}

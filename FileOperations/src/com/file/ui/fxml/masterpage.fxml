@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.validation.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.file.ui.controller.DMSMasterController">
+   <top>
+      <MenuBar prefHeight="20.0" prefWidth="611.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TabPane layoutX="149.0" layoutY="57.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <tabs>
+                <Tab text="Master Page">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <SplitPane dividerPositions="0.255, 0.6" prefHeight="160.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="50.0">
+                                       <children>
+                                          <Accordion layoutX="3.0" layoutY="100.0" />
+                                          <BorderPane layoutX="-55.0" layoutY="23.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <center>
+                                                <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                                                  <tabs>
+                                                    <Tab fx:id="localTab" text="Local System">
+                                                      <content>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                      </content>
+                                                    </Tab>
+                                                    <Tab fx:id="serverTab" text="Cloud Server">
+                                                      <content>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                      </content>
+                                                    </Tab>
+                                                  </tabs>
+                                                </TabPane>
+                                             </center>
+                                             <bottom>
+                                                <TextField fx:id="searchTxtFld" onKeyReleased="#searchTxtFldKeyReleased" promptText="Type to search" BorderPane.alignment="CENTER">
+                                                   <font>
+                                                      <Font name="Tahoma" size="13.0" />
+                                                   </font>
+                                                </TextField>
+                                             </bottom>
+                                             <opaqueInsets>
+                                                <Insets bottom="10.0" top="10.0" />
+                                             </opaqueInsets>
+                                          </BorderPane>
+                                       </children></AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                       <children>
+                                          <BorderPane layoutY="48.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <center>
+                                                <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                                                  <tabs>
+                                                      <Tab fx:id="recentTab" text="Recent">
+                                                        <content>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <TableView fx:id="recentTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                     <columns>
+                                                                        <TableColumn fx:id="recentTableNameColumn" editable="false" minWidth="200.0" prefWidth="250.0" sortable="false" text="Name" />
+                                                                        <TableColumn fx:id="recentTableActionColumn" editable="false" prefWidth="75.0" sortable="false" text="Action" />
+                                                                        <TableColumn fx:id="recentTableDateColumn" editable="false" minWidth="100.0" prefWidth="130.0" sortable="false" text="Change Date" />
+                                                                        <TableColumn fx:id="recentTableSizeColumn" editable="false" prefWidth="75.0" sortable="false" text="Size" />
+                                                                     </columns>
+                                                                  </TableView>
+                                                               </children></AnchorPane>
+                                                        </content>
+                                                      </Tab>
+                                                    <Tab fx:id="pendingTab" text="Pending">
+                                                      <content>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <TableView fx:id="pendingTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                     <columns>
+                                                                        <TableColumn fx:id="pendingTableNameColumn" editable="false" minWidth="200.0" prefWidth="250.0" sortable="false" text="Name" />
+                                                                        <TableColumn fx:id="pendingTableActionColumn" editable="false" prefWidth="75.0" sortable="false" text="Action" />
+                                                                        <TableColumn fx:id="pendingTableDateColumn" editable="false" minWidth="100.0" prefWidth="130.0" sortable="false" text="Change Date" />
+                                                                        <TableColumn fx:id="pendingTableSizeColumn" editable="false" prefWidth="75.0" sortable="false" text="Size" />
+                                                                     </columns>
+                                                                  </TableView>
+                                                               </children></AnchorPane>
+                                                      </content>
+                                                    </Tab>
+                                                  </tabs>
+                                                </TabPane>
+                                             </center>
+                                          </BorderPane>
+                                       </children></AnchorPane>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <BorderPane layoutX="22.0" layoutY="24.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <center>
+                                                <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                                                  <tabs>
+                                                    <Tab fx:id="previewTab" text="Preview">
+                                                      <content>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                      </content>
+                                                    </Tab>
+                                                    <Tab fx:id="uploadTab" text="Upload">
+                                                      <content>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <TitledPane layoutX="10.0" text="Upload your files/folders to local &amp; cloud" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+                                                                     <content>
+                                                                        <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                                                                           <top>
+                                                                              <GridPane prefHeight="200.0" prefWidth="295.0" BorderPane.alignment="CENTER">
+                                                                                <columnConstraints>
+                                                                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                                </columnConstraints>
+                                                                                <rowConstraints>
+                                                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints minHeight="10.0" prefHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                                                                                  <RowConstraints minHeight="10.0" prefHeight="25.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                                                                                </rowConstraints>
+                                                                                 <children>
+                                                                                    <Label text="Select source file or folder location" />
+                                                                                    <Label text="Select destination location" GridPane.rowIndex="3" />
+                                                                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                                                       <center>
+                                                                                          <TextField fx:id="uploadSourceTxtFld" promptText="Select Source " BorderPane.alignment="CENTER" />
+                                                                                       </center>
+                                                                                       <right>
+                                                                                          <Button fx:id="uploadSourceChooserBtn" mnemonicParsing="false" onAction="#uploadSourceChooserBtnAction" rotate="90.0" text="lll" BorderPane.alignment="CENTER">
+                                                                                             <BorderPane.margin>
+                                                                                                <Insets left="5.0" />
+                                                                                             </BorderPane.margin>
+                                                                                          </Button>
+                                                                                       </right>
+                                                                                       <GridPane.margin>
+                                                                                          <Insets />
+                                                                                       </GridPane.margin>
+                                                                                    </BorderPane>
+                                                                                    <BorderPane prefHeight="27.0" prefWidth="132.0" GridPane.rowIndex="4">
+                                                                                       <center>
+                                                                                          <TextField fx:id="uploadDestinationTxtFld" promptText="Select Destination" BorderPane.alignment="CENTER" />
+                                                                                       </center>
+                                                                                       <right>
+                                                                                          <Button fx:id="uploadDestinationChooserBtn" mnemonicParsing="false" onAction="#uploadDestinationChooserBtnAction" rotate="90.0" text="lll" BorderPane.alignment="CENTER">
+                                                                                             <BorderPane.margin>
+                                                                                                <Insets left="5.0" />
+                                                                                             </BorderPane.margin>
+                                                                                          </Button>
+                                                                                       </right>
+                                                                                    </BorderPane>
+                                                                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="6">
+                                                                                       <children>
+                                                                                          <Button fx:id="uploadNewBtn" mnemonicParsing="false" onAction="#uploadNewBtnAction" prefWidth="200.0" text="New" />
+                                                                                          <Button fx:id="uploadBtn" mnemonicParsing="false" onAction="#uploadBtnAction" prefWidth="200.0" text="Upload" />
+                                                                                          <Button fx:id="uploadClearBtn" mnemonicParsing="false" onAction="#uploadClearBtnAction" prefWidth="200.0" text="Clear" />
+                                                                                       </children>
+                                                                                    </HBox>
+                                                                                 </children>
+                                                                                 <BorderPane.margin>
+                                                                                    <Insets bottom="100.0" top="25.0" />
+                                                                                 </BorderPane.margin>
+                                                                              </GridPane>
+                                                                           </top>
+                                                                        </BorderPane>
+                                                                     </content>
+                                                                  </TitledPane>
+                                                               </children></AnchorPane>
+                                                      </content>
+                                                    </Tab>
+                                                      <Tab fx:id="downloadTab" text="Download">
+                                                        <content>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <TitledPane text="Download files/folders &amp; Zip or email" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+                                                                     <content>
+                                                                        <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                                                                           <top>
+                                                                              <GridPane prefHeight="200.0" prefWidth="295.0" BorderPane.alignment="CENTER">
+                                                                                 <children>
+                                                                                    <Label text="Select source file or folder location" />
+                                                                                    <Label text="Select destination location to download" GridPane.rowIndex="3" />
+                                                                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                                                       <center>
+                                                                                          <TextField fx:id="downloadSourceTxtFld" promptText="Select Source " BorderPane.alignment="CENTER" />
+                                                                                       </center>
+                                                                                       <right>
+                                                                                          <Button fx:id="downloadSourceChooserBtn" mnemonicParsing="false" onAction="#downloadSourceChooserBtnAction" rotate="90.0" text="lll" BorderPane.alignment="CENTER">
+                                                                                             <BorderPane.margin>
+                                                                                                <Insets left="5.0" />
+                                                                                             </BorderPane.margin>
+                                                                                          </Button>
+                                                                                       </right>
+                                                                                       <GridPane.margin>
+                                                                                          <Insets />
+                                                                                       </GridPane.margin>
+                                                                                    </BorderPane>
+                                                                                    <BorderPane prefHeight="27.0" prefWidth="132.0" GridPane.rowIndex="4">
+                                                                                       <center>
+                                                                                          <TextField fx:id="downloadDestinationTxtFld" promptText="Select Destination" BorderPane.alignment="CENTER" />
+                                                                                       </center>
+                                                                                       <right>
+                                                                                          <Button fx:id="downloadDestinationChooserBtn" mnemonicParsing="false" onAction="#downloadDestinationChooserBtnAction" rotate="90.0" text="lll" BorderPane.alignment="CENTER">
+                                                                                             <BorderPane.margin>
+                                                                                                <Insets left="5.0" />
+                                                                                             </BorderPane.margin>
+                                                                                          </Button>
+                                                                                       </right>
+                                                                                    </BorderPane>
+                                                                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="6">
+                                                                                       <children>
+                                                                                          <Button fx:id="downloadNewBtn" mnemonicParsing="false" onAction="#downloadNewBtnAction" prefWidth="180.0" text="New" />
+                                                                                          <Button fx:id="downloadBtn" mnemonicParsing="false" onAction="#downloadBtnAction" prefWidth="180.0" text="Download" />
+                                                                                          <Button fx:id="zipDownloadBtn" mnemonicParsing="false" onAction="#zipDownloadBtnAction" prefWidth="180.0" text="Zip &amp; download" />
+                                                                                       </children>
+                                                                                    </HBox>
+                                                                                 </children>
+                                                                                 <columnConstraints>
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                                 </columnConstraints>
+                                                                                 <rowConstraints>
+                                                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints minHeight="10.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints minHeight="10.0" prefHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints minHeight="10.0" prefHeight="25.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                                                                                 </rowConstraints>
+                                                                                 <BorderPane.margin>
+                                                                                    <Insets bottom="50.0" />
+                                                                                 </BorderPane.margin>
+                                                                              </GridPane>
+                                                                           </top>
+                                                                        </BorderPane>
+                                                                     </content>
+                                                                  </TitledPane>
+                                                                  <TitledPane text="Files/folders zip or email" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="270.0">
+                                                                    <content>
+                                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                                           <children>
+                                                                              <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                                 <center>
+                                                                                    <TitledPane animated="false" collapsible="false" text="Add files to zip or email">
+                                                                                       <content>
+                                                                                          <ListView fx:id="emailFilesListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                                                                             <BorderPane.margin>
+                                                                                                <Insets top="5.0" />
+                                                                                             </BorderPane.margin>
+                                                                                          </ListView>
+                                                                                       </content>
+                                                                                       <BorderPane.margin>
+                                                                                          <Insets top="5.0" />
+                                                                                       </BorderPane.margin>
+                                                                                    </TitledPane>
+                                                                                 </center>
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                                 <top>
+                                                                                    <HBox prefHeight="25.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                                                                       <children>
+                                                                                          <Button fx:id="addBtn" mnemonicParsing="false" onAction="#addBtnAction" prefWidth="200.0" text="Add File" />
+                                                                                          <Button fx:id="removeBtn" mnemonicParsing="false" onAction="#removeBtnAction" prefWidth="200.0" text="Remove" />
+                                                                                          <Button fx:id="listClearBtn" mnemonicParsing="false" onAction="#listClearBtnAction" prefWidth="200.0" text="Clear" />
+                                                                                       </children>
+                                                                                    </HBox>
+                                                                                 </top>
+                                                                                 <bottom>
+                                                                                    <HBox prefHeight="25.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                                                                       <children>
+                                                                                          <Button fx:id="multiZipBtn" mnemonicParsing="false" onAction="#multiZipBtnAction" prefWidth="200.0" text="Zip &amp; Download" />
+                                                                                          <Button fx:id="emailBtn" mnemonicParsing="false" onAction="#emailBtnAction" prefWidth="200.0" text="Email" />
+                                                                                          <Button fx:id="listClearBtn" mnemonicParsing="false" onAction="#listClearBtnActoin" prefWidth="200.0" text="Clear" />
+                                                                                       </children>
+                                                                                       <BorderPane.margin>
+                                                                                          <Insets top="5.0" />
+                                                                                       </BorderPane.margin>
+                                                                                    </HBox>
+                                                                                 </bottom>
+                                                                              </BorderPane>
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                    </content>
+                                                                  </TitledPane>
+                                                               </children></AnchorPane>
+                                                        </content>
+                                                      </Tab>
+                                                  </tabs>
+                                                </TabPane>
+                                             </center>
+                                          </BorderPane>
+                                       </children></AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Updates">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
+   </center>
+   <bottom>
+      <AnchorPane prefHeight="10.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="This is message" AnchorPane.leftAnchor="10.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" top="-5.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+   </bottom>
+</fx:root>
