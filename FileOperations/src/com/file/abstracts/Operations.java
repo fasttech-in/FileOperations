@@ -3,6 +3,7 @@ package com.file.abstracts;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import com.user.info.UserInfo;
 public abstract class Operations implements IFileOperations {
 
 	protected UserInfo userInfo;
+	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	
 	public Operations(UserInfo userInfo) {
 		this.userInfo = userInfo;
@@ -34,7 +36,7 @@ public abstract class Operations implements IFileOperations {
 	}
 
 	@Override
-	public String download(String fromPath, String toPath) throws IOException {
+	public String download(String fromPath, String toPath) throws Exception {
 
 		return downloadProcess(fromPath, toPath);
 	}
@@ -104,6 +106,36 @@ public abstract class Operations implements IFileOperations {
 				+ uploadPath.replace(userInfo.getUserRootDirectory(), "").replaceAll("\\\\","/");
 	}
 
+	public String getLastModifiedDate(File file) {
+		return sdf.format(file.lastModified());
+	}
+
+	public String getSize(File file,String inFormat, String uptoDecimal) {
+		double bytes = file.length();
+		double kilobytes = (bytes / 1024);
+		double megabytes = (kilobytes / 1024);
+		double gigabytes = (megabytes / 1024);
+		if(null == inFormat) {
+		if(kilobytes < 1000) {
+			return String.format("%."+uptoDecimal+"f", kilobytes) +" KB";
+		} else if(megabytes>1 && megabytes< 100) {
+			return String.format("%."+uptoDecimal+"f", megabytes) +" MB";
+		} else {
+			return String.format("%."+uptoDecimal+"f", gigabytes) +" GB";
+		}
+		} else {
+			if(inFormat.equals("B")) {
+				return String.valueOf(bytes);
+			} else if(inFormat.equals("KB")) {
+				return String.valueOf(kilobytes);
+			} else if(inFormat.equals("GB")) {
+				return String.valueOf(gigabytes);
+			} else {
+				return null;
+			}
+		}
+	}
+	
 	abstract protected void initializeUploadProcess(String fromPath,
 			String toPath);
 
@@ -112,7 +144,7 @@ public abstract class Operations implements IFileOperations {
 	abstract protected boolean uploadDropboxProcess(String fromPath,
 			String toPath) throws DbxException, IOException;
 	
-	abstract protected String downloadProcess(String fromPath, String toPath) throws IOException;
+	abstract protected String downloadProcess(String fromPath, String toPath) throws Exception;
 	
 	abstract protected String zipProcess(String fromPath, String toPath) throws IOException, ZipException;
 	

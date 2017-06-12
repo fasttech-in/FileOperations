@@ -2,191 +2,105 @@ package com.file.ui;
 
 import java.awt.Toolkit;
 import java.io.IOException;
-import java.nio.file.Paths;
 
 import javafx.application.Application;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import net.lingala.zip4j.exception.ZipException;
 
-import org.eclipse.fx.ui.controls.filesystem.DirectoryTreeView;
-import org.eclipse.fx.ui.controls.filesystem.DirectoryView;
-import org.eclipse.fx.ui.controls.filesystem.IconSize;
-import org.eclipse.fx.ui.controls.filesystem.ResourceItem;
-import org.eclipse.fx.ui.controls.filesystem.ResourcePreview;
-import org.eclipse.fx.ui.controls.filesystem.RootDirItem;
-
-import com.dropbox.core.DbxException;
-import com.file.abstracts.Operations;
+import com.file.action.FilePreviewAction;
+import com.file.action.FileTreeViewAction;
+import com.file.action.RecentAndPendingAction;
+import com.file.constant.FileConstants;
 import com.file.operations.FileOperations;
+import com.file.pojo.FolderDetailVO;
+import com.file.ui.controller.DMSMasterController;
+import com.file.util.OperationUtil;
 import com.user.info.UserInfo;
 
-public class DMSMasterPage extends Application {
-
-	private static RootDirItem rootDirItem;
-	Operations ops;
-
-	public DMSMasterPage() {
-
-		UserInfo userInfo = new UserInfo("Testuser",
-				"C:\\TEMP\\test\\dest\\Testuser\\", null);
-
-		ops = new FileOperations(userInfo);
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		rootDirItem = ResourceItem.createObservedPath(Paths
-				.get(ops.getUserRootDirectory()));
-
-		TextField srcTxt = new TextField();
-		TextField destTxt = new TextField();
-
-		DirectoryTreeView tv = new DirectoryTreeView();
-		tv.setIconSize(IconSize.MEDIUM);
-		tv.setRootDirectories(FXCollections.observableArrayList(rootDirItem));
-
-		DirectoryView v = new DirectoryView();
-		v.setIconSize(IconSize.MEDIUM);
-
-		tv.getSelectedItems().addListener(
-				(Observable o) -> {
-					if (!tv.getSelectedItems().isEmpty()) {
-						v.setDir(tv.getSelectedItems().get(0));
-						srcTxt.setText(tv.getSelectedItems().get(0).getUri()
-								.replace("file:/", ""));
-					} else {
-						v.setDir(null);
-					}
-		});
-
-		ResourcePreview prev = new ResourcePreview();
-		v.getSelectedItems().addListener((Observable o) -> {
-			if (v.getSelectedItems().size() == 1) {
-				prev.setItem(v.getSelectedItems().get(0));
-			} else {
-				prev.setItem(null);
-			}
-		});
-		v.setPrefHeight(500);
-
-		VBox vbox = new VBox();
-		vbox.setSpacing(10);
-
-		Label l1 = new Label("Source Directory");
-		Label l2 = new Label("Destination Directory");
-
-		Button uploadBtn = new Button("Upload");
-		uploadBtn.setPrefWidth(120);
-		Button downloadBtn = new Button("Download");
-		downloadBtn.setPrefWidth(120);
-		Button openBtn = new Button("Open");
-		openBtn.setPrefWidth(120);
-		Button deleteBtn = new Button("Delete");
-		deleteBtn.setPrefWidth(120);
-		Button zipBtn = new Button("Zip");
-		zipBtn.setPrefWidth(120);
-		uploadBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				String srcPath = srcTxt.getText();
-				String destPath = destTxt.getText();
-				try {
-					ops.upload(srcPath, destPath);
-				} catch (IOException e) {
-				} catch (DbxException e) {
-				}
-			}
-		});
-		zipBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				String srcPath = srcTxt.getText();
-				String destPath = destTxt.getText();
-				try {
-					ops.zip(srcPath, destPath);
-				} catch (IOException e) {
-				} catch (ZipException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-			}
-		});
-		downloadBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				String srcPath = srcTxt.getText();
-				String destPath = destTxt.getText();
-				try {
-					ops.download(srcPath, destPath);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-//					e.printStackTrace();
-				}
-			}
-		});
-
-		openBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					String path = v.getSelectedItems().get(0).getUri().replace("file:/", "");
-					ops.openFile(path);
-				} catch (IOException | InterruptedException e) {
-					// TODO Auto-generated catch block
-//					e.printStackTrace();
-				}
-			}
-		});
-		deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-
-				String path = v.getSelectedItems().get(0).getUri()
-						.replace("file:/", "");
-				ops.deleteFile(path);
-			}
-		});
-		HBox hbox = new HBox();
-		vbox.getChildren().add(v);
-		vbox.getChildren().add(l1);
-		vbox.getChildren().add(srcTxt);
-		vbox.getChildren().add(l2);
-		vbox.getChildren().add(destTxt);
-		hbox.getChildren().add(uploadBtn);
-		hbox.getChildren().add(downloadBtn);
-		hbox.getChildren().add(openBtn);
-		hbox.getChildren().add(deleteBtn);
-		hbox.getChildren().add(zipBtn);
-		vbox.getChildren().add(hbox);
-
-		SplitPane p = new SplitPane(tv, vbox, prev);
-		p.setDividerPositions(0.2, 0.653);
-		double hgt = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-		double wdt = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-		Scene s = new Scene(p, wdt-20, hgt-70);
-		primaryStage.setScene(s);
-		primaryStage.show();
-	}
-
-	public static void main(String[] args) {
-		DMSMasterPage sample = new DMSMasterPage();
+public class DMSMasterPage extends Application
+{
+	public static void main(String[] args) 
+	{
 		Application.launch(args);
-		rootDirItem.dispose();
+	}
+	
+	@Override
+	public void start(Stage stage) throws IOException
+	{	
+		FXMLLoader loader = new FXMLLoader();
+		loader.setRoot(new BorderPane());
+        loader.setLocation(DMSMasterPage.class.getResource("/com/file/ui/fxml/masterpage.fxml"));
+        BorderPane rootLayout = (BorderPane) loader.load();
+        double hgt = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+		double wdt = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        Scene scene = new Scene(rootLayout, wdt-20, hgt-70);
+        stage.setScene(scene);
+        
+        UserInfo userInfo = new UserInfo("Testuser", "C:\\TEMP\\test\\dest\\Testuser",null);
+        FileOperations ops = new FileOperations(userInfo);
+        OperationUtil.setFileOperations(ops);
+        initRecentPendingTables(loader);
+        FilePreviewAction prev = initFilePreview(loader);
+        initLocalTab(loader, userInfo, prev);
+        initCloudTab(loader, userInfo, prev);
+        
+        stage.show();
+	}
+
+	private void initRecentPendingTables(FXMLLoader loader) {
+		DMSMasterController controller = loader.getController();
+		TableColumn<FolderDetailVO, String> pendingTableNameColumn = controller.getPendingTableNameColumn();
+		TableColumn<FolderDetailVO, String> pendingTableActionColumn = controller.getPendingTableActionColumn();
+		TableColumn<FolderDetailVO, String> pendingTableDateColumn = controller.getPendingTableDateColumn();
+		TableColumn<FolderDetailVO, String> pendingTableSizeColumn = controller.getPendingTableSizeColumn();
+		
+		TableColumn<FolderDetailVO, String> recentTableNameColumn = controller.getRecentTableNameColumn();
+		TableColumn<FolderDetailVO, String> recentTableActionColumn = controller.getRecentTableActionColumn();
+		TableColumn<FolderDetailVO, String> recentTableDateColumn = controller.getRecentTableDateColumn();
+		TableColumn<FolderDetailVO, String> recentTableSizeColumn = controller.getRecentTableSizeColumn();
+		
+		pendingTableNameColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("name"));
+		pendingTableActionColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("action"));
+		pendingTableDateColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("lastModified"));
+		pendingTableSizeColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("size"));
+		recentTableNameColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("name"));
+		recentTableActionColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("action"));
+		recentTableDateColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("lastModified"));
+		recentTableSizeColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("size"));
+		
+		
+		RecentAndPendingAction action = new RecentAndPendingAction(FileConstants.PendingRecentAction.PENDING_ACTION);
+		action.loadTableData(loader.getController());
+		RecentAndPendingAction action2 = new RecentAndPendingAction(FileConstants.PendingRecentAction.RECENT_ACTION);
+		action2.loadTableData(loader.getController());
+	}
+
+	private FilePreviewAction initFilePreview(FXMLLoader loader) {
+		DMSMasterController controller = loader.getController();
+		FilePreviewAction prev = new FilePreviewAction(controller.getPreviewTab());
+		return prev;
+	}
+
+	protected void initCloudTab(FXMLLoader loader, UserInfo userInfo, FilePreviewAction dirView ) {
+		DMSMasterController controller = loader.getController();
+        FileTreeViewAction cloudTree = new FileTreeViewAction(userInfo, userInfo.getUserDropboxRoot());
+        cloudTree.setDirView(dirView);
+        cloudTree.setFilterField(controller.getSearchTxtFld());
+        Parent treeBorderPane = cloudTree.getTree();
+        controller.getServerTab().setContent(treeBorderPane);
+	}
+	
+	protected void initLocalTab(FXMLLoader loader, UserInfo userInfo, FilePreviewAction dirView ) {
+		DMSMasterController controller = loader.getController();
+        FileTreeViewAction localTree = new FileTreeViewAction(userInfo, userInfo.getUserRootDirectory());
+        localTree.setDirView(dirView);
+        localTree.setFilterField(controller.getSearchTxtFld());
+        Parent treeBorderPane = localTree.getTree();
+        controller.getLocalTab().setContent(treeBorderPane);
 	}
 }

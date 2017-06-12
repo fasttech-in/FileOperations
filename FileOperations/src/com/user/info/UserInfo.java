@@ -9,21 +9,35 @@ final public class UserInfo {
 	private String userName;
 	private String userRootDirectory;
 	private DbxClient client = null;
+	private String userDropboxRoot;
+	private String authorizationKey;
+	private String dropboxConstantPath ="/DMS/Data/";
 	
 	public UserInfo(String uName, String userRoot, String authKey) {
 		this.userName = uName;
 		this.userRootDirectory = userRoot;
+		this.authorizationKey = authKey;
 		this.client = initDropbox(authKey);
-	
+		if(isDropboxSupported()) {
+			userDropboxRoot = dropboxConstantPath+userName;
+		}
 	}
 
 	private DbxClient initDropbox(String authKey) {
 		try {
 			return DropboxAuthenticator.authenticate(authKey, userName);
 		} catch (DbxException e) {
-			e.printStackTrace();
+			System.out.println("Clound DB access denied. : "+e.getMessage());
 		}
 		return null;
+	}
+	
+	public boolean reconnectDropbox(){
+		this.client = initDropbox(authorizationKey);
+		if(isDropboxSupported()) {
+			userDropboxRoot = "/DMS/Data/"+userName;
+		}
+		return isDropboxSupported();
 	}
 	
 	public boolean isDropboxSupported() {
@@ -53,6 +67,16 @@ final public class UserInfo {
 	public void setClient(DbxClient client) {
 		this.client = client;
 	}
+
+	public String getUserDropboxRoot() {
+		return userDropboxRoot;
+	}
 	
+	public String getUserDisplayPath(String dpbPath) {
+		if(dpbPath.contains(dropboxConstantPath)){ 
+			dpbPath = dpbPath.replace(dropboxConstantPath, "\\");
+		}
+		return dpbPath;
+	}
 	
 }

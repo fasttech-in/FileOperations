@@ -26,7 +26,7 @@ public interface IFileOperations {
 	 * @return filepath of downloaded file
 	 * @throws IOException 
 	 */
-	public String download(String fromPath, String toPath) throws IOException;
+	public String download(String fromPath, String toPath) throws Exception;
 	
 	/**
 	 * 

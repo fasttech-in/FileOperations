@@ -15,7 +15,7 @@ public class FileOperationTest {
 		try {
 			String fromPath ="C:\\TEMP\\test\\src";
 			String toPath ="C:\\TEMP\\test\\dest\\Testuser\\doc2";
-			
+			System.out.println("here");
 			UserInfo userInfo = new UserInfo("Testuser", "C:\\TEMP\\test\\dest\\Testuser\\", null);
 			
 			Operations ops = new FileOperations(userInfo);

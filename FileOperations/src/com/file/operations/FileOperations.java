@@ -3,7 +3,11 @@ package com.file.operations;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+
+import javax.swing.Icon;
+import javax.swing.filechooser.FileSystemView;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -17,6 +21,7 @@ import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxWriteMode;
 import com.file.abstracts.Operations;
+import com.file.util.OperationUtil;
 import com.user.info.UserInfo;
 
 public class FileOperations extends Operations {
@@ -93,8 +98,36 @@ public class FileOperations extends Operations {
 
 	@Override
 	protected String downloadProcess(String fromPath, String toPath)
-			throws IOException {
-		return uploadProcess(fromPath, toPath)?toPath:null;
+			throws Exception {
+		if(FileUtils.getFile(fromPath).exists()) {
+			return uploadProcess(fromPath, toPath)?toPath:null;
+		} else {
+			if(!toPath.endsWith("/")){
+				toPath+="/";
+			}
+			toPath = toPath+fromPath.substring(fromPath.lastIndexOf("/")+1, fromPath.length());
+			File f = new File(toPath);
+			if(f.exists()) {
+				String bytes = OperationUtil.getFileOperations().getSize(f,"B","0");
+				DbxClient client = userInfo.getClient();
+				DbxEntry.File metadata = (DbxEntry.File)client.getMetadata(fromPath,true);
+				if(bytes.equals(String.valueOf(Double.valueOf(String.valueOf(metadata.numBytes))))) {
+					return toPath;
+				}
+				FileUtils.forceDelete(f);
+			}
+			f.createNewFile();
+			FileOutputStream outputStream = new FileOutputStream(f);
+			try {
+				DbxClient client = userInfo.getClient();
+				DbxEntry.File downloadedFile = client.getFile(fromPath, null,
+						outputStream);
+				System.out.println("Metadata: " + downloadedFile.toString());
+				return toPath;
+			} finally {
+				outputStream.close();
+			}
+		}
 	}
 
 	@Override
