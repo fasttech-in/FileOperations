@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.dropbox.core.DbxException;
 import com.file.Interfaces.IFileOperations;
+import com.file.util.CommanUtil;
 import com.user.info.UserInfo;
 
 public abstract class Operations implements IFileOperations {
@@ -26,13 +27,11 @@ public abstract class Operations implements IFileOperations {
 
 	@Override
 	public boolean upload(String fromPath, String toPath) throws IOException, DbxException {
-
 		initializeUploadProcess(fromPath, toPath);
-		boolean isUploaded = uploadProcess(fromPath, toPath);
-		if (isUploaded)
-			uploadDropboxProcess(fromPath, toPath);
-
-		return isUploaded;
+		String uploadPath = uploadProcess(fromPath, toPath);
+		if (uploadPath!=null)
+			uploadDropboxProcess(uploadPath);
+		return uploadPath!=null;
 	}
 
 	@Override
@@ -73,8 +72,11 @@ public abstract class Operations implements IFileOperations {
 	}
 
 	@Override
-	public boolean openFile(String filePath) throws IOException, InterruptedException {
+	public boolean openFile(String filePath) throws Exception, InterruptedException {
 		File file = FileUtils.getFile(filePath);
+		if(!file.exists() && isCloudPath(filePath)) {
+			file = FileUtils.getFile(download(filePath, CommanUtil.getTempDirectory()));
+		}
 		if (file.exists()) {
 			if (Desktop.isDesktopSupported()) {
 				Desktop.getDesktop().open(file);
@@ -91,7 +93,20 @@ public abstract class Operations implements IFileOperations {
 	@Override
 	public boolean deleteFile(String filePath) {
 		File file = FileUtils.getFile(filePath);
-		return FileUtils.deleteQuietly(file);
+		if(file.exists()) {
+			return FileUtils.deleteQuietly(file);
+		} else if(isCloudPath(filePath)) {
+			if(userInfo.isDropboxSupported()) {
+				try {
+					userInfo.getClient().delete(filePath);
+					return true;
+				} catch (DbxException e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+		}
+		return false;
 	}
 	
 	public String getUserRootDirectory() {
@@ -99,11 +114,17 @@ public abstract class Operations implements IFileOperations {
 	}
 	
 	protected String convertToDropboxPath(String uploadPath) {
-		if(uploadPath.contains("/")){
-			uploadPath = uploadPath.replaceAll("\\/", "\\\\");
-		}
-		return "/DMS/Data/" + userInfo.getUserName() + "/"
-				+ uploadPath.replace(userInfo.getUserRootDirectory(), "").replaceAll("\\\\","/");
+		if(uploadPath.startsWith(userInfo.getUserRootDirectory())) {
+			if(uploadPath.contains("/")){
+				uploadPath = uploadPath.replaceAll("\\/", "\\\\");
+			}
+			uploadPath = uploadPath.replace(userInfo.getUserRootDirectory(), "").replaceAll("\\\\","/");
+			if(!uploadPath.startsWith("/")){
+				uploadPath ="/"+uploadPath;
+			}
+			return "/DMS/Data/" + userInfo.getUserName() + uploadPath;
+		} 
+		return null;
 	}
 
 	public String getLastModifiedDate(File file) {
@@ -136,16 +157,21 @@ public abstract class Operations implements IFileOperations {
 		}
 	}
 	
+	public boolean isCloudPath(String path) {
+		return path.startsWith("/");
+	}
+	
 	abstract protected void initializeUploadProcess(String fromPath,
 			String toPath);
 
-	abstract protected boolean uploadProcess(String fromPath, String toPath) throws IOException;
+	abstract protected String uploadProcess(String fromPath, String toPath) throws IOException;
 
-	abstract protected boolean uploadDropboxProcess(String fromPath,
-			String toPath) throws DbxException, IOException;
+	abstract protected boolean uploadDropboxProcess(String fromPath) throws DbxException, IOException;
 	
 	abstract protected String downloadProcess(String fromPath, String toPath) throws Exception;
 	
 	abstract protected String zipProcess(String fromPath, String toPath) throws IOException, ZipException;
+	
+	abstract protected void syncDropbox();
 	
 }

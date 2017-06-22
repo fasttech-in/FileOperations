@@ -37,7 +37,7 @@ public class SendMail {
 		try {
 			InternetAddress[] recipientsList = addRecipients(emailVO.getToEmailIds());
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("noreplyfasttech@gmail.com"));
+			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO,recipientsList);
 			message.setSubject(emailVO.getSubject());
 			message.setText(emailVO.getMessage());

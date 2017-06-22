@@ -2,6 +2,7 @@ package com.file.abstracts;
 
 import java.io.File;
 
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 
@@ -22,9 +23,11 @@ public abstract class Preview implements IFilePreview {
 
 	@Override
 	public void loadPreview(String path) {
-		previewTab.setContent(null);
-		Parent content = loadContents(path);
-		previewTab.setContent(content);
+		Platform.runLater(()->{
+			previewTab.setContent(null);
+			Parent content = loadContents(path);
+			previewTab.setContent(content);
+		});
 	}
 
 	@Override

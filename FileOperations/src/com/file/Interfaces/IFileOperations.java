@@ -52,8 +52,9 @@ public interface IFileOperations {
 	 * @return true if file is opened otherwise false
 	 * @throws IOException 
 	 * @throws InterruptedException 
+	 * @throws Exception 
 	 */
-    public boolean openFile(String filePath) throws IOException, InterruptedException;
+    public boolean openFile(String filePath) throws IOException, InterruptedException, Exception;
     
     /**
      * 

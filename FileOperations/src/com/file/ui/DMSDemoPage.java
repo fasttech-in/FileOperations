@@ -214,7 +214,7 @@ public class DMSDemoPage extends Application {
 		try {
 			String path = v.getSelectedItems().get(0).getUri().replace("file:/", "");
 			ops.openFile(path);
-		} catch (IOException | InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 //					e.printStackTrace();
 		}

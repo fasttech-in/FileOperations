@@ -3,6 +3,8 @@ package com.file.ui.controller;
 import java.io.File;
 import java.util.Iterator;
 
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,12 +17,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 import com.file.pojo.FolderDetailVO;
+import com.file.util.OperationUtil;
 
 public class DMSMasterController {
 	DMSMasterControllerImpl dmsImpl;
 	
 	public DMSMasterController() {
 		dmsImpl = new DMSMasterControllerImpl();
+		disableOperationButtons();
 	}
 
     @FXML
@@ -90,6 +94,12 @@ public class DMSMasterController {
     private ListView<String> emailFilesListView;
     
     @FXML
+    private Button downloadBtn;
+    
+    @FXML
+    private Button zipDownloadBtn;
+    
+    @FXML
     private Button addBtn;
     
     @FXML
@@ -124,6 +134,9 @@ public class DMSMasterController {
     
     @FXML
     private TextField uploadSourceTxtFld;
+    
+    @FXML
+    private Button downloadListBtn;
     
     @FXML
     void searchTxtFldKeyReleased(KeyEvent event) {
@@ -321,17 +334,12 @@ public class DMSMasterController {
 
     @FXML
     void multiZipBtnAction(ActionEvent event) {
-
+    	getDmsImpl().multiZipBtnActionPerformed(emailFilesListView.getItems());
     }
 
     @FXML
     void emailBtnAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void listClearBtnActoin(ActionEvent event) {
-
+    	getDmsImpl().emailBtnActionPerformed(emailFilesListView.getItems());
     }
 
     @FXML
@@ -353,8 +361,59 @@ public class DMSMasterController {
 
     @FXML
     void listClearBtnAction(ActionEvent event) {
-
+    	emailFilesListView.getItems().clear();
     }
 	
-	
+    @FXML
+    void downloadListBtnAction(ActionEvent event) {
+    	getDmsImpl().multiDownloadBtnActionPerformed(emailFilesListView.getItems());
+    }
+    
+    protected void disableOperationButtons() {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				uploadBtn.setDisable(true);
+				downloadBtn.setDisable(true);
+				multiZipBtn.setDisable(true);
+				downloadListBtn.setDisable(true);
+				emailBtn.setDisable(true);
+				zipDownloadBtn.setDisable(true);
+				listClearBtn.setDisable(true);
+				
+				if(OperationUtil.getFileOperations()!=null) {
+					uploadSourceTxtFld.textProperty().addListener((observable, oldValue, newValue) -> {
+					    uploadBtn.setDisable(newValue.trim().isEmpty());
+					    uploadBtn.setDisable(uploadDestinationTxtFld.getText().trim().isEmpty());
+					});
+					
+					uploadDestinationTxtFld.textProperty().addListener((observable, oldValue, newValue) -> {
+					    uploadBtn.setDisable(newValue.trim().isEmpty());
+					    uploadBtn.setDisable(uploadSourceTxtFld.getText().trim().isEmpty());
+					});
+					
+					downloadSourceTxtFld.textProperty().addListener((observable, oldValue, newValue) -> {
+					    downloadBtn.setDisable(newValue.trim().isEmpty());
+					    downloadBtn.setDisable(downloadDestinationTxtFld.getText().trim().isEmpty());
+					});
+					
+					downloadDestinationTxtFld.textProperty().addListener((observable, oldValue, newValue) -> {
+						downloadBtn.setDisable(newValue.trim().isEmpty());
+						downloadBtn.setDisable(downloadSourceTxtFld.getText().trim().isEmpty());
+					});
+					
+					downloadBtn.disabledProperty().addListener((observable, oldValue, newValue) -> {
+						zipDownloadBtn.setDisable(downloadBtn.isDisabled());
+					});
+					
+					emailFilesListView.getItems().addListener((ListChangeListener<? super String>) change -> {
+						multiZipBtn.setDisable(emailFilesListView.getItems().size()==0);
+						emailBtn.setDisable(emailFilesListView.getItems().size()==0);
+						downloadListBtn.setDisable(emailFilesListView.getItems().size()==0);
+						listClearBtn.setDisable(emailFilesListView.getItems().size()==0);
+					});
+				}
+			}
+		});
+	}
 }

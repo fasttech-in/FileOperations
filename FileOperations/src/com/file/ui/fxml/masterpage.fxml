@@ -298,9 +298,9 @@
                                                                                  <bottom>
                                                                                     <HBox prefHeight="25.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
                                                                                        <children>
-                                                                                          <Button fx:id="multiZipBtn" mnemonicParsing="false" onAction="#multiZipBtnAction" prefWidth="200.0" text="Zip &amp; Download" />
                                                                                           <Button fx:id="emailBtn" mnemonicParsing="false" onAction="#emailBtnAction" prefWidth="200.0" text="Email" />
-                                                                                          <Button fx:id="listClearBtn" mnemonicParsing="false" onAction="#listClearBtnActoin" prefWidth="200.0" text="Clear" />
+                                                                                          <Button fx:id="downloadListBtn" mnemonicParsing="false" onAction="#downloadListBtnAction" prefWidth="200.0" text="Download" />
+                                                                                          <Button fx:id="multiZipBtn" mnemonicParsing="false" onAction="#multiZipBtnAction" prefWidth="200.0" text="Zip &amp; Download" />
                                                                                        </children>
                                                                                        <BorderPane.margin>
                                                                                           <Insets top="5.0" />

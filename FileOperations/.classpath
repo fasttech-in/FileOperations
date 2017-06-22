@@ -16,6 +16,6 @@
 	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/Enzo-0.3.6.jar"/>
 	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/icepdf-core.jar"/>
 	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/icepdf-viewer.jar"/>
-	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/javax.mail-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="D:/CodeExamples/GIT/FileOperations/libs/javax.mail-1.5.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

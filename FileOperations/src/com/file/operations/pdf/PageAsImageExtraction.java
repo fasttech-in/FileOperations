@@ -63,7 +63,7 @@ public class PageAsImageExtraction {
     	flow = new FlowPane();
     	flow.setPadding(new Insets(5, 5, 5, 5));
         flow.setVgap(5);
-        flow.setHgap(5);
+        flow.setHgap(15);
         flow.setAlignment(Pos.TOP_LEFT);
     	
     	final ScrollPane scroll = new ScrollPane();
@@ -117,7 +117,7 @@ public class PageAsImageExtraction {
 				BufferedImage image = (BufferedImage) document.getPageImage(
 						pageNumber, GraphicsRenderingHints.SCREEN,
 						Page.BOUNDARY_CROPBOX, rotation, scale);
-				java.awt.Image img = image.getScaledInstance(140, 160,
+				java.awt.Image img = image.getScaledInstance(210, 230,
 						java.awt.Image.SCALE_SMOOTH);
 				
 				SwingNode swingNode = new SwingNode();

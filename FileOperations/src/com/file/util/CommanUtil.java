@@ -2,6 +2,9 @@ package com.file.util;
 
 import java.io.File;
 
+import com.file.action.FileTreeViewAction;
+
+import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 
 public class CommanUtil {
@@ -19,7 +22,24 @@ public class CommanUtil {
 	public static Image txtNodeImg = null;
 	public static Image csvNodeImg = null;
 	public static Image gifNodeImg = null;
+	public static Image loginNodeImg = null;
+	public static Image emailNodeImg = null;
+	public static Image deleteNodeImg = null;
+	public static Image downloadNodeImg = null;
+	public static Image refreshNodeImg = null;
+	public static Image searchNodeImg = null;
+	public static Image uploadNodeImg = null;
+	public static Image onefingerNodeImg = null;
+	public static Image addfolderNodeImg = null;
+	public static Image cutNodeImg = null;
+	public static Image copyNodeImg = null;
+	public static Image pasteNodeImg = null;
+	public static Image folderOpenNodeImg = null;
+	
 	private static String p = "/com/file/ui/images/";
+	private static FileTreeViewAction cloudTreeAction;
+	private static FileTreeViewAction localTreeAction;
+	private static FXMLLoader loader;
 	
 	public CommanUtil() {
 		
@@ -40,6 +60,20 @@ public class CommanUtil {
 		 txtNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"text24.png"));
 		 csvNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"excel24.png"));
 		 gifNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"gif24.png"));
+		 loginNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"login-32.png"));
+		 emailNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"email.png"));
+		 deleteNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"delete24.png"));
+		 downloadNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"download24.png"));
+		 refreshNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"refresh24.png"));
+		 searchNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"search24.png"));
+		 uploadNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"upload24.png"));
+		 onefingerNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"onefinger24.png"));
+		 addfolderNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"addfolder24.png"));
+		 cutNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"cut24.png"));
+		 copyNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"copy24.png"));
+		 pasteNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"paste24.png"));
+		 folderOpenNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"folderOpen24.png"));
+		 
 	}
 
 	public static String getUserRootDirectory() {
@@ -69,5 +103,29 @@ public class CommanUtil {
 		}
 		return fileNodeImg;
 	}
+
+	public static void setCloudTreeAction(FileTreeViewAction cTreeAction) {
+		cloudTreeAction = cTreeAction;
+	}
+
+	public static void setLocalTreeAction(FileTreeViewAction lTreeAction) {
+		localTreeAction = lTreeAction;
+	}
 	
+	public static void loadCloudTreeData() {
+		cloudTreeAction.loadServerdata();
+	}
+	
+	public static void loadLocalTreeData() {
+		localTreeAction.loadLocalData();
+	}
+
+	public static void setFXMLLoader(FXMLLoader _loader) {
+		loader = _loader;
+	}
+	
+	public static FXMLLoader getFXMLLoader() {
+		return loader;
+	}
 }
+

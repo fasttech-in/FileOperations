@@ -1,5 +1,6 @@
 package com.file.operations;
 
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -12,7 +13,6 @@ public class PdfPreviewOperations extends Preview {
 	
 	public PdfPreviewOperations(Tab previewTab) {
 		super(previewTab);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -31,8 +31,14 @@ public class PdfPreviewOperations extends Preview {
 		Tab pageAsImgTab = new Tab("Thumbnails");
 		pageAsImgTab.setClosable(false);
 		
-		PageAsImageExtraction pageImageExtraction = new PageAsImageExtraction();
-        pageImageExtraction.pageImageExtraction(pageAsImgTab, path, 20);
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				PageAsImageExtraction pageImageExtraction = new PageAsImageExtraction();
+		        pageImageExtraction.pageImageExtraction(pageAsImgTab, path, 20);
+			}
+		});
 		
 		tabpane.getTabs().add(pageAsImgTab);
 		return pageAsImgTab;
@@ -42,8 +48,14 @@ public class PdfPreviewOperations extends Preview {
 		Tab singlePageTab = new Tab("Pages");
 		singlePageTab.setClosable(false);
 		
-		PDFPageViewer pageViewer = new PDFPageViewer();
-		pageViewer.loadViewer(singlePageTab, path, 2);
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				PDFPageViewer pageViewer = new PDFPageViewer();
+				pageViewer.loadViewer(singlePageTab, path, 2);
+			}
+		});
 		
 		tabpane.getTabs().add(singlePageTab);
 		return singlePageTab;

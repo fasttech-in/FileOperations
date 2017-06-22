@@ -3,6 +3,9 @@ package com.file.ui;
 import java.awt.Toolkit;
 import java.io.IOException;
 
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,6 +22,7 @@ import com.file.constant.FileConstants;
 import com.file.operations.FileOperations;
 import com.file.pojo.FolderDetailVO;
 import com.file.ui.controller.DMSMasterController;
+import com.file.util.CommanUtil;
 import com.file.util.OperationUtil;
 import com.user.info.UserInfo;
 
@@ -40,18 +44,48 @@ public class DMSMasterPage extends Application
 		double wdt = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         Scene scene = new Scene(rootLayout, wdt-20, hgt-70);
         stage.setScene(scene);
-        
-        UserInfo userInfo = new UserInfo("Testuser", "C:\\TEMP\\test\\dest\\Testuser",null);
-        FileOperations ops = new FileOperations(userInfo);
-        OperationUtil.setFileOperations(ops);
-        initRecentPendingTables(loader);
-        FilePreviewAction prev = initFilePreview(loader);
-        initLocalTab(loader, userInfo, prev);
-        initCloudTab(loader, userInfo, prev);
-        
         stage.show();
+        
+//        LoginDialog login = new LoginDialog();
+//		System.out.println("after login");
+//		if(login.isSuccess()) {
+			UserInfo userInfo = new UserInfo("Testuser", "C:\\TEMP\\test\\dest\\Testuser",null);
+	        FileOperations ops = new FileOperations(userInfo);
+	        OperationUtil.setFileOperations(ops);
+	        CommanUtil.setFXMLLoader(loader);
+	        initRecentPendingTables(loader);
+	        FilePreviewAction prev = initFilePreview(loader);
+	        initLocalTab(loader, userInfo, prev);
+	        initCloudTab(loader, userInfo, prev);
+//		}
 	}
 
+	private FilePreviewAction initFilePreview(FXMLLoader loader) {
+		DMSMasterController controller = loader.getController();
+		FilePreviewAction prev = new FilePreviewAction(controller.getPreviewTab());
+		return prev;
+	}
+
+	protected void initCloudTab(FXMLLoader loader, UserInfo userInfo, FilePreviewAction dirView ) {
+		DMSMasterController controller = loader.getController();
+        FileTreeViewAction cloudTree = new FileTreeViewAction(userInfo, userInfo.getUserDropboxRoot());
+        cloudTree.setDirView(dirView);
+        cloudTree.setFilterField(controller.getSearchTxtFld());
+        Parent treeBorderPane = cloudTree.getTreePane();
+        controller.getServerTab().setContent(treeBorderPane);
+        CommanUtil.setCloudTreeAction(cloudTree);
+	}
+	
+	protected void initLocalTab(FXMLLoader loader, UserInfo userInfo, FilePreviewAction dirView ) {
+		DMSMasterController controller = loader.getController();
+        FileTreeViewAction localTree = new FileTreeViewAction(userInfo, userInfo.getUserRootDirectory());
+        localTree.setDirView(dirView);
+        localTree.setFilterField(controller.getSearchTxtFld());
+        Parent treeBorderPane = localTree.getTreePane();
+        controller.getLocalTab().setContent(treeBorderPane);
+        CommanUtil.setLocalTreeAction(localTree);
+	}
+	
 	private void initRecentPendingTables(FXMLLoader loader) {
 		DMSMasterController controller = loader.getController();
 		TableColumn<FolderDetailVO, String> pendingTableNameColumn = controller.getPendingTableNameColumn();
@@ -68,39 +102,15 @@ public class DMSMasterPage extends Application
 		pendingTableActionColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("action"));
 		pendingTableDateColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("lastModified"));
 		pendingTableSizeColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("size"));
+		
 		recentTableNameColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("name"));
 		recentTableActionColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("action"));
 		recentTableDateColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("lastModified"));
 		recentTableSizeColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("size"));
 		
-		
 		RecentAndPendingAction action = new RecentAndPendingAction(FileConstants.PendingRecentAction.PENDING_ACTION);
 		action.loadTableData(loader.getController());
 		RecentAndPendingAction action2 = new RecentAndPendingAction(FileConstants.PendingRecentAction.RECENT_ACTION);
 		action2.loadTableData(loader.getController());
-	}
-
-	private FilePreviewAction initFilePreview(FXMLLoader loader) {
-		DMSMasterController controller = loader.getController();
-		FilePreviewAction prev = new FilePreviewAction(controller.getPreviewTab());
-		return prev;
-	}
-
-	protected void initCloudTab(FXMLLoader loader, UserInfo userInfo, FilePreviewAction dirView ) {
-		DMSMasterController controller = loader.getController();
-        FileTreeViewAction cloudTree = new FileTreeViewAction(userInfo, userInfo.getUserDropboxRoot());
-        cloudTree.setDirView(dirView);
-        cloudTree.setFilterField(controller.getSearchTxtFld());
-        Parent treeBorderPane = cloudTree.getTree();
-        controller.getServerTab().setContent(treeBorderPane);
-	}
-	
-	protected void initLocalTab(FXMLLoader loader, UserInfo userInfo, FilePreviewAction dirView ) {
-		DMSMasterController controller = loader.getController();
-        FileTreeViewAction localTree = new FileTreeViewAction(userInfo, userInfo.getUserRootDirectory());
-        localTree.setDirView(dirView);
-        localTree.setFilterField(controller.getSearchTxtFld());
-        Parent treeBorderPane = localTree.getTree();
-        controller.getLocalTab().setContent(treeBorderPane);
 	}
 }

@@ -27,13 +27,12 @@ import javafx.scene.text.Text;
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
-import com.file.ui.FileTreeView.Resource;
+import com.file.ui.MobileFileTreeView.Resource;
 import com.file.util.CommanUtil;
-import com.file.util.OperationUtil;
 import com.user.info.UserInfo;
 
 
-public abstract class FileTreeView {
+public abstract class MobileFileTreeView {
 
 	protected TextField filterField;
 	protected UserInfo userInfo;
@@ -42,11 +41,8 @@ public abstract class FileTreeView {
 	protected String loadPath = "";
 	private TitledPane treeViewTitlePane;
 	protected String CLOUD_UNAVAILABLE = "No Internet Connection.";
-	protected boolean isCutFlag = false;
-	protected String copyPath = "";
-	protected TreeItem<Resource> cutItem;
 	
-	public FileTreeView(UserInfo userInfo, String loadPath) {
+	public MobileFileTreeView(UserInfo userInfo, String loadPath) {
 		this.loadPath = loadPath;
 		this.userInfo = userInfo;
 		 
@@ -79,7 +75,7 @@ public abstract class FileTreeView {
 		
 		root.setExpanded(true);
 		addContextMenu(treeView);
-		treeViewTitlePane = new TitledPane(loadPath, treeView);
+		treeViewTitlePane = new TitledPane("Precise Data Management System", treeView);
 		treeViewTitlePane.setCollapsible(false);
 		treeViewTitlePane.setMaxHeight(Double.MAX_VALUE);
 		return treeViewTitlePane;
@@ -95,37 +91,13 @@ public abstract class FileTreeView {
 		
 		if(loadPath!=null) {
 			if (isCloudPath(loadPath)) {
-				MenuItem serverReconnect = getServerReconnectMenuItem(treeView,"Refresh");
+				MenuItem serverReconnect = getServerReconnectMenuItem(treeView,"Reload");
 				rootContextMenu.getItems().add(serverReconnect);
 				MenuItem selectInView = getSelectInViewMenuItem(treeView);
 				rootContextMenu.getItems().add(selectInView);
-				MenuItem openMenu = getOpenMenuItem(treeView);
-				rootContextMenu.getItems().add(openMenu);
-				MenuItem downloadMenu = getDownloadMenuItem(treeView);
-				rootContextMenu.getItems().add(downloadMenu);
-				MenuItem deleteMenu = getDeleteMenuItem(treeView);
-				rootContextMenu.getItems().add(deleteMenu);
 			} else {
-				MenuItem localReload = getLocalReloadMenuItem(treeView);
-				rootContextMenu.getItems().add(localReload);
-				MenuItem selectInView = getSelectInViewMenuItem(treeView);
-				rootContextMenu.getItems().add(selectInView);
-//				MenuItem addFolderMenu = getAddFolderMenuItem(treeView);
-//				rootContextMenu.getItems().add(addFolderMenu);
-				MenuItem openMenu = getOpenMenuItem(treeView);
-				rootContextMenu.getItems().add(openMenu);
-				MenuItem uploadMenu = getUploadLocalMenuItem(treeView);
-				rootContextMenu.getItems().add(uploadMenu);
-				MenuItem downloadMenu = getDownloadMenuItem(treeView);
-				rootContextMenu.getItems().add(downloadMenu);
-				MenuItem deleteMenu = getDeleteMenuItem(treeView);
-				rootContextMenu.getItems().add(deleteMenu);
-				MenuItem copyMenu = getCopyMenuItem(treeView);
-				rootContextMenu.getItems().add(copyMenu);
-				MenuItem cutMenu = getCutMenuItem(treeView);
-				rootContextMenu.getItems().add(cutMenu);
-				MenuItem pasteMenu = getPasteMenuItem(treeView);
-				rootContextMenu.getItems().add(pasteMenu);
+				MenuItem localDelete = getDeleteLocalMenuItem(treeView);
+				rootContextMenu.getItems().add(localDelete);
 			}
 		} else {
 			if(CLOUD_UNAVAILABLE.equals(treeView.getRoot().getValue().resourceName)) {
@@ -137,71 +109,22 @@ public abstract class FileTreeView {
 			treeView.setContextMenu(rootContextMenu);
 	
 	}
-	
-	private MenuItem getOpenMenuItem(TreeView<Resource> treeView2) {
-		MenuItem openMenu = new MenuItem("Open",new ImageView(CommanUtil.folderOpenNodeImg));
-		openMenu.setOnAction(t -> getOpenMenuItemAction(treeView));
-		return openMenu;
-	}
-
-	private MenuItem getPasteMenuItem(TreeView<Resource> treeView2) {
-		MenuItem pasteMenu = new MenuItem("Paste",new ImageView(CommanUtil.pasteNodeImg));
-		pasteMenu.setOnAction(t -> getPasteMenuItemAction(treeView));
-		pasteMenu.setDisable(true);
-		return pasteMenu;
-	}
-
-	private MenuItem getCopyMenuItem(TreeView<Resource> treeView2) {
-		MenuItem copyMenu = new MenuItem("Copy",new ImageView(CommanUtil.copyNodeImg));
-		copyMenu.setOnAction(t -> getCopyMenuItemAction(treeView));
-		return copyMenu;
-	}
-
-	private MenuItem getCutMenuItem(TreeView<Resource> treeView2) {
-		MenuItem cutMenu = new MenuItem("Cut",new ImageView(CommanUtil.cutNodeImg));
-		cutMenu.setOnAction(t -> getCutMenuItemAction(treeView));
-		return cutMenu;
-	}
-
-	private MenuItem getLocalReloadMenuItem(TreeView<Resource> treeView) {
-		MenuItem localReload = new MenuItem("Refresh",new ImageView(CommanUtil.refreshNodeImg));
-		localReload.setOnAction(t -> getLocalReloadMenuItemAction(treeView));
-		return localReload;
-	}
-
-	private MenuItem getAddFolderMenuItem(TreeView<Resource> treeView2) {
-		MenuItem addFolderMenu = new MenuItem("New folder",new ImageView(CommanUtil.addfolderNodeImg));
-//		addFolderMenu.setOnAction(t -> getAddFolderMenuItemAction(treeView));
-		return addFolderMenu;
-	}
 
 	private MenuItem getSelectInViewMenuItem(TreeView<Resource> treeView) {
-		MenuItem selectInView = new MenuItem("Select in tree",new ImageView(CommanUtil.onefingerNodeImg));
+		MenuItem selectInView = new MenuItem("Select in tree");
 		selectInView.setOnAction(t -> getSelectInViewMenuItemAction(treeView));
 		return selectInView;
 	}
 	
 	private MenuItem getServerReconnectMenuItem(TreeView<Resource> treeView, String menuName) {
-		MenuItem serverReconnect = new MenuItem(menuName,new ImageView(CommanUtil.refreshNodeImg));
+		MenuItem serverReconnect = new MenuItem(menuName);
 		serverReconnect.setOnAction(t -> getServerReconnectMenuItemAction());
 		return serverReconnect;
 	}
 	
-	private MenuItem getDeleteMenuItem(TreeView<Resource> treeView) {
-		MenuItem deleteMenu = new MenuItem("Delete",new ImageView(CommanUtil.deleteNodeImg));
-		deleteMenu.setOnAction(t -> getDeleteMenuItemAction(treeView));
-		return deleteMenu;
-	}
-	
-	private MenuItem getUploadLocalMenuItem(TreeView<Resource> treeView) {
-		MenuItem localDelete = new MenuItem("Upload",new ImageView(CommanUtil.uploadNodeImg));
-		localDelete.setOnAction(t -> getUploadLocalMenuItemAction(treeView));
-		return localDelete;
-	}
-	
-	private MenuItem getDownloadMenuItem(TreeView<Resource> treeView) {
-		MenuItem localDelete = new MenuItem("Download",new ImageView(CommanUtil.downloadNodeImg));
-		localDelete.setOnAction(t -> getDownloadLocalMenuItemAction(treeView));
+	private MenuItem getDeleteLocalMenuItem(TreeView<Resource> treeView) {
+		MenuItem localDelete = new MenuItem("Delete");
+		localDelete.setOnAction(t -> getDeleteLocalMenuItemAction(treeView));
 		return localDelete;
 	}
 
@@ -218,24 +141,22 @@ public abstract class FileTreeView {
 		if(loadPath!=null) {
 			File rootFolder = new File(loadPath);
 			if(rootFolder.exists()) {
-				loadLocalData();
+				loadLocalData(loadPath,root);
 			} else {
-				loadServerdata();
+				loadServerdata(root);
 			}
 		}
 		return treeView; 
 	}
 
-	public void loadServerdata() {
+	public void loadServerdata(FilterableTreeItem<Resource> root) {
 		Platform.runLater(new Runnable() {
 			
 			@Override
 			public void run() {
 				try {
-					if(userInfo.getClient()!=null) {
-						root.getInternalChildren().clear();
-						loadServerData(userInfo.getClient(), loadPath, root);
-					}
+					root.getInternalChildren().clear();
+					loadServerData(userInfo.getClient(), loadPath, root);
 				} catch (DbxException e) {
 					PopupNotification.showError("Failure-Unable to connect", "Please check internet connection.");
 				}
@@ -255,9 +176,9 @@ public abstract class FileTreeView {
 		return rootName;
 	}
 	
-	public void loadLocalData() {
+	public void loadLocalData(String loadingPath, FilterableTreeItem<Resource> root) {
 		root.getInternalChildren().clear();
-		loadData(loadPath,root);
+		loadData(loadingPath, root);
 	}
 
 	private FilterableTreeItem<Resource> loadData(String loadingPath, FilterableTreeItem<Resource> root) {
@@ -298,7 +219,6 @@ public abstract class FileTreeView {
 		    path = getTreeSelectedPath(treeView);
 		    loadDirectoryView(path);
 		    path = userInfo.getUserDisplayPath(path);
-		    treeViewTitlePane.setText(path);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -330,28 +250,10 @@ public abstract class FileTreeView {
 	}
 	
 	private boolean isCloudPath(String path) {
-		return OperationUtil.getFileOperations().isCloudPath(path);
+		return path.startsWith("/");
 	}
 	
-	protected void modifyMenuItem(TreeView<Resource> treeView, String menuName, boolean flag) {
-		treeView.getContextMenu().getItems().forEach(menu->{
-			if(menu.getText().equals(menuName)) {
-				menu.setDisable(!flag);
-			}
-		});
-	}
-	
-	
-//	protected abstract void getAddFolderMenuItemAction(TreeView<Resource> treeView);
-	
-	protected abstract void getPasteMenuItemAction(TreeView<Resource> treeView);
-	protected abstract void getCopyMenuItemAction(TreeView<Resource> treeView);
-	protected abstract void getCutMenuItemAction(TreeView<Resource> treeView);
-	protected abstract void getOpenMenuItemAction(TreeView<Resource> treeView);
-	protected abstract void getLocalReloadMenuItemAction(TreeView<Resource> treeView);
-	protected abstract void getUploadLocalMenuItemAction(TreeView<Resource> treeView);
-	protected abstract void getDownloadLocalMenuItemAction(TreeView<Resource> treeView);
-	protected abstract void getDeleteMenuItemAction(TreeView<Resource> treeView);
+	protected abstract void getDeleteLocalMenuItemAction(TreeView<Resource> treeView);
 	protected abstract void getSelectInViewMenuItemAction(TreeView<Resource> treeView);
 	protected abstract void getServerReconnectMenuItemAction();
 	protected abstract void loadDirectoryView(String path);

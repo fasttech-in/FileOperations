@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import com.file.Interfaces.IFilePreview;
 import com.file.operations.ImagePreviewOperations;
 import com.file.operations.PdfPreviewOperations;
+import com.file.util.OperationUtil;
 
 public class FilePreviewAction {
 	
@@ -24,11 +25,13 @@ public class FilePreviewAction {
 	}
 
 	public void preview(String loadPath) {
-		File previewFile = FileUtils.getFile(loadPath);
-		String fileName = previewFile.getName();
-		String extension = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length()).toLowerCase();
+		String extension = loadPath.substring(loadPath.lastIndexOf(".")+1, loadPath.length()).toLowerCase();
 		IFilePreview prev = getPreviewProcessor(extension);
 		if(prev != null) {
+			File previewFile = FileUtils.getFile(loadPath);
+			if(!previewFile.exists() && OperationUtil.getFileOperations().isCloudPath(loadPath)) {
+				previewFile = FileUtils.getFile(prev.downloadCloudFile(loadPath));
+			}
 			prev.setPreviewFile(previewFile);
 			prev.loadPreview(loadPath);
 		} else {

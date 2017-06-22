@@ -36,26 +36,32 @@ public class FileOperations extends Operations {
 	}
 
 	@Override
-	protected boolean uploadProcess(String fromPath, String toPath)
+	protected String uploadProcess(String fromPath, String toPath)
 			throws IOException {
 		File fromFile = FileUtils.getFile(fromPath);
-		File toFile = FileUtils.getFile(toPath);
-		if(!toFile.exists()) {
-			toFile.mkdirs();
+		File toFile = null;
+		if(fromFile.isDirectory()) {
+			toFile = FileUtils.getFile(toPath+File.separator+fromFile.getName());
+		} else {
+		    toFile = FileUtils.getFile(toPath);
 		}
 		if (fromFile != null && fromFile.isDirectory()) {
+			if(!toFile.exists()) {
+				toFile.mkdirs();
+			}
 			FileUtils.copyDirectory(fromFile, toFile, false);
-			return true;
 		} else if (fromFile != null && fromFile.isFile()) {
+			if(!toFile.getParentFile().exists()) {
+				toFile.getParentFile().mkdirs();
+			}
 			FileUtils.copyFileToDirectory(fromFile, toFile, false);
-			return true;
 		}
-		return false;
+		System.out.println("File uploaded to local at :"+toFile.getAbsolutePath());
+		return toFile.getAbsolutePath();
 	}
 
 	@Override
-	protected boolean uploadDropboxProcess(String fromPath, String toPath) 
-			throws DbxException, IOException {
+	protected boolean uploadDropboxProcess(String fromPath) throws DbxException, IOException {
 		if (userInfo.isDropboxSupported()) {
 			File file = new File(fromPath);
 			if (file.isDirectory()) {
@@ -63,33 +69,32 @@ public class FileOperations extends Operations {
 					File[] files = file.listFiles();
 					for (int i = 0; i < files.length; i++) {
 						if(files[i].getAbsoluteFile().isFile()) {
-							uploadingFiles(userInfo.getClient(), files[i].getAbsoluteFile(), toPath);
+							uploadingFiles(userInfo.getClient(), files[i].getAbsoluteFile());
 						} else {
-							uploadDropboxProcess(files[i].getAbsolutePath(), toPath+"/"+files[i].getName());
+							uploadDropboxProcess(files[i].getAbsolutePath());
 						}
 					}
 				}
 			} else if(file.isFile()) {
-				uploadingFiles(userInfo.getClient(), file, toPath);
+				uploadingFiles(userInfo.getClient(), file);
 			}
  		}
 
 		return false;
 	}
 
-	private void uploadingFiles(DbxClient client, File inputFile,
-			String uploadPath) throws DbxException, IOException {
-		// File inputFile = new File(filePath);
-		// inputFile.createNewFile();
+	private void uploadingFiles(DbxClient client, File inputFile) throws DbxException, IOException {
 		FileInputStream inputStream=null;
 		try {
-			uploadPath = convertToDropboxPath(uploadPath);
-			inputStream = new FileInputStream(inputFile);
-			
-			DbxEntry.File uploadedFile = client.uploadFile(uploadPath + "/"
-					+ inputFile.getName(), DbxWriteMode.add(),
-					inputFile.length(), inputStream);
-			System.out.println("Uploaded: " + uploadedFile.toString());
+			String uploadPath = convertToDropboxPath(inputFile.getAbsolutePath());
+			if(uploadPath!=null) {
+				System.out.println("Uploading to dropbox : "+uploadPath);
+				inputStream = new FileInputStream(inputFile);
+				
+				DbxEntry.File uploadedFile = client.uploadFile(uploadPath, DbxWriteMode.add(),
+						inputFile.length(), inputStream);
+				System.out.println("Uploaded: " + uploadedFile.toString());
+			}
 		} finally {
 			if (inputStream != null)
 				inputStream.close();
@@ -100,10 +105,10 @@ public class FileOperations extends Operations {
 	protected String downloadProcess(String fromPath, String toPath)
 			throws Exception {
 		if(FileUtils.getFile(fromPath).exists()) {
-			return uploadProcess(fromPath, toPath)?toPath:null;
+			return uploadProcess(fromPath, toPath);
 		} else {
 			if(!toPath.endsWith("/")){
-				toPath+="/";
+				toPath+=File.separator;
 			}
 			toPath = toPath+fromPath.substring(fromPath.lastIndexOf("/")+1, fromPath.length());
 			File f = new File(toPath);
@@ -151,6 +156,12 @@ public class FileOperations extends Operations {
 		}
 		
 		return f.getAbsolutePath();
+	}
+
+	@Override
+	protected void syncDropbox() {
+		
+		
 	}
 
 }

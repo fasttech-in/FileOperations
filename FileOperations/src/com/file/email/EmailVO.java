@@ -13,15 +13,6 @@ public class EmailVO {
 	private String username;
 	private String password;
 
-	public EmailVO() {
-		initCredentials();
-	}
-
-	private void initCredentials() {
-		username="";
-		password="";
-	}
-
 	public EmailVO(List<String> emailids,
 			List<String> attachmentPaths,
 			String message,String subject) {
@@ -29,6 +20,12 @@ public class EmailVO {
 		this.attachmentPaths = attachmentPaths;
 		this.message = message;
 		this.subject = subject;
+		initCredentials();
+	}
+	
+	private void initCredentials() {
+		username="";
+		password="";
 	}
 	
 	public List<String> getToEmailIds() {
@@ -63,14 +60,8 @@ public class EmailVO {
 		this.subject = subject;
 	}
 	
-	public void sendEmail(EmailVO emailVO) throws Exception {
-		String result = SendMail.sendMailWithAttachment(emailVO); 
-		if(SendMail.SUCCESS_MESSAGE.equals(result)) {
-			PopupNotification.showSuccess("Email-Success", "Mail Sent");
-		} else {
-			PopupNotification.showError("Email-Error", result);
-		}
-		
+	public String sendEmail(EmailVO emailVO) throws Exception {
+		return SendMail.sendMailWithAttachment(emailVO); 
 	}
 
 	public String getUsername() {
