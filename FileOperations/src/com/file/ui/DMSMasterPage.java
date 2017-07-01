@@ -1,19 +1,26 @@
 package com.file.ui;
 
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
-
-import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+import org.apache.commons.io.FileUtils;
 
 import com.file.action.FilePreviewAction;
 import com.file.action.FileTreeViewAction;
@@ -25,6 +32,7 @@ import com.file.ui.controller.DMSMasterController;
 import com.file.util.CommanUtil;
 import com.file.util.OperationUtil;
 import com.user.info.UserInfo;
+import com.user.info.UserVO;
 
 public class DMSMasterPage extends Application
 {
@@ -44,12 +52,17 @@ public class DMSMasterPage extends Application
 		double wdt = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         Scene scene = new Scene(rootLayout, wdt-20, hgt-70);
         stage.setScene(scene);
+        stage.setTitle("Precise - Data Management System");
+        stage.getIcons().add(CommanUtil.fileNodeImg);
         stage.show();
+        List<UserVO> voList = loadUserData();
         
-//        LoginDialog login = new LoginDialog();
-//		System.out.println("after login");
-//		if(login.isSuccess()) {
-			UserInfo userInfo = new UserInfo("Testuser", "C:\\TEMP\\test\\dest\\Testuser",null);
+        LoginDialog login = new LoginDialog(voList);
+		if(login.isSuccess()) {
+			UserVO vo = login.getUser();
+			CommanUtil.setUserSettingsVO(vo);
+			initUserSettings(loader, vo);
+			UserInfo userInfo = new UserInfo(vo);
 	        FileOperations ops = new FileOperations(userInfo);
 	        OperationUtil.setFileOperations(ops);
 	        CommanUtil.setFXMLLoader(loader);
@@ -57,7 +70,86 @@ public class DMSMasterPage extends Application
 	        FilePreviewAction prev = initFilePreview(loader);
 	        initLocalTab(loader, userInfo, prev);
 	        initCloudTab(loader, userInfo, prev);
-//		}
+		} else {
+			PopupNotification.showError("Login - Error", "Invalid username or password");
+		}
+	}
+
+	private List<UserVO> loadUserData() {
+		List<UserVO> volist = new ArrayList<UserVO>();
+		File productDir = FileUtils.getFile(CommanUtil
+				.getProductFileDirectory());
+		for (File f : productDir.listFiles()) {
+			if (f.getName().endsWith("des")) {
+				UserVO vo = CommanUtil.unmarshall(f.getName());
+				if (vo != null) {
+					byte[] decodedBytes = Base64.getDecoder().decode(
+							vo.getPassword());
+					String decodedString = new String(decodedBytes);
+					vo.setPassword(decodedString);
+					decodedBytes = Base64.getDecoder().decode(
+							vo.getUserAccessKey());
+					decodedString = new String(decodedBytes);
+					vo.setUserAccessKey(decodedString);
+					volist.add(vo);
+				}
+			}
+		}
+
+		return volist;
+	}
+
+	private void initUserSettings(FXMLLoader loader, UserVO vo) {
+		DMSMasterController controller = loader.getController();
+		
+		GridPane serverSetttingsGridPane = controller.getServerSettingsGridPane();
+		SwitchButton s1 = new SwitchButton();
+		SwitchButton s2 = new SwitchButton();
+		SwitchButton s3 = new SwitchButton();
+		s1.setSwitchOn(vo.isServerService());
+		s2.setSwitchOn(vo.isServerLoadOnStartup());
+		s3.setSwitchOn(vo.isServerAutoSync());
+		UserVO.getInstance().setServerService(vo.isServerService());
+		UserVO.getInstance().setServerLoadOnStartup(vo.isServerLoadOnStartup());
+		UserVO.getInstance().setServerAutoSync(vo.isServerAutoSync());
+		serverSetttingsGridPane.add(s1, 1, 0);
+		serverSetttingsGridPane.add(s2, 1, 1);
+		serverSetttingsGridPane.add(s3, 1, 2);
+		
+		
+		Button b1 = (Button)s1.getGraphic();
+		b1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent t) {
+				s1.buttonActionPerformed();
+				UserVO.getInstance().setServerService(s1.isButtonOn());
+			}
+		});
+		
+		Button b2 = (Button)s2.getGraphic();
+		b2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent t) {
+				s2.buttonActionPerformed();
+				UserVO.getInstance().setServerLoadOnStartup(s2.isButtonOn());
+			}
+		});
+		
+		Button b3 = (Button)s3.getGraphic();
+		b3.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent t) {
+				s3.buttonActionPerformed();
+				UserVO.getInstance().setServerAutoSync(s3.isButtonOn());
+			}
+		});
+		
+		controller.getClientNameTxtFld().setText(vo.getClientName());
+		controller.getContactNoTxtFld().setText(vo.getClientContactNo());
+		controller.getUserNameTxtFld().setText(vo.getUserName());
+		controller.getPasswordTxtFld().setText(vo.getPassword());
+		controller.getAccessKeyTxtFld().setText(vo.getUserAccessKey());
+		controller.getDataRootTxtFld().setText(vo.getUserRootDirectory());
 	}
 
 	private FilePreviewAction initFilePreview(FXMLLoader loader) {
@@ -108,9 +200,9 @@ public class DMSMasterPage extends Application
 		recentTableDateColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("lastModified"));
 		recentTableSizeColumn.setCellValueFactory(new PropertyValueFactory<FolderDetailVO, String>("size"));
 		
-		RecentAndPendingAction action = new RecentAndPendingAction(FileConstants.PendingRecentAction.PENDING_ACTION);
-		action.loadTableData(loader.getController());
-		RecentAndPendingAction action2 = new RecentAndPendingAction(FileConstants.PendingRecentAction.RECENT_ACTION);
-		action2.loadTableData(loader.getController());
+		RecentAndPendingAction pendingAction = new RecentAndPendingAction(FileConstants.PendingRecentAction.PENDING_ACTION);
+		pendingAction.loadTableData(loader.getController());
+		RecentAndPendingAction recentAction = new RecentAndPendingAction(FileConstants.PendingRecentAction.RECENT_ACTION);
+		recentAction.loadTableData(loader.getController());
 	}
 }

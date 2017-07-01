@@ -3,6 +3,7 @@ package com.user.info;
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxException;
 import com.file.dropbox.operations.auth.DropboxAuthenticator;
+import com.file.ui.PopupNotification;
 
 final public class UserInfo {
 
@@ -12,8 +13,14 @@ final public class UserInfo {
 	private String userDropboxRoot;
 	private String authorizationKey;
 	private String dropboxConstantPath ="/DMS/Data/";
+	private UserVO userVO;
 	
-	public UserInfo(String uName, String userRoot, String authKey) {
+	public UserInfo(UserVO vo) {
+		userVO = vo;
+		init(vo.getUserName(), vo.getUserRootDirectory(), vo.getUserAccessKey());
+	}
+
+	protected void init(String uName, String userRoot, String authKey) {
 		this.userName = uName;
 		this.userRootDirectory = userRoot;
 		this.authorizationKey = authKey;
@@ -24,22 +31,36 @@ final public class UserInfo {
 	}
 
 	private DbxClient initDropbox(String authKey) {
-		try {
-			return DropboxAuthenticator.authenticate(authKey, userName);
-		} catch (DbxException e) {
-			System.out.println("Clound DB access denied. : "+e.getMessage());
-		}
+		if(userVO.isServerService()) {
+			try {
+				return DropboxAuthenticator.authenticate(authKey, userName);
+			} catch (DbxException e) {
+				System.out.println("Clound DB access denied. : "+e.getMessage());
+			}
+		} 
 		return null;
 	}
 	
-	public boolean reconnectDropbox(){
-		this.client = initDropbox(authorizationKey);
-		if(isDropboxSupported()) {
-			userDropboxRoot = "/DMS/Data/"+userName;
+	public boolean reconnectDropbox() {
+		if(userVO.isServerService()) {
+			this.client = initDropbox(authorizationKey);
+			if(isDropboxSupported()) {
+				userDropboxRoot = dropboxConstantPath+userName;
+			}
+		} else {
+			PopupNotification.showError("Cloud - Service", "Cloud service is disabled.");
 		}
 		return isDropboxSupported();
 	}
 	
+	public UserVO getUserVO() {
+		return userVO;
+	}
+
+	public void setUserVO(UserVO uservo) {
+		this.userVO = uservo;
+	}
+
 	public boolean isDropboxSupported() {
 		return client !=null;
 	}
@@ -74,7 +95,7 @@ final public class UserInfo {
 	
 	public String getUserDisplayPath(String dpbPath) {
 		if(dpbPath.contains(dropboxConstantPath)){ 
-			dpbPath = dpbPath.replace(dropboxConstantPath, "\\");
+			dpbPath = dpbPath.replace(dropboxConstantPath, "/");
 		}
 		return dpbPath;
 	}

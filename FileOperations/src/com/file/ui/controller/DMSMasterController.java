@@ -1,6 +1,7 @@
 package com.file.ui.controller;
 
 import java.io.File;
+import java.util.Base64;
 import java.util.Iterator;
 
 import javafx.application.Platform;
@@ -14,10 +15,15 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 
 import com.file.pojo.FolderDetailVO;
+import com.file.ui.PopupNotification;
+import com.file.util.CommanUtil;
 import com.file.util.OperationUtil;
+import com.user.info.UserVO;
 
 public class DMSMasterController {
 	DMSMasterControllerImpl dmsImpl;
@@ -25,7 +31,13 @@ public class DMSMasterController {
 	public DMSMasterController() {
 		dmsImpl = new DMSMasterControllerImpl();
 		disableOperationButtons();
+		loadAboutUs();
 	}
+
+	@FXML
+	private Button serverSettingsSaveButton;
+	@FXML
+	private GridPane serverSettingsGridPane;
 
     @FXML
     private Tab localTab;
@@ -59,7 +71,28 @@ public class DMSMasterController {
     
     @FXML
     private TextField searchTxtFld;
+    
+    @FXML
+    private TextField clientNameTxtFld;
 
+    @FXML
+    private TextField contactNoTxtFld;
+    
+    @FXML
+    private TextField userNameTxtFld;
+    
+    @FXML
+    private TextField passwordTxtFld;
+    
+    @FXML
+    private TextField accessKeyTxtFld;
+    
+    @FXML
+    private TextField dataRootTxtFld;
+    
+    @FXML
+    private ImageView aboutImageView;
+    
     @FXML
     private TableView<FolderDetailVO> pendingTable;
     
@@ -332,7 +365,11 @@ public class DMSMasterController {
 	}
 	
 
-    @FXML
+    public GridPane getServerSettingsGridPane() {
+		return serverSettingsGridPane;
+	}
+
+	@FXML
     void multiZipBtnAction(ActionEvent event) {
     	getDmsImpl().multiZipBtnActionPerformed(emailFilesListView.getItems());
     }
@@ -349,8 +386,34 @@ public class DMSMasterController {
     		emailFilesListView.getItems().add(file.getAbsolutePath());
     	}
     }
+    
+    
 
-    @FXML
+    public TextField getClientNameTxtFld() {
+		return clientNameTxtFld;
+	}
+
+	public TextField getContactNoTxtFld() {
+		return contactNoTxtFld;
+	}
+
+	public TextField getUserNameTxtFld() {
+		return userNameTxtFld;
+	}
+
+	public TextField getPasswordTxtFld() {
+		return passwordTxtFld;
+	}
+
+	public TextField getAccessKeyTxtFld() {
+		return accessKeyTxtFld;
+	}
+
+	public TextField getDataRootTxtFld() {
+		return dataRootTxtFld;
+	}
+
+	@FXML
     void removeBtnAction(ActionEvent event) {
     	ObservableList<String> selectedItems = emailFilesListView.getSelectionModel().getSelectedItems();
     	for (Iterator iterator = selectedItems.iterator(); iterator.hasNext();) {
@@ -368,6 +431,35 @@ public class DMSMasterController {
     void downloadListBtnAction(ActionEvent event) {
     	getDmsImpl().multiDownloadBtnActionPerformed(emailFilesListView.getItems());
     }
+    
+    @FXML
+    void serverSettingsSaveButtonAction(ActionEvent event) {
+    	saveSettingsCode();
+    }
+    
+    @FXML
+    void userSettingsButtonAction(ActionEvent event) {
+    	saveSettingsCode();
+    }
+
+	protected void saveSettingsCode() {
+		UserVO.getInstance().setClientName(clientNameTxtFld.getText());
+    	UserVO.getInstance().setClientContactNo(contactNoTxtFld.getText());
+    	UserVO.getInstance().setUserName(userNameTxtFld.getText());
+    	UserVO.getInstance().setPassword(passwordTxtFld.getText());
+    	UserVO.getInstance().setUserAccessKey(accessKeyTxtFld.getText());
+    	UserVO.getInstance().setUserRootDirectory(dataRootTxtFld.getText());
+    	
+    	UserVO.getInstance().setPassword(
+    			Base64.getEncoder().encodeToString
+    			(UserVO.getInstance().getPassword().getBytes()));
+    	UserVO.getInstance().setUserAccessKey(
+    			Base64.getEncoder().encodeToString
+    			(UserVO.getInstance().getUserAccessKey().getBytes()));
+    	
+    	CommanUtil.marshal(UserVO.getInstance());
+    	PopupNotification.showSuccess("Save - Settings", "Saved successfully.");
+	}
     
     protected void disableOperationButtons() {
 		Platform.runLater(new Runnable() {
@@ -414,6 +506,15 @@ public class DMSMasterController {
 					});
 				}
 			}
+		});
+	}
+    
+    private void loadAboutUs() {
+		Platform.runLater(()->{
+			aboutImageView.setImage(CommanUtil.aboutNodeImg);
+			aboutImageView.setFitWidth(800);
+			aboutImageView.setFitHeight(500);
+			aboutImageView.setPreserveRatio(true);
 		});
 	}
 }

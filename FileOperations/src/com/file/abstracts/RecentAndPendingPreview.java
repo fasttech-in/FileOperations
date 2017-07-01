@@ -25,11 +25,13 @@ public abstract class RecentAndPendingPreview implements IDirectoryPreview {
 	}
 
 	@Override
-	public void loadPreview() {
+	public ObservableList<FolderDetailVO> loadPreview() {
 		tableView.getItems().clear();
 		ObservableList<FolderDetailVO> content = loadContents();
+		
 		tableView.setItems(content);
 		tableView.refresh();
+		return content;
 	}
 
 	@Override

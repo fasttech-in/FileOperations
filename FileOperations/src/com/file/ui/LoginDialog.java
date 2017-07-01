@@ -1,35 +1,43 @@
 package com.file.ui;
 
+import java.util.List;
 import java.util.Optional;
-
-import com.file.util.CommanUtil;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import javafx.util.Pair;
+
+import com.file.util.CommanUtil;
+import com.user.info.UserVO;
 
 public class LoginDialog {
 
 	private boolean isSuccess = false;
-	
-	public LoginDialog() {
-		init();
+	private UserVO vo;
+
+	public LoginDialog(List<UserVO> users) {
+		init(users);
+		
 	}
 
-	private void init() {
+	private void init(List<UserVO> users) {
 		// Create the custom dialog.
 		Dialog<Pair<String, String>> dialog = new Dialog<>();
 		dialog.setTitle("Login");
-		dialog.setHeaderText("Please enter your details");
+		dialog.setHeaderText("Select client to connect.");
+		Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(CommanUtil.fileNodeImg);
 
 		// Set the icon (must be included in the project).
 		dialog.setGraphic(new ImageView(CommanUtil.loginNodeImg));
@@ -37,6 +45,12 @@ public class LoginDialog {
 		// Set the button types.
 		ButtonType loginButtonType = new ButtonType("Login", ButtonData.OK_DONE);
 		dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+		
+		ComboBox<String> clientNamesCombo = new ComboBox<String>();
+		users.forEach(user->{
+			clientNamesCombo.getItems().add(user.getClientName());
+		});
+		clientNamesCombo.getSelectionModel().select(0);
 
 		// Create the username and password labels and fields.
 		GridPane grid = new GridPane();
@@ -49,10 +63,12 @@ public class LoginDialog {
 		PasswordField password = new PasswordField();
 		password.setPromptText("Password");
 
-		grid.add(new Label("Username:"), 0, 0);
-		grid.add(username, 1, 0);
-		grid.add(new Label("Password:"), 0, 1);
-		grid.add(password, 1, 1);
+		grid.add(new Label("Client Name:"), 0, 0);
+		grid.add(clientNamesCombo, 1, 0);
+		grid.add(new Label("Username:"), 0, 1);
+		grid.add(username, 1, 1);
+		grid.add(new Label("Password:"), 0, 2);
+		grid.add(password, 1, 2);
 
 		// Enable/Disable login button depending on whether a username was entered.
 		Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
@@ -79,13 +95,29 @@ public class LoginDialog {
 		Optional<Pair<String, String>> result = dialog.showAndWait();
 
 		result.ifPresent(usernamePassword -> {
-		    System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
-		    isSuccess = true;
+
+			for(UserVO user : users) {
+				String clientName = clientNamesCombo.getSelectionModel().getSelectedItem();
+				if(user.getClientName().equals(clientName)) {
+					if(usernamePassword.getKey().equals(user.getUserName()) &&
+				    		usernamePassword.getValue().equals(user.getPassword())) {
+						vo = user;
+				    	isSuccess = true;
+				    } else {
+				    	isSuccess = false;
+				    }
+					break;
+				}
+			}
 		});
 		
 	}
 	
 	public boolean isSuccess() {
 		return isSuccess;
+	}
+	
+	public UserVO getUser() {
+		return vo;
 	}
 }

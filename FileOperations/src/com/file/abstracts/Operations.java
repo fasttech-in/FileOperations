@@ -7,13 +7,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import net.lingala.zip4j.exception.ZipException;
 
 import org.apache.commons.io.FileUtils;
 
+import com.dropbox.core.DbxClient;
+import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
 import com.file.Interfaces.IFileOperations;
+import com.file.action.DatabaseDAOAction;
+import com.file.constant.FileConstants;
+import com.file.pojo.FolderDetailVO;
 import com.file.util.CommanUtil;
+import com.file.util.OperationUtil;
 import com.user.info.UserInfo;
 
 public abstract class Operations implements IFileOperations {
@@ -29,8 +37,15 @@ public abstract class Operations implements IFileOperations {
 	public boolean upload(String fromPath, String toPath) throws IOException, DbxException {
 		initializeUploadProcess(fromPath, toPath);
 		String uploadPath = uploadProcess(fromPath, toPath);
-		if (uploadPath!=null)
+		if (uploadPath!=null && userInfo.getUserVO().isServerAutoSync()) {
 			uploadDropboxProcess(uploadPath);
+		} else {
+			ObservableList<FolderDetailVO> data =
+		            CommanUtil.getPendingTableContentList();
+			
+			data.add(new FolderDetailVO(FileUtils.getFile(uploadPath),FileConstants.FileOperationAction.CLOUD_ACTION));
+			DatabaseDAOAction.updatePending(data);
+		}
 		return uploadPath!=null;
 	}
 
@@ -113,16 +128,27 @@ public abstract class Operations implements IFileOperations {
 		return userInfo.getUserRootDirectory();
 	}
 	
-	protected String convertToDropboxPath(String uploadPath) {
-		if(uploadPath.startsWith(userInfo.getUserRootDirectory())) {
-			if(uploadPath.contains("/")){
-				uploadPath = uploadPath.replaceAll("\\/", "\\\\");
+	protected String convertToDropboxPath(String localPath) {
+		if(localPath.startsWith(userInfo.getUserRootDirectory())) {
+			if(localPath.contains("/")){
+				localPath = localPath.replaceAll("\\/", "\\\\");
 			}
-			uploadPath = uploadPath.replace(userInfo.getUserRootDirectory(), "").replaceAll("\\\\","/");
-			if(!uploadPath.startsWith("/")){
-				uploadPath ="/"+uploadPath;
+			localPath = localPath.replace(userInfo.getUserRootDirectory(), "").replaceAll("\\\\","/");
+			if(!localPath.startsWith("/")){
+				localPath ="/"+localPath;
 			}
-			return "/DMS/Data/" + userInfo.getUserName() + uploadPath;
+			return userInfo.getUserDropboxRoot() + localPath;
+		} 
+		return null;
+	}
+	
+	protected String convertToLocalPath(String dropboxPath) {
+		if(dropboxPath.startsWith(userInfo.getUserDropboxRoot())) {
+			dropboxPath = dropboxPath.replace(userInfo.getUserDropboxRoot(), "").replaceAll("\\\\","/");
+			if(dropboxPath.contains("/")){
+				dropboxPath = dropboxPath.replaceAll("\\/", "\\\\");
+			}
+			return userInfo.getUserRootDirectory() + dropboxPath;
 		} 
 		return null;
 	}
@@ -157,12 +183,43 @@ public abstract class Operations implements IFileOperations {
 		}
 	}
 	
+	protected boolean compareMetadata(File localFile, String dropboxPath) throws Exception{
+		String bytes = OperationUtil.getFileOperations().getSize(localFile,"B","0");
+		DbxClient client = userInfo.getClient();
+		DbxEntry entry = client.getMetadata(dropboxPath,true);
+		if(entry == null) {
+			return false;
+		}
+		if(entry.isFolder()) {
+			return true;
+		}
+		DbxEntry.File metadata = (DbxEntry.File)entry;
+		return bytes.equals(String.valueOf(Double.valueOf(String.valueOf(metadata.numBytes))));
+	}
+	
 	public boolean isCloudPath(String path) {
 		return path.startsWith("/");
 	}
 	
-	abstract protected void initializeUploadProcess(String fromPath,
-			String toPath);
+	public boolean syncFiles(String loadPath) throws Exception {
+		final Task task = new Task<Boolean>() {
+			@Override
+			protected Boolean call() throws Exception {
+				updateMessage("");
+				if(isCloudPath(loadPath)) {
+					syncDropboxToLocal(loadPath);
+				} else {
+					syncLocalToDropbox(loadPath);
+				}
+				return true;
+			}
+		};
+		new Thread(task).start();
+		
+		return true;
+	}
+	
+	abstract protected void initializeUploadProcess(String fromPath, String toPath);
 
 	abstract protected String uploadProcess(String fromPath, String toPath) throws IOException;
 
@@ -172,6 +229,8 @@ public abstract class Operations implements IFileOperations {
 	
 	abstract protected String zipProcess(String fromPath, String toPath) throws IOException, ZipException;
 	
-	abstract protected void syncDropbox();
+	abstract protected void syncLocalToDropbox(String localRootPath) throws Exception;
+	
+	abstract protected void syncDropboxToLocal(String dropboxRootPath) throws Exception;
 	
 }

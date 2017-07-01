@@ -2,8 +2,16 @@ package com.file.util;
 
 import java.io.File;
 
-import com.file.action.FileTreeViewAction;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
+import com.file.action.FileTreeViewAction;
+import com.file.action.RecentAndPendingAction;
+import com.file.pojo.FolderDetailVO;
+import com.user.info.UserVO;
+
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 
@@ -35,10 +43,16 @@ public class CommanUtil {
 	public static Image copyNodeImg = null;
 	public static Image pasteNodeImg = null;
 	public static Image folderOpenNodeImg = null;
+	public static Image synchronizeNodeImg = null;
+	public static Image aboutNodeImg = null;
 	
+	private static UserVO userVO;
 	private static String p = "/com/file/ui/images/";
 	private static FileTreeViewAction cloudTreeAction;
 	private static FileTreeViewAction localTreeAction;
+	private static ObservableList<FolderDetailVO> pendingTableContentList;
+	private static ObservableList<FolderDetailVO> recentTableContentList;
+
 	private static FXMLLoader loader;
 	
 	public CommanUtil() {
@@ -48,6 +62,7 @@ public class CommanUtil {
 	static {
 		userRootDirectory = System.getProperty("user.dir");
 		new File(userRootDirectory+File.separator+"Temp").mkdir();
+		new File(userRootDirectory+File.separator+"ProductFiles").mkdir();
 		folderNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"folder-yellow24.png"));
 		 fileNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"file24.png"));
 		 jpgNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"jpg24.png"));
@@ -73,7 +88,8 @@ public class CommanUtil {
 		 copyNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"copy24.png"));
 		 pasteNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"paste24.png"));
 		 folderOpenNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"folderOpen24.png"));
-		 
+		 synchronizeNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"synchronize24.png"));
+		 aboutNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"about.png"));
 	}
 
 	public static String getUserRootDirectory() {
@@ -82,6 +98,10 @@ public class CommanUtil {
 	
 	public static String getTempDirectory() {
 		return userRootDirectory+File.separator+"Temp";
+	}
+	
+	public static String getProductFileDirectory() {
+		return userRootDirectory+File.separator+"ProductFiles";
 	}
 	
 	public static Image getNodeImage(String fileName) {
@@ -111,7 +131,25 @@ public class CommanUtil {
 	public static void setLocalTreeAction(FileTreeViewAction lTreeAction) {
 		localTreeAction = lTreeAction;
 	}
-	
+
+	public static ObservableList<FolderDetailVO> getPendingTableContentList() {
+		return pendingTableContentList;
+	}
+
+	public static void setPendingTableContentList(
+			ObservableList<FolderDetailVO> pendingTableContentList) {
+		CommanUtil.pendingTableContentList = pendingTableContentList;
+	}
+
+	public static ObservableList<FolderDetailVO> getRecentTableContentList() {
+		return recentTableContentList;
+	}
+
+	public static void setRecentTableContentList(
+			ObservableList<FolderDetailVO> recentTableContentList) {
+		CommanUtil.recentTableContentList = recentTableContentList;
+	}
+
 	public static void loadCloudTreeData() {
 		cloudTreeAction.loadServerdata();
 	}
@@ -126,6 +164,49 @@ public class CommanUtil {
 	
 	public static FXMLLoader getFXMLLoader() {
 		return loader;
+	}
+	
+	public static void marshal(UserVO vo) {
+		try {
+
+			File file = new File(getProductFileDirectory() + File.separator
+					+ vo.getClientName()+".des");
+			
+			JAXBContext jaxbContext = JAXBContext.newInstance(UserVO.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+			jaxbMarshaller.marshal(vo, file);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static UserVO unmarshall(String fileName) {
+		try {
+
+			File file = new File(getProductFileDirectory() + File.separator
+					+ fileName);
+			if(file.exists()) {
+				JAXBContext jaxbContext = JAXBContext.newInstance(UserVO.class);
+	
+				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+				return (UserVO) jaxbUnmarshaller.unmarshal(file);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void setUserSettingsVO(UserVO vo) {
+		userVO = vo;
+	}
+	
+	public static UserVO getUserSettingsVO() {
+		return userVO;
 	}
 }
 

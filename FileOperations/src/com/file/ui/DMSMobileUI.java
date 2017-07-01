@@ -15,6 +15,7 @@ import com.file.operations.FileOperations;
 import com.file.ui.controller.DMSMobileController;
 import com.file.util.OperationUtil;
 import com.user.info.UserInfo;
+import com.user.info.UserVO;
 
 public class DMSMobileUI extends Application
 {
@@ -40,7 +41,8 @@ public class DMSMobileUI extends Application
 //      LoginDialog login = new LoginDialog();
 //		System.out.println("after login");
 //		if(login.isSuccess()) {
-			UserInfo userInfo = new UserInfo("Testuser", "C:\\TEMP\\test\\dest\\Testuser",null);
+        
+			UserInfo userInfo = new UserInfo(UserVO.getInstance());
 	        FileOperations ops = new FileOperations(userInfo);
 	        OperationUtil.setFileOperations(ops);
 	        initTree(loader, userInfo);

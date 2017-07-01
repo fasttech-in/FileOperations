@@ -3,6 +3,9 @@ package com.file.action;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+
+import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
@@ -10,6 +13,8 @@ import javafx.scene.image.ImageView;
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
+import com.file.constant.FileConstants;
+import com.file.pojo.FolderDetailVO;
 import com.file.ui.FileTreeView;
 import com.file.ui.FilterableTreeItem;
 import com.file.ui.PopupNotification;
@@ -43,25 +48,27 @@ public class FileTreeViewAction extends FileTreeView {
 	protected FilterableTreeItem<Resource> loadServerData(DbxClient client,
 			String loadingPath, FilterableTreeItem<Resource> node)
 			throws DbxException {
-		if (!loadingPath.startsWith("/")) {
-			loadingPath = "/" + loadingPath;
-		}
-		DbxEntry.WithChildren listing = client
-				.getMetadataWithChildren(loadingPath);
-
-		if (listing != null) {
-			for (DbxEntry child : listing.children) {
-				// System.out.println(child.name);
-				if (child.isFolder()) {
-					FilterableTreeItem<Resource> folder = new FilterableTreeItem<>(new Resource(child.name), new ImageView(CommanUtil.folderNodeImg));
-					node.getInternalChildren().add(folder);
-
-					loadServerData(client, child.path, folder);
-					treeView.refresh();
-				} else {
-					FilterableTreeItem<Resource> file = new FilterableTreeItem<>(new Resource(child.name), new ImageView(CommanUtil.getNodeImage(child.name)));
-					node.getInternalChildren().add(file);
-					treeView.refresh();
+		if(userInfo.isDropboxSupported()) {
+			if (!loadingPath.startsWith("/")) {
+				loadingPath = "/" + loadingPath;
+			}
+			DbxEntry.WithChildren listing = client
+					.getMetadataWithChildren(loadingPath);
+	
+			if (listing != null) {
+				for (DbxEntry child : listing.children) {
+					// System.out.println(child.name);
+					if (child.isFolder()) {
+						FilterableTreeItem<Resource> folder = new FilterableTreeItem<>(new Resource(child.name), new ImageView(CommanUtil.folderNodeImg));
+						node.getInternalChildren().add(folder);
+	
+						loadServerData(client, child.path, folder);
+						treeView.refresh();
+					} else {
+						FilterableTreeItem<Resource> file = new FilterableTreeItem<>(new Resource(child.name), new ImageView(CommanUtil.getNodeImage(child.name)));
+						node.getInternalChildren().add(file);
+						treeView.refresh();
+					}
 				}
 			}
 		}
@@ -95,6 +102,11 @@ public class FileTreeViewAction extends FileTreeView {
 					loadLocalData();
 				}
 				PopupNotification.showSuccess("Success-Delete", "Deleted successfully.");
+				ObservableList<FolderDetailVO> data =
+			            CommanUtil.getRecentTableContentList();
+				
+				data.add(new FolderDetailVO(FileUtils.getFile(treeSelectedPath),FileConstants.FileOperationAction.DELETE_ACTION));
+				DatabaseDAOAction.updateRecent(data);
 			}
 		}
 	}
@@ -178,6 +190,19 @@ public class FileTreeViewAction extends FileTreeView {
 			PopupNotification.showError("Error-Open", "Unable to open.");
 			e.printStackTrace();
 		} 
+	}
+
+	@Override
+	protected void getSynchronizeMenuItemAction(TreeView<Resource> treeView) {
+		try {
+			if(OperationUtil.getFileOperations().syncFiles(loadPath)) {
+				CommanUtil.loadLocalTreeData();
+				CommanUtil.loadCloudTreeData();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

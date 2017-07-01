@@ -2,9 +2,8 @@ package com.file.ui;
 
 import java.io.File;
 
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -12,22 +11,17 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 import com.dropbox.core.DbxClient;
-import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
-import com.file.ui.FileTreeView.Resource;
 import com.file.util.CommanUtil;
 import com.file.util.OperationUtil;
 import com.user.info.UserInfo;
@@ -105,6 +99,8 @@ public abstract class FileTreeView {
 				rootContextMenu.getItems().add(downloadMenu);
 				MenuItem deleteMenu = getDeleteMenuItem(treeView);
 				rootContextMenu.getItems().add(deleteMenu);
+				MenuItem synchronizeMenu = getSynchronizeMenuItem(treeView);
+				rootContextMenu.getItems().add(synchronizeMenu);
 			} else {
 				MenuItem localReload = getLocalReloadMenuItem(treeView);
 				rootContextMenu.getItems().add(localReload);
@@ -126,6 +122,8 @@ public abstract class FileTreeView {
 				rootContextMenu.getItems().add(cutMenu);
 				MenuItem pasteMenu = getPasteMenuItem(treeView);
 				rootContextMenu.getItems().add(pasteMenu);
+				MenuItem synchronizeMenu = getSynchronizeMenuItem(treeView);
+				rootContextMenu.getItems().add(synchronizeMenu);
 			}
 		} else {
 			if(CLOUD_UNAVAILABLE.equals(treeView.getRoot().getValue().resourceName)) {
@@ -138,6 +136,12 @@ public abstract class FileTreeView {
 	
 	}
 	
+	private MenuItem getSynchronizeMenuItem(TreeView<Resource> treeView2) {
+		MenuItem synchronizeMenu = new MenuItem("Synchronize",new ImageView(CommanUtil.synchronizeNodeImg));
+		synchronizeMenu.setOnAction(t -> getSynchronizeMenuItemAction(treeView));
+		return synchronizeMenu;
+	}
+
 	private MenuItem getOpenMenuItem(TreeView<Resource> treeView2) {
 		MenuItem openMenu = new MenuItem("Open",new ImageView(CommanUtil.folderOpenNodeImg));
 		openMenu.setOnAction(t -> getOpenMenuItemAction(treeView));
@@ -216,31 +220,42 @@ public abstract class FileTreeView {
 		TreeView<Resource> treeView = new TreeView<>(root);
 		treeView.setShowRoot(true);
 		if(loadPath!=null) {
-			File rootFolder = new File(loadPath);
-			if(rootFolder.exists()) {
-				loadLocalData();
-			} else {
-				loadServerdata();
-			}
+			final Task task = new Task<Boolean>() {
+				@Override
+				protected Boolean call() {
+					File rootFolder = new File(loadPath);
+					if (rootFolder.exists()) {
+						loadLocalData();
+					} else {
+						if( userInfo.getUserVO().isServerLoadOnStartup()) {
+							loadServerdata();
+						} 
+					}
+					return true;
+				}
+			};
+			new Thread(task).start();
 		}
 		return treeView; 
 	}
 
 	public void loadServerdata() {
-		Platform.runLater(new Runnable() {
+		final Task task = new Task<Void>() {
 			
 			@Override
-			public void run() {
+			public Void call() {
 				try {
-					if(userInfo.getClient()!=null) {
+					if(userInfo.isDropboxSupported()) {
 						root.getInternalChildren().clear();
 						loadServerData(userInfo.getClient(), loadPath, root);
 					}
 				} catch (DbxException e) {
 					PopupNotification.showError("Failure-Unable to connect", "Please check internet connection.");
 				}
+				return null;
 			}
-		});
+		};
+		new Thread(task).start();		
 	}
 
 	private String getRootName(String loadPath) {
@@ -274,9 +289,6 @@ public abstract class FileTreeView {
 		}
 		return root;
 	}
-	
-	protected abstract FilterableTreeItem<Resource> loadServerData(DbxClient client, String loadingPath,
-				FilterableTreeItem<Resource> node) throws DbxException;
 
 	public static class Resource {
 		public String resourceName;
@@ -342,8 +354,9 @@ public abstract class FileTreeView {
 	}
 	
 	
-//	protected abstract void getAddFolderMenuItemAction(TreeView<Resource> treeView);
-	
+	protected abstract FilterableTreeItem<Resource> loadServerData(DbxClient client, String loadingPath,
+			FilterableTreeItem<Resource> node) throws DbxException;
+	protected abstract void getSynchronizeMenuItemAction(TreeView<Resource> treeView);
 	protected abstract void getPasteMenuItemAction(TreeView<Resource> treeView);
 	protected abstract void getCopyMenuItemAction(TreeView<Resource> treeView);
 	protected abstract void getCutMenuItemAction(TreeView<Resource> treeView);

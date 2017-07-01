@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 import com.file.abstracts.RecentAndPendingPreview;
+import com.file.action.DatabaseDAOAction;
 import com.file.constant.FileConstants;
 import com.file.pojo.FolderDetailVO;
 
@@ -30,19 +31,11 @@ public class RecentAndPendingOperations extends RecentAndPendingPreview {
 	}
 
 	private ObservableList<FolderDetailVO> loadRecentData() {
-		ObservableList<FolderDetailVO> data =
-	            FXCollections.observableArrayList();
-		
-		data.add(new FolderDetailVO("C:\\temp\\test", "10/06/17", "100KB", "Added"));
-		return data;
+		return DatabaseDAOAction.loadRecent();
 	}
 
 	private ObservableList<FolderDetailVO> loadPendingData() {
-		ObservableList<FolderDetailVO> data =
-	            FXCollections.observableArrayList();
-		
-		data.add(new FolderDetailVO("C:\\temp\\test", "10/06/17", "100KB", "Added"));
-		return data;
+		return DatabaseDAOAction.loadPending();
 	}
 
 }

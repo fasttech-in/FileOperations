@@ -1,9 +1,15 @@
 package com.user.info;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.file.util.CommanUtil;
+
 /**
  * 
  * @author sdahake
  *
  */
+@XmlRootElement
 public class UserVO {
 	
 	private String userName;
@@ -11,11 +17,23 @@ public class UserVO {
 	private String clientName;
 	private String clientContactNo;
 	private String dropboxAuthKey;
+	private String userRootDirectory;
+	private String userAccessKey;
+	private boolean serverService = false;
+	private boolean serverLoadOnStartup = false;
+	private boolean serverAutoSync = false;
 
 	public UserVO() {
-		 
+		
 	}
-
+		 
+	public static synchronized UserVO getInstance() {
+		if(CommanUtil.getUserSettingsVO()==null) {
+			CommanUtil.setUserSettingsVO(new UserVO());
+		}
+		return CommanUtil.getUserSettingsVO();
+	}
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -56,5 +74,44 @@ public class UserVO {
 		this.dropboxAuthKey = dropboxAuthKey;
 	}
 
-	
+	public String getUserRootDirectory() {
+		return userRootDirectory;
+	}
+
+	public void setUserRootDirectory(String userRootDirectory) {
+		this.userRootDirectory = userRootDirectory;
+	}
+
+	public String getUserAccessKey() {
+		return userAccessKey;
+	}
+
+	public void setUserAccessKey(String userAccessKey) {
+		this.userAccessKey = userAccessKey;
+	}
+
+	public boolean isServerService() {
+		return serverService;
+	}
+
+	public void setServerService(boolean serverService) {
+		this.serverService = serverService;
+	}
+
+	public boolean isServerLoadOnStartup() {
+		return serverLoadOnStartup;
+	}
+
+	public void setServerLoadOnStartup(boolean serverLoadOnStartup) {
+		this.serverLoadOnStartup = serverLoadOnStartup;
+	}
+
+	public boolean isServerAutoSync() {
+		return serverAutoSync;
+	}
+
+	public void setServerAutoSync(boolean serverAutoSync) {
+		this.serverAutoSync = serverAutoSync;
+	}
+		
 }

@@ -7,14 +7,18 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import org.apache.commons.io.FileUtils;
 
+import com.file.action.DatabaseDAOAction;
+import com.file.constant.FileConstants;
 import com.file.email.EmailVO;
 import com.file.email.SendMail;
+import com.file.pojo.FolderDetailVO;
 import com.file.ui.EmailInputDialog;
 import com.file.ui.PopupNotification;
 import com.file.util.CommanUtil;
@@ -35,6 +39,12 @@ public class DMSMasterControllerImpl {
 				PopupNotification.showSuccess("Upload-Success", "Files uploaded successfully.");
 				CommanUtil.loadLocalTreeData();
 				CommanUtil.loadCloudTreeData();
+				
+				ObservableList<FolderDetailVO> data =
+			            CommanUtil.getRecentTableContentList();
+				
+				data.add(new FolderDetailVO(FileUtils.getFile(destination),FileConstants.FileOperationAction.UPLOAD_ACTION));
+				DatabaseDAOAction.updateRecent(data);
 			} else {
 				PopupNotification.showError("Upload-Error", "Upload failed, please contact administrator.");
 			}
@@ -50,6 +60,12 @@ public class DMSMasterControllerImpl {
 			File f = FileUtils.getFile(downPath);
 			if(f!=null && f.exists()) {
 				PopupNotification.showSuccess("Download-Success", "Files downloaded successfully.");
+				
+				ObservableList<FolderDetailVO> data =
+			            CommanUtil.getRecentTableContentList();
+				
+				data.add(new FolderDetailVO(f,FileConstants.FileOperationAction.DOWNLOAD_ACTION));
+				DatabaseDAOAction.updateRecent(data);
 			} else {
 				PopupNotification.showError("Download-Error", "Download failed, please contact administrator.");
 			}
@@ -64,6 +80,12 @@ public class DMSMasterControllerImpl {
 			File f = FileUtils.getFile(downPath);
 			if(f!=null && f.exists()) {
 				PopupNotification.showSuccess("Zip-Success", "Zipped successfully.");
+				
+				ObservableList<FolderDetailVO> data =
+			            CommanUtil.getRecentTableContentList();
+				
+				data.add(new FolderDetailVO(f,FileConstants.FileOperationAction.ZIP_ACTION));
+				DatabaseDAOAction.updateRecent(data);
 			} else {
 				PopupNotification.showError("Zip-Error", "Zip failed, please contact administrator.");
 			}
@@ -126,6 +148,12 @@ public class DMSMasterControllerImpl {
 					File f = FileUtils.getFile(downPath);
 					if(f!=null && f.exists()) {
 						PopupNotification.showSuccess("Zip-Success", "Zipped successfully.");
+						
+						ObservableList<FolderDetailVO> data =
+					            CommanUtil.getRecentTableContentList();
+						
+						data.add(new FolderDetailVO(f,FileConstants.FileOperationAction.ZIP_ACTION));
+						DatabaseDAOAction.updateRecent(data);
 					} else {
 						PopupNotification.showError("Zip-Error", "Zip failed, please contact administrator.");
 					}
@@ -146,6 +174,12 @@ public class DMSMasterControllerImpl {
 						OperationUtil.getFileOperations().download(fromPath,toPath);
 					}
 					PopupNotification.showSuccess("Download-Success", "Files downloaded successfully.");
+					
+					ObservableList<FolderDetailVO> data =
+				            CommanUtil.getRecentTableContentList();
+					
+					data.add(new FolderDetailVO(FileUtils.getFile(toPath),FileConstants.FileOperationAction.DOWNLOAD_ACTION));
+					DatabaseDAOAction.updateRecent(data);
 				}
 			} catch (Exception e) {
 				PopupNotification.showError("Download-Error", "Download failed, please contact administrator.");
@@ -169,6 +203,14 @@ public class DMSMasterControllerImpl {
 					String result = vo.sendEmail(vo);
 					if(SendMail.SUCCESS_MESSAGE.equals(result)) {
 						PopupNotification.showSuccess("Email-Success", "Mail Sent");
+						ObservableList<FolderDetailVO> data =
+					            CommanUtil.getRecentTableContentList();
+						items.forEach((path)->{
+							data.add(new FolderDetailVO(FileUtils.getFile(path),
+									FileConstants.FileOperationAction.EMAIL_ACTION));
+						});
+						
+						DatabaseDAOAction.updateRecent(data);
 					} else {
 						PopupNotification.showError("Email-Error", result);
 					}

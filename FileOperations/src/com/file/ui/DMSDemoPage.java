@@ -36,6 +36,7 @@ import com.file.operations.FileOperations;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 import com.user.info.UserInfo;
+import com.user.info.UserVO;
 
 public class DMSDemoPage extends Application {
 
@@ -45,9 +46,9 @@ public class DMSDemoPage extends Application {
 	public DMSDemoPage() {
 
 		UserInfo userInfo;
-
-		userInfo = new UserInfo("Testuser", "C:\\TEMP\\test\\dest\\Testuser\\",
-				null);
+		UserVO.getInstance().setUserName("Testuser");
+        UserVO.getInstance().setUserRootDirectory("C:\\TEMP\\test\\dest\\Testuser");
+		userInfo = new UserInfo( UserVO.getInstance());
 		ops = new FileOperations(userInfo);
 		
 	}

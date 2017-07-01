@@ -107,20 +107,24 @@ public class FileOperations extends Operations {
 		if(FileUtils.getFile(fromPath).exists()) {
 			return uploadProcess(fromPath, toPath);
 		} else {
-			if(!toPath.endsWith("/")){
-				toPath+=File.separator;
+			if(FileUtils.getFile(toPath).isDirectory()) {
+				if(!toPath.endsWith("/")){
+					toPath+=File.separator;
+				}
+				toPath = toPath+fromPath.substring(fromPath.lastIndexOf("/")+1, fromPath.length());
 			}
-			toPath = toPath+fromPath.substring(fromPath.lastIndexOf("/")+1, fromPath.length());
 			File f = new File(toPath);
+			File parent = f.getParentFile();
+			if(!parent.exists()) {
+				parent.mkdirs();
+			}	
 			if(f.exists()) {
-				String bytes = OperationUtil.getFileOperations().getSize(f,"B","0");
-				DbxClient client = userInfo.getClient();
-				DbxEntry.File metadata = (DbxEntry.File)client.getMetadata(fromPath,true);
-				if(bytes.equals(String.valueOf(Double.valueOf(String.valueOf(metadata.numBytes))))) {
+				if(compareMetadata(f, fromPath)) {
 					return toPath;
 				}
 				FileUtils.forceDelete(f);
 			}
+			
 			f.createNewFile();
 			FileOutputStream outputStream = new FileOutputStream(f);
 			try {
@@ -159,9 +163,48 @@ public class FileOperations extends Operations {
 	}
 
 	@Override
-	protected void syncDropbox() {
-		
-		
+	protected void syncLocalToDropbox(String localRootPath) throws Exception {
+		if(userInfo.isDropboxSupported()) { 
+			File file = new File(localRootPath);
+			if (file.isDirectory()) {
+				File[] files = file.listFiles();
+				for (int i = 0; i < files.length; i++) {
+					if(files[i].getAbsoluteFile().isFile()) {
+						File localFile = files[i].getAbsoluteFile();
+						String dropboxPath = convertToDropboxPath(localFile.getAbsolutePath());
+						if(!compareMetadata(localFile, dropboxPath)) {
+							System.out.println("Upload dropbox :"+localFile.getAbsolutePath());
+							uploadingFiles(userInfo.getClient(), localFile);
+						}
+					} else {
+						syncLocalToDropbox(files[i].getAbsolutePath());
+					}
+				}
+			} 
+		}
 	}
+
+	@Override
+	protected void syncDropboxToLocal(String dropboxRootPath) throws Exception {
+		System.out.println("syncDropboxToLocal " + dropboxRootPath);
+		if (userInfo.isDropboxSupported()) {
+			DbxEntry.WithChildren listing = userInfo.getClient()
+					.getMetadataWithChildren(dropboxRootPath);
+			if (listing != null) {
+				for (DbxEntry child : listing.children) {
+					if (child.isFolder()) {
+						syncDropboxToLocal(child.path);
+					} else {
+						String localPath = convertToLocalPath(child.path);
+						if (!FileUtils.getFile(localPath).exists()) {
+							OperationUtil.getFileOperations().download(
+									child.path, localPath);
+						}
+					}
+				}
+			}
+		}
+	}
+
 
 }
