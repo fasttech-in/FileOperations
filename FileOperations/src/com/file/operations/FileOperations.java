@@ -83,7 +83,7 @@ public class FileOperations extends Operations {
 		return false;
 	}
 
-	private void uploadingFiles(DbxClient client, File inputFile) throws DbxException, IOException {
+	private boolean uploadingFiles(DbxClient client, File inputFile) throws DbxException, IOException {
 		FileInputStream inputStream=null;
 		try {
 			String uploadPath = convertToDropboxPath(inputFile.getAbsolutePath());
@@ -94,11 +94,13 @@ public class FileOperations extends Operations {
 				DbxEntry.File uploadedFile = client.uploadFile(uploadPath, DbxWriteMode.add(),
 						inputFile.length(), inputStream);
 				System.out.println("Uploaded: " + uploadedFile.toString());
+				return uploadedFile!=null;
 			}
 		} finally {
 			if (inputStream != null)
 				inputStream.close();
 		}
+		return false;
 	}
 
 	@Override
@@ -164,6 +166,7 @@ public class FileOperations extends Operations {
 
 	@Override
 	protected void syncLocalToDropbox(String localRootPath) throws Exception {
+		System.out.println("syncLocalToDropbox " + localRootPath);
 		if(userInfo.isDropboxSupported()) { 
 			File file = new File(localRootPath);
 			if (file.isDirectory()) {
@@ -181,6 +184,8 @@ public class FileOperations extends Operations {
 					}
 				}
 			} 
+		} else {
+			throw new RuntimeException("Cloud service not supported.");
 		}
 	}
 
@@ -203,6 +208,8 @@ public class FileOperations extends Operations {
 					}
 				}
 			}
+		} else {
+			throw new RuntimeException("Cloud service not supported.");
 		}
 	}
 

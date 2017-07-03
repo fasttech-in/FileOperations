@@ -1,10 +1,7 @@
 package com.file.ui;
 
 import java.awt.Toolkit;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import javafx.application.Application;
@@ -20,12 +17,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import org.apache.commons.io.FileUtils;
-
 import com.file.action.FilePreviewAction;
 import com.file.action.FileTreeViewAction;
 import com.file.action.RecentAndPendingAction;
 import com.file.constant.FileConstants;
+import com.file.operations.DataSynchonizationService;
 import com.file.operations.FileOperations;
 import com.file.pojo.FolderDetailVO;
 import com.file.ui.controller.DMSMasterController;
@@ -70,33 +66,14 @@ public class DMSMasterPage extends Application
 	        FilePreviewAction prev = initFilePreview(loader);
 	        initLocalTab(loader, userInfo, prev);
 	        initCloudTab(loader, userInfo, prev);
+	        initAutoSyncService(userInfo);
 		} else {
-			PopupNotification.showError("Login - Error", "Invalid username or password");
+			PopupNotification.showError("Login - Failed", "Invalid username or password");
 		}
 	}
 
 	private List<UserVO> loadUserData() {
-		List<UserVO> volist = new ArrayList<UserVO>();
-		File productDir = FileUtils.getFile(CommanUtil
-				.getProductFileDirectory());
-		for (File f : productDir.listFiles()) {
-			if (f.getName().endsWith("des")) {
-				UserVO vo = CommanUtil.unmarshall(f.getName());
-				if (vo != null) {
-					byte[] decodedBytes = Base64.getDecoder().decode(
-							vo.getPassword());
-					String decodedString = new String(decodedBytes);
-					vo.setPassword(decodedString);
-					decodedBytes = Base64.getDecoder().decode(
-							vo.getUserAccessKey());
-					decodedString = new String(decodedBytes);
-					vo.setUserAccessKey(decodedString);
-					volist.add(vo);
-				}
-			}
-		}
-
-		return volist;
+		return CommanUtil.loadAvailableUsers();
 	}
 
 	private void initUserSettings(FXMLLoader loader, UserVO vo) {
@@ -204,5 +181,16 @@ public class DMSMasterPage extends Application
 		pendingAction.loadTableData(loader.getController());
 		RecentAndPendingAction recentAction = new RecentAndPendingAction(FileConstants.PendingRecentAction.RECENT_ACTION);
 		recentAction.loadTableData(loader.getController());
+	}
+	
+	private void initAutoSyncService(UserInfo userInfo) {
+		DataSynchonizationService service = new DataSynchonizationService(OperationUtil.getFileOperations());
+		try {
+			service.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

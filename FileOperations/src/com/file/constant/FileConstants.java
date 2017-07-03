@@ -18,4 +18,7 @@ public class FileConstants {
 		public static String CLOUD_ACTION = "CLOUD UPLOAD";
 	}
 
+	public static class ClientSettingsFile {
+		public static String EXTENSION = ".dms";
+	}
 }

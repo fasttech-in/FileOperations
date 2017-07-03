@@ -35,7 +35,7 @@ final public class UserInfo {
 			try {
 				return DropboxAuthenticator.authenticate(authKey, userName);
 			} catch (DbxException e) {
-				System.out.println("Clound DB access denied. : "+e.getMessage());
+				System.out.println("Cloud DB access denied. : "+e.getMessage());
 			}
 		} 
 		return null;
@@ -62,7 +62,7 @@ final public class UserInfo {
 	}
 
 	public boolean isDropboxSupported() {
-		return client !=null;
+		return client !=null && userVO.isServerService();
 	}
 
 	public String getUserName() {
@@ -82,7 +82,7 @@ final public class UserInfo {
 	}
 
 	public DbxClient getClient() {
-		return client;
+		return userVO.isServerService()?client:null;
 	}
 
 	public void setClient(DbxClient client) {

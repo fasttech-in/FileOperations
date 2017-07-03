@@ -281,10 +281,12 @@ public abstract class FileTreeView {
 			if(f.isDirectory()) {
 				FilterableTreeItem<Resource> folder = new FilterableTreeItem<>(new Resource(f.getName()), new ImageView(CommanUtil.folderNodeImg));
 				root.getInternalChildren().add(folder);
+				treeView.refresh();
 				loadData(f.getAbsolutePath(), folder);
 			} else {
 				FilterableTreeItem<Resource> file = new FilterableTreeItem<>(new Resource(f.getName()), new ImageView(CommanUtil.getNodeImage(f.getName())));
 				root.getInternalChildren().add(file);
+				treeView.refresh();
 			}
 		}
 		return root;

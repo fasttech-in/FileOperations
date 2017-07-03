@@ -1,13 +1,19 @@
 package com.file.util;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.io.FileUtils;
+
 import com.file.action.FileTreeViewAction;
 import com.file.action.RecentAndPendingAction;
+import com.file.constant.FileConstants;
 import com.file.pojo.FolderDetailVO;
 import com.user.info.UserVO;
 
@@ -170,7 +176,7 @@ public class CommanUtil {
 		try {
 
 			File file = new File(getProductFileDirectory() + File.separator
-					+ vo.getClientName()+".des");
+					+ vo.getClientName()+FileConstants.ClientSettingsFile.EXTENSION);
 			
 			JAXBContext jaxbContext = JAXBContext.newInstance(UserVO.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -193,7 +199,19 @@ public class CommanUtil {
 				JAXBContext jaxbContext = JAXBContext.newInstance(UserVO.class);
 	
 				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-				return (UserVO) jaxbUnmarshaller.unmarshal(file);
+				
+				UserVO vo =  (UserVO) jaxbUnmarshaller.unmarshal(file);
+				if (vo != null) {
+					byte[] decodedBytes = Base64.getDecoder().decode(
+							vo.getPassword());
+					String decodedString = new String(decodedBytes);
+					vo.setPassword(decodedString);
+					decodedBytes = Base64.getDecoder().decode(
+							vo.getUserAccessKey());
+					decodedString = new String(decodedBytes);
+					vo.setUserAccessKey(decodedString);
+				}
+				return vo;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -207,6 +225,21 @@ public class CommanUtil {
 	
 	public static UserVO getUserSettingsVO() {
 		return userVO;
+	}
+
+	public static List<UserVO> loadAvailableUsers() {
+		List<UserVO> volist = new ArrayList<UserVO>();
+		File productDir = FileUtils.getFile(CommanUtil
+				.getProductFileDirectory());
+		for (File f : productDir.listFiles()) {
+			if (f.getName().endsWith(FileConstants.ClientSettingsFile.EXTENSION)) {
+				UserVO vo = unmarshall(f.getName());
+				if (vo != null) {
+					volist.add(vo);
+				}
+			}
+		}
+		return volist;
 	}
 }
 

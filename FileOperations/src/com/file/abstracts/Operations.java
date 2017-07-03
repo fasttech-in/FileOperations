@@ -3,12 +3,19 @@ package com.file.abstracts;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
 import net.lingala.zip4j.exception.ZipException;
 
 import org.apache.commons.io.FileUtils;
@@ -20,6 +27,7 @@ import com.file.Interfaces.IFileOperations;
 import com.file.action.DatabaseDAOAction;
 import com.file.constant.FileConstants;
 import com.file.pojo.FolderDetailVO;
+import com.file.ui.PopupNotification;
 import com.file.util.CommanUtil;
 import com.file.util.OperationUtil;
 import com.user.info.UserInfo;
@@ -31,6 +39,10 @@ public abstract class Operations implements IFileOperations {
 	
 	public Operations(UserInfo userInfo) {
 		this.userInfo = userInfo;
+	}
+	
+	public UserInfo getUserInfo() {
+		return userInfo;
 	}
 
 	@Override
@@ -183,6 +195,10 @@ public abstract class Operations implements IFileOperations {
 		}
 	}
 	
+	public long getFileCount(String path) throws IOException {
+		return Files.walk(Paths.get(path)).parallel().filter(p -> !p.toFile().isDirectory()).count();
+	}
+	
 	protected boolean compareMetadata(File localFile, String dropboxPath) throws Exception{
 		String bytes = OperationUtil.getFileOperations().getSize(localFile,"B","0");
 		DbxClient client = userInfo.getClient();
@@ -202,7 +218,7 @@ public abstract class Operations implements IFileOperations {
 	}
 	
 	public boolean syncFiles(String loadPath) throws Exception {
-		final Task task = new Task<Boolean>() {
+		final Task<Boolean> task = new Task<Boolean>() {
 			@Override
 			protected Boolean call() throws Exception {
 				updateMessage("");
@@ -211,11 +227,29 @@ public abstract class Operations implements IFileOperations {
 				} else {
 					syncLocalToDropbox(loadPath);
 				}
+				System.out.println("Sync done. returning true");
 				return true;
 			}
 		};
-		new Thread(task).start();
+
+		task.stateProperty().addListener(new ChangeListener<Worker.State>() {
+
+	        @Override
+	        public void changed(ObservableValue<? extends State> observable,
+	                State oldValue, Worker.State newState) {
+	            if(newState==Worker.State.SUCCEEDED) {
+	    			PopupNotification.showSuccess("Auto Sync - Success", "Sync completed successfully.");
+	            }
+	            else if(newState==Worker.State.RUNNING) {
+	    			PopupNotification.showInfo("Auto Sync - Running", "Please wait, might take upto a minute.");
+	            }
+	            else if(newState==Worker.State.FAILED) {
+	    			PopupNotification.showError("Auto Sync - Failed", "Check internet connection & settings.");
+	            }
+	        }
+	    });
 		
+		new Thread(task).start();
 		return true;
 	}
 	
