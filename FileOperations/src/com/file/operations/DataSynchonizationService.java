@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 import com.file.constant.FileConstants;
 import com.file.ui.PopupNotification;
@@ -18,6 +19,7 @@ import com.user.info.UserInfo;
 import com.user.info.UserVO;
 
 public class DataSynchonizationService {
+	static Logger log = Logger.getLogger(DataSynchonizationService.class.getName());
 	private FileOperations ops;
 	private boolean isViaDMS = true;
 	
@@ -38,6 +40,7 @@ public class DataSynchonizationService {
 		if(clientDetailsFilePath!=null && clientDetailsFilePath.endsWith(FileConstants.ClientSettingsFile.EXTENSION)) {
 			File clientFile = FileUtils.getFile(clientDetailsFilePath);
 			if(clientFile.exists()) {
+				log.info("Loading auto sync client file: "+clientFile.getAbsolutePath());
 				UserVO user = CommanUtil.unmarshall(clientFile.getName());
 				CommanUtil.setUserSettingsVO(user);
 				UserInfo userInfo = new UserInfo(user);
@@ -53,11 +56,10 @@ public class DataSynchonizationService {
 			long fileCount = 0;
 			@Override
 			public void run() {
-				System.out.println("running TimerTask...");
+				log.info("Running auto sync TimerTask ");
 				Task<Void> task = new Task<Void>() {
 					@Override
 					protected Void call()  {
-						System.out.println("running FXTask ...");
 						if(ops!=null && ops.getUserInfo().isDropboxSupported() && 
 								ops.getUserInfo().getUserVO().isServerAutoSync()) {
 							try {
@@ -70,6 +72,7 @@ public class DataSynchonizationService {
 								e.printStackTrace();
 							}
 						} else {
+							log.info("Unable to start. check client settings file and auto sync flags.");
 							if(!isViaDMS) {
 								PopupNotification.showError("Sync - Error", "Unable to start auto sync.");
 							}

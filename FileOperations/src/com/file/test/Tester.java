@@ -1,9 +1,10 @@
-package com.file.tesst;
+package com.file.test;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import com.file.operations.DataSynchonizationService;
+import com.file.util.CommanUtil;
 
 public class Tester extends Application {
 
@@ -18,9 +19,7 @@ public class Tester extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.show();
-		primaryStage.hide();
-		DataSynchonizationService service = new DataSynchonizationService("D:\\CodeExamples\\GIT\\FileOperations\\ProductFiles\\testuser.dms");
+		DataSynchonizationService service = new DataSynchonizationService(CommanUtil.getPropertyValue("AUTO.SYNC.FILE"));
 		try {
 			service.start();
 		} catch (Exception e) {

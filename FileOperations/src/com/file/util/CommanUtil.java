@@ -1,27 +1,33 @@
 package com.file.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Properties;
+
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.image.Image;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import com.file.action.FileTreeViewAction;
-import com.file.action.RecentAndPendingAction;
 import com.file.constant.FileConstants;
 import com.file.pojo.FolderDetailVO;
 import com.user.info.UserVO;
 
-import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.image.Image;
-
 public class CommanUtil {
+	static Logger log = Logger.getLogger(CommanUtil.class.getName());
 
 	private static String userRootDirectory;
 	public static Image folderNodeImg = null;
@@ -53,6 +59,7 @@ public class CommanUtil {
 	public static Image aboutNodeImg = null;
 	
 	private static UserVO userVO;
+	private static Properties funcationalityPropertiesFile;
 	private static String p = "/com/file/ui/images/";
 	private static FileTreeViewAction cloudTreeAction;
 	private static FileTreeViewAction localTreeAction;
@@ -69,6 +76,15 @@ public class CommanUtil {
 		userRootDirectory = System.getProperty("user.dir");
 		new File(userRootDirectory+File.separator+"Temp").mkdir();
 		new File(userRootDirectory+File.separator+"ProductFiles").mkdir();
+		PropertyConfigurator.configure(getPropertiesFilePath());
+		log.debug("Hello this is a debug message");
+	      log.info("Hello this is an info message");
+	      log.info("Hello this is an info message");
+	      log.info("Hello this is an info message");
+	      log.info("Hello this is an info message");
+	      log.info("Hello this is an info message");
+	      log.error("Hello this is an error message");
+	      log.error("Hello this is an error message");
 		folderNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"folder-yellow24.png"));
 		 fileNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"file24.png"));
 		 jpgNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"jpg24.png"));
@@ -102,12 +118,38 @@ public class CommanUtil {
 		return userRootDirectory;
 	}
 	
+	public static String getPropertyValue(String key) {
+		if(funcationalityPropertiesFile == null) {
+			funcationalityPropertiesFile= new Properties();
+			InputStream input = null;
+			try {
+				input = new FileInputStream(getPropertiesFilePath());
+				funcationalityPropertiesFile.load(input);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				if (input != null) {
+					try {
+						input.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return funcationalityPropertiesFile.getProperty(key);
+	}
+
 	public static String getTempDirectory() {
 		return userRootDirectory+File.separator+"Temp";
 	}
 	
 	public static String getProductFileDirectory() {
 		return userRootDirectory+File.separator+"ProductFiles";
+	}
+	
+	public static String getPropertiesFilePath() {
+		return userRootDirectory+File.separator+"PropertyFiles"+File.separator+"Functionality.properties";
 	}
 	
 	public static Image getNodeImage(String fileName) {
