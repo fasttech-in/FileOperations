@@ -2,6 +2,7 @@ package com.file.dropbox.operations.auth;
 
 import java.util.Locale;
 
+import com.dropbox.core.DbxAccountInfo;
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
@@ -25,6 +26,10 @@ public class DropboxAuthenticator {
 				.getDefault().toString());
 
 		DbxClient client = new DbxClient(config, accessToken);
+		DbxAccountInfo.Quota accInfo = client.getAccountInfo().quota;
+		System.out.println("total :"+accInfo.total);
+		System.out.println("remaining :"+accInfo.normal);
+		
 		System.out.println("Linked account: "+ client.getAccountInfo().displayName);
 		return client;
 	}

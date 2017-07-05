@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JFileChooser;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -224,4 +225,5 @@ public class DMSMasterControllerImpl {
 			PopupNotification.showError("Email-Error", "please contact administrator.");
 		}
 	}
+
 }

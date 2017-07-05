@@ -77,14 +77,6 @@ public class CommanUtil {
 		new File(userRootDirectory+File.separator+"Temp").mkdir();
 		new File(userRootDirectory+File.separator+"ProductFiles").mkdir();
 		PropertyConfigurator.configure(getPropertiesFilePath());
-		log.debug("Hello this is a debug message");
-	      log.info("Hello this is an info message");
-	      log.info("Hello this is an info message");
-	      log.info("Hello this is an info message");
-	      log.info("Hello this is an info message");
-	      log.info("Hello this is an info message");
-	      log.error("Hello this is an error message");
-	      log.error("Hello this is an error message");
 		folderNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"folder-yellow24.png"));
 		 fileNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"file24.png"));
 		 jpgNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"jpg24.png"));

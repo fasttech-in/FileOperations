@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,6 +26,8 @@ import com.file.ui.PopupNotification;
 import com.file.util.CommanUtil;
 import com.file.util.OperationUtil;
 import com.user.info.UserVO;
+
+import static java.lang.Math.toIntExact;
 
 public class DMSMasterController {
 	DMSMasterControllerImpl dmsImpl;
@@ -44,6 +48,12 @@ public class DMSMasterController {
 
     @FXML
     private Tab pendingTab;
+    
+    @FXML
+    private ProgressBar storageSpaceProgressBar;
+    
+    @FXML
+    private ProgressIndicator storageSpaceProgressIndiBar;
 
     @FXML
     private Tab downloadTab;
@@ -215,6 +225,8 @@ public class DMSMasterController {
     void downloadTabSelectionChanged(ActionEvent event) {
 
     }
+    
+    
     
     @FXML
     void uploadSourceChooserBtnAction(ActionEvent event) {
@@ -411,6 +423,15 @@ public class DMSMasterController {
 
 	public TextField getDataRootTxtFld() {
 		return dataRootTxtFld;
+	}
+	
+	public void updateStorageSpaceIndicator(long total, long done) {
+		double bar = Double.parseDouble(String.valueOf(toIntExact(done/total)));
+		if(bar<0.1) {
+			bar = 0.01;
+		}
+		storageSpaceProgressBar.setProgress(bar);
+		storageSpaceProgressIndiBar.setProgress(bar);
 	}
 
 	@FXML

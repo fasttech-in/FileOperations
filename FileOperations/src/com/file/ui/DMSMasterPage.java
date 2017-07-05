@@ -4,6 +4,8 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import com.dropbox.core.DbxException;
 import com.file.action.FilePreviewAction;
 import com.file.action.FileTreeViewAction;
 import com.file.action.RecentAndPendingAction;
@@ -31,7 +34,9 @@ import com.user.info.UserInfo;
 import com.user.info.UserVO;
 
 public class DMSMasterPage extends Application
-{
+{	
+	static Logger log = Logger.getLogger(DMSMasterPage.class.getName());
+	
 	public static void main(String[] args) 
 	{
 		Application.launch(args);
@@ -67,6 +72,7 @@ public class DMSMasterPage extends Application
 	        initLocalTab(loader, userInfo, prev);
 	        initCloudTab(loader, userInfo, prev);
 	        initAutoSyncService(userInfo);
+	        updateStorageSpaceIndicator(loader);
 		} else {
 			PopupNotification.showError("Login - Failed", "Invalid username or password");
 		}
@@ -190,6 +196,18 @@ public class DMSMasterPage extends Application
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	private void updateStorageSpaceIndicator(FXMLLoader loader) {
+		DMSMasterController controller = loader.getController();
+		try {
+			long total = OperationUtil.getFileOperations().getUserInfo().getClient().getAccountInfo().quota.total;
+			long done = OperationUtil.getFileOperations().getUserInfo().getClient().getAccountInfo().quota.normal;
+			log.info("updating storage space :"+ (done/total));
+			controller.updateStorageSpaceIndicator(total, done);
+		} catch (DbxException e) {
+			controller.updateStorageSpaceIndicator(1, 1);
 		}
 		
 	}
