@@ -4,17 +4,21 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
 import com.file.constant.FileConstants;
 import com.file.pojo.FolderDetailVO;
+import com.file.ui.DMSMasterPage;
 import com.file.ui.FileTreeView;
 import com.file.ui.FilterableTreeItem;
 import com.file.ui.PopupNotification;
@@ -24,6 +28,7 @@ import com.file.util.OperationUtil;
 import com.user.info.UserInfo;
 
 public class FileTreeViewAction extends FileTreeView {
+	static Logger log = Logger.getLogger(FileTreeViewAction.class.getName());
 	FilePreviewAction previewAction;
 
 	public FileTreeViewAction(UserInfo userInfo, String loadPath) {
@@ -34,6 +39,7 @@ public class FileTreeViewAction extends FileTreeView {
 			TreeView<Resource> treeView) {
 		 TreeItem<Resource> item = treeView.getSelectionModel().getSelectedItem();
     	 filterField.clear();
+    	 collapseTreeView(treeView.getRoot());
     	 treeView.getSelectionModel().select(item);
 	}
 	
@@ -188,7 +194,7 @@ public class FileTreeViewAction extends FileTreeView {
 			OperationUtil.getFileOperations().openFile(treeSelectedPath);
 		} catch (Exception e) {
 			PopupNotification.showError("Error-Open", "Unable to open.");
-			e.printStackTrace();
+			log.info(e);
 		} 
 	}
 
@@ -200,9 +206,58 @@ public class FileTreeViewAction extends FileTreeView {
 				CommanUtil.loadCloudTreeData();
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info(e);
 		}
 	}
+
+	@Override
+	protected void registerDoubleClickAction(TreeView<Resource> treeView) {
+		treeView.setOnMouseClicked(new EventHandler<MouseEvent>()
+		{
+		    @Override
+		    public void handle(MouseEvent mouseEvent)
+		    {            
+		        if(mouseEvent.getClickCount() == 2)
+		        {
+		        	getSelectInViewMenuItemAction(treeView);
+		        }
+		    }
+		});
+	}
+
+	@Override
+	protected void getCollapseMenuItemAction(TreeView<Resource> treeView) {
+		collapseTreeView(treeView.getRoot());
+		treeView.getRoot().setExpanded(true);
+	}
 	
+	private void collapseTreeView(TreeItem<?> item) {
+	    if(item != null && !item.isLeaf()) {
+	        item.setExpanded(false);
+	        for(TreeItem<?> child:item.getChildren()){
+	            collapseTreeView(child);
+	        }
+	    }
+	    
+	}
+
+	@Override
+	protected void getAttachmentMenuItemAction(TreeView<Resource> treeView) {
+		String treeSelectedPath = getTreeSelectedPath(treeView);
+		DMSMasterController controller = CommanUtil.getFXMLLoader().getController();
+		controller.addAttachmentToEmail(treeSelectedPath);
+	}
+
+	@Override
+	protected void getSendEmailMenuItemAction(TreeView<Resource> treeView) {
+		DMSMasterController controller = CommanUtil.getFXMLLoader().getController();
+		controller.getDmsImpl().emailBtnActionPerformed(controller.getEmailFilesListView().getItems());
+		controller.clearAttachments();
+	}
+
+	@Override
+	protected void clearAttachments() {
+		DMSMasterController controller = CommanUtil.getFXMLLoader().getController();
+		controller.clearAttachments();
+	}
 }

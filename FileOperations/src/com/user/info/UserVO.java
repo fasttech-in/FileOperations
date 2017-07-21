@@ -22,6 +22,7 @@ public class UserVO {
 	private boolean serverService = false;
 	private boolean serverLoadOnStartup = false;
 	private boolean serverAutoSync = false;
+	private String emailId;
 
 	public UserVO() {
 		
@@ -113,5 +114,14 @@ public class UserVO {
 	public void setServerAutoSync(boolean serverAutoSync) {
 		this.serverAutoSync = serverAutoSync;
 	}
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 		
+	
 }

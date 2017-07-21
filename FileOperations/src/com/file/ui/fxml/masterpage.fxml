@@ -329,6 +329,7 @@
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                    <children>
                                                       <Label layoutX="14.0" layoutY="125.0" text="Password" GridPane.rowIndex="3">
@@ -356,7 +357,7 @@
                                                             <Font name="Tahoma" size="12.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="clientNameTxtFld" GridPane.columnIndex="1">
+                                                      <TextField fx:id="clientNameTxtFld" onKeyReleased="#clientNameKeyReleased" GridPane.columnIndex="1">
                                                          <font>
                                                             <Font name="Tahoma" size="12.0" />
                                                          </font>
@@ -371,7 +372,7 @@
                                                             <Font name="Tahoma" size="12.0" />
                                                          </font>
                                                       </TextField>
-                                                      <TextField fx:id="accessKeyTxtFld" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                      <TextField fx:id="accessKeyTxtFld" promptText="Call admin to generate new access key" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                          <font>
                                                             <Font name="Tahoma" size="12.0" />
                                                          </font>
@@ -381,8 +382,21 @@
                                                             <Font name="Tahoma" size="12.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="dataRootTxtFld" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                      <TextField fx:id="dataRootTxtFld" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                         <font>
+                                                            <Font name="Tahoma" size="12.0" />
+                                                         </font></TextField>
                                                       <PasswordField fx:id="passwordTxtFld" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                      <Label text="Email" GridPane.rowIndex="6">
+                                                         <font>
+                                                            <Font name="Tahoma" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="clientEmailIdTxtFld" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                         <font>
+                                                            <Font name="Tahoma" size="12.0" />
+                                                         </font>
+                                                      </TextField>
                                                    </children>
                                                 </GridPane>
                                                 <Button fx:id="userSettingsButton" layoutX="15.0" layoutY="300.0" mnemonicParsing="false" onAction="#userSettingsButtonAction" prefHeight="25.0" prefWidth="608.0" text="Save">

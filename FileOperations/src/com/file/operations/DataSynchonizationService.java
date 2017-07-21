@@ -24,6 +24,7 @@ public class DataSynchonizationService {
 	private boolean isViaDMS = true;
 	
 	public DataSynchonizationService(String clientDetailsFilePath) {
+		CommanUtil.getTempDirectory(); // just to initialize util class
 		isViaDMS = false;
 		init(clientDetailsFilePath);
 	}

@@ -2,12 +2,17 @@ package com.file.ui;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
@@ -16,18 +21,21 @@ import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import com.dropbox.core.DbxClient;
 import com.dropbox.core.DbxException;
+import com.file.action.FileTreeViewAction;
 import com.file.util.CommanUtil;
 import com.file.util.OperationUtil;
 import com.user.info.UserInfo;
 
 
 public abstract class FileTreeView {
+	static Logger log = Logger.getLogger(FileTreeView.class.getName());
 
 	protected TextField filterField;
 	protected UserInfo userInfo;
@@ -73,12 +81,13 @@ public abstract class FileTreeView {
 		
 		root.setExpanded(true);
 		addContextMenu(treeView);
+		registerDoubleClickAction(treeView);
 		treeViewTitlePane = new TitledPane(loadPath, treeView);
 		treeViewTitlePane.setCollapsible(false);
 		treeViewTitlePane.setMaxHeight(Double.MAX_VALUE);
 		return treeViewTitlePane;
 	}
- 
+
 	private void addContextMenu(TreeView<Resource> treeView) {
 		EventHandler<MouseEvent> mouseEventHandle = (MouseEvent event) -> {
 		    getTreeSelectedPath(event, treeView);
@@ -86,7 +95,6 @@ public abstract class FileTreeView {
 		treeView.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventHandle);
 		
 		ContextMenu rootContextMenu = new ContextMenu();
-		
 		if(loadPath!=null) {
 			if (isCloudPath(loadPath)) {
 				MenuItem serverReconnect = getServerReconnectMenuItem(treeView,"Refresh");
@@ -116,6 +124,8 @@ public abstract class FileTreeView {
 				rootContextMenu.getItems().add(downloadMenu);
 				MenuItem deleteMenu = getDeleteMenuItem(treeView);
 				rootContextMenu.getItems().add(deleteMenu);
+				Menu emailMenu = getEmailMenuItem(treeView);
+				rootContextMenu.getItems().add(emailMenu);
 				MenuItem copyMenu = getCopyMenuItem(treeView);
 				rootContextMenu.getItems().add(copyMenu);
 				MenuItem cutMenu = getCutMenuItem(treeView);
@@ -124,6 +134,8 @@ public abstract class FileTreeView {
 				rootContextMenu.getItems().add(pasteMenu);
 				MenuItem synchronizeMenu = getSynchronizeMenuItem(treeView);
 				rootContextMenu.getItems().add(synchronizeMenu);
+				MenuItem collapseMenu = getcollapseMenuItem(treeView);
+				rootContextMenu.getItems().add(collapseMenu);
 			}
 		} else {
 			if(CLOUD_UNAVAILABLE.equals(treeView.getRoot().getValue().resourceName)) {
@@ -136,6 +148,24 @@ public abstract class FileTreeView {
 	
 	}
 	
+	private Menu getEmailMenuItem(TreeView<Resource> treeView2) {
+		Menu emailMenu = new Menu("Email",new ImageView(CommanUtil.emailNodeImg));
+        MenuItem attachment = new MenuItem("Add attachment",new ImageView(CommanUtil.attachmentNodeImg));
+        attachment.setOnAction(t -> getAttachmentMenuItemAction(treeView));
+        MenuItem email = new MenuItem("Send email",new ImageView(CommanUtil.sendEmailNodeImg));
+        email.setOnAction(t -> getSendEmailMenuItemAction(treeView));
+        MenuItem clear = new MenuItem("Clear attachment",new ImageView(CommanUtil.deleteNodeImg));
+        clear.setOnAction(t -> clearAttachments());
+        emailMenu.getItems().addAll(attachment, email, clear);
+		return emailMenu; 
+	}
+
+	private MenuItem getcollapseMenuItem(TreeView<Resource> treeView2) {
+		MenuItem collapseMenu = new MenuItem("Collapse",new ImageView(CommanUtil.collapseNodeImg));
+		collapseMenu.setOnAction(t -> getCollapseMenuItemAction(treeView));
+		return collapseMenu;
+	}
+
 	private MenuItem getSynchronizeMenuItem(TreeView<Resource> treeView2) {
 		MenuItem synchronizeMenu = new MenuItem("Synchronize",new ImageView(CommanUtil.synchronizeNodeImg));
 		synchronizeMenu.setOnAction(t -> getSynchronizeMenuItemAction(treeView));
@@ -204,7 +234,7 @@ public abstract class FileTreeView {
 	}
 	
 	private MenuItem getDownloadMenuItem(TreeView<Resource> treeView) {
-		MenuItem localDelete = new MenuItem("Download",new ImageView(CommanUtil.downloadNodeImg));
+		MenuItem localDelete = new MenuItem("Save",new ImageView(CommanUtil.downloadNodeImg));
 		localDelete.setOnAction(t -> getDownloadLocalMenuItemAction(treeView));
 		return localDelete;
 	}
@@ -358,6 +388,10 @@ public abstract class FileTreeView {
 	
 	protected abstract FilterableTreeItem<Resource> loadServerData(DbxClient client, String loadingPath,
 			FilterableTreeItem<Resource> node) throws DbxException;
+	protected abstract void clearAttachments();
+	protected abstract void getAttachmentMenuItemAction(TreeView<Resource> treeView);
+	protected abstract void getSendEmailMenuItemAction(TreeView<Resource> treeView);
+	protected abstract void getCollapseMenuItemAction(TreeView<Resource> treeView);
 	protected abstract void getSynchronizeMenuItemAction(TreeView<Resource> treeView);
 	protected abstract void getPasteMenuItemAction(TreeView<Resource> treeView);
 	protected abstract void getCopyMenuItemAction(TreeView<Resource> treeView);
@@ -370,4 +404,7 @@ public abstract class FileTreeView {
 	protected abstract void getSelectInViewMenuItemAction(TreeView<Resource> treeView);
 	protected abstract void getServerReconnectMenuItemAction();
 	protected abstract void loadDirectoryView(String path);
+	protected abstract void registerDoubleClickAction(TreeView<Resource> treeView);
+	
+	
 }

@@ -8,14 +8,17 @@ import java.util.List;
 import javax.swing.JFileChooser;
 
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 import com.file.action.DatabaseDAOAction;
+import com.file.action.FileTreeViewAction;
 import com.file.constant.FileConstants;
 import com.file.email.EmailVO;
 import com.file.email.SendMail;
@@ -27,6 +30,8 @@ import com.file.util.OperationUtil;
 
 
 public class DMSMasterControllerImpl {
+	static Logger log = Logger.getLogger(DMSMasterControllerImpl.class.getName());
+	
 	private DirectoryChooser dirChooser;
 	private FileChooser fileChooser;
 
@@ -50,6 +55,7 @@ public class DMSMasterControllerImpl {
 				PopupNotification.showError("Upload-Error", "Upload failed, please contact administrator.");
 			}
 		} catch (Exception e) {
+			log.info(e);
 			e.printStackTrace();
 			PopupNotification.showError("Upload-Error", "Upload failed, please contact administrator.");
 		} 
@@ -71,6 +77,7 @@ public class DMSMasterControllerImpl {
 				PopupNotification.showError("Download-Error", "Download failed, please contact administrator.");
 			}
 		} catch (Exception e) {
+			log.info(e);
 			PopupNotification.showError("Download-Error", "Download failed, please contact administrator.");
 		} 
 	}
@@ -91,6 +98,7 @@ public class DMSMasterControllerImpl {
 				PopupNotification.showError("Zip-Error", "Zip failed, please contact administrator.");
 			}
 		} catch (Exception e) {
+			log.info(e);
 			PopupNotification.showError("Zip-Error", "Zip failed, please contact administrator.");
 		} 
 	}
@@ -160,6 +168,7 @@ public class DMSMasterControllerImpl {
 					}
 				}
 			} catch (Exception e) {
+				log.info(e);
 				PopupNotification.showError("Zip-Error","Zip failed, please contact administrator.");
 			}
 		}
@@ -183,6 +192,7 @@ public class DMSMasterControllerImpl {
 					DatabaseDAOAction.updateRecent(data);
 				}
 			} catch (Exception e) {
+				log.info(e);
 				PopupNotification.showError("Download-Error", "Download failed, please contact administrator.");
 			}
 		}
@@ -198,23 +208,31 @@ public class DMSMasterControllerImpl {
 
 				String to[] = toString.split(";");
 				if (to != null && to.length > 0) {
-					EmailVO vo = new EmailVO(Arrays.asList(to), items,
-							messageString, subjectString);
-
-					String result = vo.sendEmail(vo);
-					if(SendMail.SUCCESS_MESSAGE.equals(result)) {
-						PopupNotification.showSuccess("Email-Success", "Mail Sent");
-						ObservableList<FolderDetailVO> data =
-					            CommanUtil.getRecentTableContentList();
-						items.forEach((path)->{
-							data.add(new FolderDetailVO(FileUtils.getFile(path),
-									FileConstants.FileOperationAction.EMAIL_ACTION));
-						});
-						
-						DatabaseDAOAction.updateRecent(data);
-					} else {
-						PopupNotification.showError("Email-Error", result);
-					}
+					PopupNotification.showSuccess("Email-Sending", "Please wait, Sending mail...");
+					final Task task = new Task<Boolean>() {
+						@Override
+						protected Boolean call() throws Exception {
+							EmailVO vo = new EmailVO(Arrays.asList(to), items,
+									messageString, subjectString);
+		
+							String result = vo.sendEmail(vo);
+							if(SendMail.SUCCESS_MESSAGE.equals(result)) {
+								PopupNotification.showSuccess("Email-Success", "Mail Sent");
+								ObservableList<FolderDetailVO> data =
+							            CommanUtil.getRecentTableContentList();
+								items.forEach((path)->{
+									data.add(new FolderDetailVO(FileUtils.getFile(path),
+											FileConstants.FileOperationAction.EMAIL_ACTION));
+								});
+								
+								DatabaseDAOAction.updateRecent(data);
+							} else {
+								PopupNotification.showError("Email-Error", result);
+							}
+							return null;
+						}
+					};
+					new Thread(task).start();
 				} else {
 					PopupNotification.showError("Email-Error", "Please add recipients.");
 				}
@@ -222,6 +240,7 @@ public class DMSMasterControllerImpl {
 				PopupNotification.showError("Email-Error", "please add attachments.");
 			}
 		} catch (Exception e) {
+			log.info(e);
 			PopupNotification.showError("Email-Error", "please contact administrator.");
 		}
 	}

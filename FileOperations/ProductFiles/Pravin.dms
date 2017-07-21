@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<userVO>
+    <clientContactNo>9503462575</clientContactNo>
+    <clientName>Pravin</clientName>
+    <password>cGFzc3dvcmQx</password>
+    <serverAutoSync>true</serverAutoSync>
+    <serverLoadOnStartup>false</serverLoadOnStartup>
+    <serverService>true</serverService>
+    <userAccessKey>access</userAccessKey>
+    <userName>pravin</userName>
+    <userRootDirectory>C:\TEMP\test\dest</userRootDirectory>
+</userVO>

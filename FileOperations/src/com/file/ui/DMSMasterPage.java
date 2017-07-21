@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -43,38 +44,49 @@ public class DMSMasterPage extends Application
 	}
 	
 	@Override
+	public void stop() throws Exception {
+		super.stop();
+		Platform.exit();
+        System.exit(0);
+	}
+
+	@Override
 	public void start(Stage stage) throws IOException
 	{	
-		FXMLLoader loader = new FXMLLoader();
-		loader.setRoot(new BorderPane());
-        loader.setLocation(DMSMasterPage.class.getResource("/com/file/ui/fxml/masterpage.fxml"));
-        BorderPane rootLayout = (BorderPane) loader.load();
-        double hgt = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-		double wdt = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-        Scene scene = new Scene(rootLayout, wdt-20, hgt-70);
-        stage.setScene(scene);
-        stage.setTitle("Precise - Data Management System");
-        stage.getIcons().add(CommanUtil.fileNodeImg);
-        stage.show();
-        List<UserVO> voList = loadUserData();
-        
-        LoginDialog login = new LoginDialog(voList);
-		if(login.isSuccess()) {
-			UserVO vo = login.getUser();
-			CommanUtil.setUserSettingsVO(vo);
-			initUserSettings(loader, vo);
-			UserInfo userInfo = new UserInfo(vo);
-	        FileOperations ops = new FileOperations(userInfo);
-	        OperationUtil.setFileOperations(ops);
-	        CommanUtil.setFXMLLoader(loader);
-	        initRecentPendingTables(loader);
-	        FilePreviewAction prev = initFilePreview(loader);
-	        initLocalTab(loader, userInfo, prev);
-	        initCloudTab(loader, userInfo, prev);
-	        initAutoSyncService(userInfo);
-	        updateStorageSpaceIndicator(loader);
-		} else {
-			PopupNotification.showError("Login - Failed", "Invalid username or password");
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setRoot(new BorderPane());
+	        loader.setLocation(DMSMasterPage.class.getResource("/com/file/ui/fxml/masterpage.fxml"));
+	        BorderPane rootLayout = (BorderPane) loader.load();
+	        double hgt = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+			double wdt = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+	        Scene scene = new Scene(rootLayout, wdt-20, hgt-70);
+	        stage.setScene(scene);
+	        stage.setTitle("Precise - Document Management System");
+	        stage.getIcons().add(CommanUtil.fileNodeImg);
+	        stage.show();
+	        List<UserVO> voList = loadUserData();
+	        
+	        LoginDialog login = new LoginDialog(voList);
+			if(login.isSuccess()) {
+				UserVO vo = login.getUser();
+				CommanUtil.setUserSettingsVO(vo);
+				initUserSettings(loader, vo);
+				UserInfo userInfo = new UserInfo(vo);
+		        FileOperations ops = new FileOperations(userInfo);
+		        OperationUtil.setFileOperations(ops);
+		        CommanUtil.setFXMLLoader(loader);
+		        initRecentPendingTables(loader);
+		        FilePreviewAction prev = initFilePreview(loader);
+		        initLocalTab(loader, userInfo, prev);
+		        initCloudTab(loader, userInfo, prev);
+		        initAutoSyncService(userInfo);
+		        updateStorageSpaceIndicator(loader);
+			} else {
+				PopupNotification.showError("Login - Failed", "Invalid username or password");
+			}
+		} catch (Exception e) {
+			log.info(e);
 		}
 	}
 
@@ -84,6 +96,7 @@ public class DMSMasterPage extends Application
 
 	private void initUserSettings(FXMLLoader loader, UserVO vo) {
 		DMSMasterController controller = loader.getController();
+		controller.disableOperationButtons();
 		
 		GridPane serverSetttingsGridPane = controller.getServerSettingsGridPane();
 		SwitchButton s1 = new SwitchButton();
@@ -202,11 +215,18 @@ public class DMSMasterPage extends Application
 	private void updateStorageSpaceIndicator(FXMLLoader loader) {
 		DMSMasterController controller = loader.getController();
 		try {
-			long total = OperationUtil.getFileOperations().getUserInfo().getClient().getAccountInfo().quota.total;
-			long done = OperationUtil.getFileOperations().getUserInfo().getClient().getAccountInfo().quota.normal;
-			log.info("updating storage space :"+ (done/total));
-			controller.updateStorageSpaceIndicator(total, done);
+			if(OperationUtil.getFileOperations().getUserInfo()!=null &&
+					OperationUtil.getFileOperations().getUserInfo().getClient()!=null) {
+				long total = OperationUtil.getFileOperations().getUserInfo().getClient().getAccountInfo().quota.total;
+				long done = OperationUtil.getFileOperations().getUserInfo().getClient().getAccountInfo().quota.normal;
+				log.info("updating storage space :"+ (done/total));
+				controller.updateStorageSpaceIndicator(total, done);
+			} else {
+				log.info("Error in method updateStorageSpaceIndicator:"+OperationUtil.getFileOperations().getUserInfo());
+				log.info("Error in method updateStorageSpaceIndicator:"+OperationUtil.getFileOperations().getUserInfo().getClient());
+			}
 		} catch (DbxException e) {
+			log.info(e);
 			controller.updateStorageSpaceIndicator(1, 1);
 		}
 		

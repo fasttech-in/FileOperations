@@ -57,6 +57,10 @@ public class CommanUtil {
 	public static Image folderOpenNodeImg = null;
 	public static Image synchronizeNodeImg = null;
 	public static Image aboutNodeImg = null;
+	public static Image collapseNodeImg = null;
+	public static Image expandNodeImg = null;
+	public static Image attachmentNodeImg = null;
+	public static Image sendEmailNodeImg = null;
 	
 	private static UserVO userVO;
 	private static Properties funcationalityPropertiesFile;
@@ -76,6 +80,7 @@ public class CommanUtil {
 		userRootDirectory = System.getProperty("user.dir");
 		new File(userRootDirectory+File.separator+"Temp").mkdir();
 		new File(userRootDirectory+File.separator+"ProductFiles").mkdir();
+		new File(userRootDirectory+File.separator+"Documents").mkdir();
 		PropertyConfigurator.configure(getPropertiesFilePath());
 		folderNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"folder-yellow24.png"));
 		 fileNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"file24.png"));
@@ -104,6 +109,10 @@ public class CommanUtil {
 		 folderOpenNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"folderOpen24.png"));
 		 synchronizeNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"synchronize24.png"));
 		 aboutNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"about.png"));
+		 collapseNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"collapse24.png"));
+		 expandNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"expand-16.png"));
+		 attachmentNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"attach24.png"));
+		 sendEmailNodeImg = new Image(CommanUtil.class.getResourceAsStream(p+"send24.png"));
 	}
 
 	public static String getUserRootDirectory() {
@@ -132,6 +141,10 @@ public class CommanUtil {
 		return funcationalityPropertiesFile.getProperty(key);
 	}
 
+	public static String getDocumentsDirectory() {
+		return userRootDirectory+File.separator+"Documents";
+	}
+	
 	public static String getTempDirectory() {
 		return userRootDirectory+File.separator+"Temp";
 	}

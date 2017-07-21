@@ -3,6 +3,7 @@ package com.file.ui;
 import java.util.Optional;
 
 import com.file.util.CommanUtil;
+import com.user.info.UserVO;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -46,7 +47,7 @@ public class EmailInputDialog {
 		toNames.setPromptText("To");
 		toNames.setPrefWidth(500);
 		TextField subject = new TextField();
-		subject.setPromptText("Subject");
+		subject.setText("Documents from "+UserVO.getInstance().getClientName());
 		TextField message = new TextField();
 		message.setPromptText("Message");
 

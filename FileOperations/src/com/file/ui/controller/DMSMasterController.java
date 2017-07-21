@@ -84,6 +84,9 @@ public class DMSMasterController {
     
     @FXML
     private TextField clientNameTxtFld;
+    
+    @FXML
+    private TextField clientEmailIdTxtFld;
 
     @FXML
     private TextField contactNoTxtFld;
@@ -181,6 +184,8 @@ public class DMSMasterController {
     @FXML
     private Button downloadListBtn;
     
+    
+    
     @FXML
     void searchTxtFldKeyReleased(KeyEvent event) {
 //    	List<String> searchResults = dmsImpl.search(searchTxtFld.getText(),localTab.isSelected());
@@ -225,8 +230,6 @@ public class DMSMasterController {
     void downloadTabSelectionChanged(ActionEvent event) {
 
     }
-    
-    
     
     @FXML
     void uploadSourceChooserBtnAction(ActionEvent event) {
@@ -395,11 +398,21 @@ public class DMSMasterController {
     void addBtnAction(ActionEvent event) {
     	File file = getDmsImpl().showFileChooser();
     	if(file!=null) {
-    		emailFilesListView.getItems().add(file.getAbsolutePath());
+    		addAttachmentToEmail(file.getAbsolutePath());
     	}
     }
     
+    public ListView<String> getEmailFilesListView() {
+		return emailFilesListView;
+	}
+
+	public void addAttachmentToEmail(String path) {
+    	emailFilesListView.getItems().add(path);
+    }
     
+    public void clearAttachments() {
+    	emailFilesListView.getItems().clear();
+    }
 
     public TextField getClientNameTxtFld() {
 		return clientNameTxtFld;
@@ -424,6 +437,14 @@ public class DMSMasterController {
 	public TextField getDataRootTxtFld() {
 		return dataRootTxtFld;
 	}
+	
+	@FXML
+    void clientNameKeyReleased(KeyEvent event) {
+		String clientName = clientNameTxtFld.getText();
+		String userName = clientName.replaceAll("[^A-Za-z]+", "");
+		userNameTxtFld.setText(userName);
+		dataRootTxtFld.setText(CommanUtil.getDocumentsDirectory()+File.separator+userName);
+    }
 	
 	public void updateStorageSpaceIndicator(long total, long done) {
 		double bar = Double.parseDouble(String.valueOf(toIntExact(done/total)));
@@ -470,6 +491,7 @@ public class DMSMasterController {
     	UserVO.getInstance().setPassword(passwordTxtFld.getText());
     	UserVO.getInstance().setUserAccessKey(accessKeyTxtFld.getText());
     	UserVO.getInstance().setUserRootDirectory(dataRootTxtFld.getText());
+    	UserVO.getInstance().setEmailId(clientEmailIdTxtFld.getText());
     	
     	UserVO.getInstance().setPassword(
     			Base64.getEncoder().encodeToString
@@ -482,7 +504,7 @@ public class DMSMasterController {
     	PopupNotification.showSuccess("Save - Settings", "Saved successfully.");
 	}
     
-    protected void disableOperationButtons() {
+    public void disableOperationButtons() {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -518,12 +540,15 @@ public class DMSMasterController {
 					downloadBtn.disabledProperty().addListener((observable, oldValue, newValue) -> {
 						zipDownloadBtn.setDisable(downloadBtn.isDisabled());
 					});
-					
-					emailFilesListView.getItems().addListener((ListChangeListener<? super String>) change -> {
-						multiZipBtn.setDisable(emailFilesListView.getItems().size()==0);
-						emailBtn.setDisable(emailFilesListView.getItems().size()==0);
-						downloadListBtn.setDisable(emailFilesListView.getItems().size()==0);
-						listClearBtn.setDisable(emailFilesListView.getItems().size()==0);
+				
+					emailFilesListView.getItems().addListener(new ListChangeListener() {
+					    @Override
+					    public void onChanged(ListChangeListener.Change change) {
+					        multiZipBtn.setDisable(emailFilesListView.getItems().size()==0);
+							emailBtn.setDisable(emailFilesListView.getItems().size()==0);
+							downloadListBtn.setDisable(emailFilesListView.getItems().size()==0);
+							listClearBtn.setDisable(emailFilesListView.getItems().size()==0);
+					    }
 					});
 				}
 			}

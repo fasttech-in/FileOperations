@@ -1,6 +1,7 @@
 package com.file.email;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -11,7 +12,14 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.log4j.Logger;
+
+import com.file.ui.FileTreeView;
+import com.user.info.UserVO;
+
 public class SendMail {
+	static Logger log = Logger.getLogger(SendMail.class.getName());
+	
 	static String username = "noreplyfasttech@gmail.com";
 	static String password = "fasttech2013";
 	public final static String SUCCESS_MESSAGE = "Mail Send Successfully";
@@ -44,6 +52,11 @@ public class SendMail {
 
 			Multipart multipart = new MimeMultipart();
 			addAttachment(multipart, emailVO.getAttachmentPaths());
+			BodyPart messageBodyPart = new MimeBodyPart();
+			String msg = getMessage(emailVO.getAttachmentPaths());
+	        messageBodyPart.setText(msg);
+	        messageBodyPart.setContent(msg, "text/html");
+	        multipart.addBodyPart(messageBodyPart);
 			
 			message.setContent(multipart);
 
@@ -59,10 +72,21 @@ public class SendMail {
 			}else{
 				result = "Mail Not Send ";
 			}
-		
+			log.info(e);
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	private static String getMessage(List<String> attachmentPaths) {
+		String msg = "Hello,<br> Thank you for your business. <br><br>Following files are attached with mail - <br>";
+		for (int i = 0; i < attachmentPaths.size(); i++) {
+			String filename = attachmentPaths.get(i);
+			msg +=String.valueOf((i+1))+" "+new File(filename).getName()+"<br>";
+		}
+		msg +="<br><br>Thanks & Regards<br>"+UserVO.getInstance().getClientName()+"";
+		msg +="<br><br>Mail sent from <br><b>Precise - Documents Management System.<br>fasttech.in@gmail.com | 9503462575/9421517509</b>";
+		return msg;
 	}
 
 	private static void addAttachment(Multipart multipart,
@@ -77,6 +101,7 @@ public class SendMail {
 				multipart.addBodyPart(messageBodyPart);
 			}
 		} catch (Exception e) {
+			log.info(e);
 			System.out.println("Exception In addAttachment() :"+e.getMessage());
 			e.printStackTrace();		
 			throw e;
